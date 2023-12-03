@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 
 const Menu = () => {
     return (
-        <nav className=''>
-            <ul className=''>
+        <nav className='relative'>
+            <ul className='flex'>
                 <li><Link to=''>Compare</Link></li>
                 <li><Link to=''>Wish list</Link></li>
                 <li><Link to=''>Cart</Link></li>

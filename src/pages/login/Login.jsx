@@ -8,15 +8,21 @@ const Login = () => {
     };
 
     return (
+      
         <motion.div
-        className='flex flex-col w-full h-screen bg-gray-100 dark:bg-gray-800'
-            initial={{ x: '-100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-        >
-            <h2>Log in</h2>
-            <AuthForm onSubmit={onSubmit} isRegistration={false} />
-        </motion.div>
+  className='flex items-center justify-center w-full h-screen bg-gray-100 dark:bg-gray-800'
+  initial={{ x: '-100%' }}
+  animate={{ x: 0 }}
+  exit={{ x: '100%' }}
+  transition={{ duration: 1}}
+
+>
+  
+    <AuthForm onSubmit={onSubmit} isRegistration={false} />
+
+    
+</motion.div>
+
     );
 };
 

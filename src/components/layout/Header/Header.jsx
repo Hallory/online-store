@@ -5,7 +5,7 @@ import Menu from './Menu';
 
 const Header = (props) => {
     return (
-        <header className=''>
+        <header className='flex absolute min-h-[70px] z-40'>
             <Logo />
             <SearchBar />
             <Menu />

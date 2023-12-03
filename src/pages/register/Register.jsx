@@ -10,13 +10,18 @@ const Register = () => {
 
     return (
         <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '-100%' }}
-        >
-            <h2>Register with your email</h2>
-            <AuthForm onSubmit={onSubmit} isRegistration={true} />
-        </motion.div>
+  className='flex items-center justify-center w-full h-screen bg-gray-100 dark:bg-gray-800'
+  initial={{ x: '-100%' }}
+  animate={{ x: 0 }}
+  exit={{ x: '100%' }}
+  transition={{ duration: 1}}
+>
+  
+    <AuthForm onSubmit={onSubmit} isRegistration={true} />
+
+    
+</motion.div>
+
     );
 };
 

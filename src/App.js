@@ -6,7 +6,7 @@ import Home from './pages/home/Home';
 import { AnimatePresence } from 'framer-motion';
 function App() {
   return (
-    <div className="App">
+    <div className="App pt-[100px]">
         <Routes>
           <Route path="/" element ={<Home />}/>
           <Route path="/login" element={<AnimatePresence mode='wait'><Login /></AnimatePresence>} />

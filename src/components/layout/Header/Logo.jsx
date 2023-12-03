@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom/dist';
 
 const Logo = () => {
     return (
-        <div className=''>
+        <div className='relative'>
             <Link to=''>
                 <img className='' src='' alt='Header logo' />
             </Link>
