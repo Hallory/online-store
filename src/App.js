@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Routes, Route, BrowserRouter, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import './App.css';
+import { BrowserRouter } from 'react-router-dom'; // Одновременно с BrowserRouter не используйте Routes и Route
+import { AnimatePresence } from 'framer-motion';
+import axios from 'axios';
 import Login from './pages/login/Login';
 import Register from './pages/register/Register';
 import Home from './pages/home/Home';
-import { AnimatePresence } from 'framer-motion';
 import ProductDetails from './pages/product-details/ProductDetails';
-import axios from 'axios';
 import Products from './pages/products/Products';
 
 function App() {
@@ -21,6 +23,7 @@ function App() {
       .then((res) => {
         const data = res.data;
         setProducts(data.products);
+        console.log(data.products);
       })
       .catch((err) => {
         console.log(err);
@@ -37,10 +40,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home products={products} />} />
         <Route path="/products" element={<Products products={products} />} />
-        <Route
-          path="/products/:productId"
-          element={<ProductDetails products={products} />}
-        />
+        <Route path="/products/:productId" element={<ProductDetails products={products} />} />
         <Route
           path="/login"
           element={
@@ -53,7 +53,7 @@ function App() {
           path="/register"
           element={
             <AnimatePresence mode='wait'>
-              <Register  shouldAnimate={shouldAnimate} key="register" />
+              <Register shouldAnimate={shouldAnimate} key="register" />
             </AnimatePresence>
           }
         />

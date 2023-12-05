@@ -98,6 +98,7 @@ const AuthForm = ({ onSubmit, isRegistration }) => {
                     <p className="text-center">or</p>
 
                     <button className="bg-blue-500 hover:bg-blue-700 text-white py-2 rounded">
+
                         {isRegistration
                             ? 'Sign in with Google'
                             : 'Sign up with Google'}

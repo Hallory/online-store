@@ -19,6 +19,10 @@ const Register = ({ shouldAnimate}) => {
       <AuthForm onSubmit={onSubmit} isRegistration={true} />
     </motion.div>
   );
+
+
+    
+
 };
 
 export default Register;

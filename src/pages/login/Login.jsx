@@ -1,4 +1,3 @@
-// Login.jsx
 import React from 'react';
 import AuthForm from '../../components/auth/AuthForm';
 import { motion } from 'framer-motion';
@@ -19,6 +18,7 @@ const Login = ({ shouldAnimate}) => {
       <AuthForm onSubmit={onSubmit} isRegistration={false} />
     </motion.div>
   );
+
 };
 
 export default Login;

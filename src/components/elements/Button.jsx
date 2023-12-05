@@ -8,17 +8,19 @@ const Button = ({ onClick, icon: Icon, label, variant = 'primary' }) => {
                 return '';
             case 'secondary':
                 return '';
+            case 'icon':
+                return 'px-3 py-3 border border-gray-300 rounded-md shadow-sm hover:bg-blue-600';
             default:
-                return 'border border-gray-300 rounded-md shadow-sm hover:bg-blue-600 ';
+                return 'px-10 py-3 border border-gray-300 rounded-md shadow-sm hover:bg-blue-600';
         }
     };
 
     return (
         <button
             onClick={onClick}
-            className={`px-4 py-2 rounded-md focus:outline-none ${getVariantStyles()}`}
+            className={`rounded-md focus:outline-none ${getVariantStyles()}`}
         >
-            {Icon && <Icon className="inline-block mr-2" />}
+            <span>{Icon && <Icon className="inline-block w-5 h-5" />}</span>
             <span>{label}</span>
         </button>
     );

@@ -11,7 +11,5 @@ const Products = ({products}) => {
                         </Link>
                     ))}
             </div>
-    );
-};
-
+)};
 export default Products;
