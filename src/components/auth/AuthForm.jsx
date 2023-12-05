@@ -1,54 +1,105 @@
 import React from 'react';
-import {useForm} from 'react-hook-form'
-const AuthForm = ({onSubmit, isRegistration}) => {
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
-    const {register,handleSubmit,formState:{errors}, watch} = useForm()
-    
+const AuthForm = ({ onSubmit, isRegistration }) => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+
     return (
-        <form
-        className='flex flex-col'
-        onSubmit={handleSubmit(onSubmit)}>
-            {isRegistration && (
-                <label htmlFor="FullName">
-                    Fullname
-                </label>
-            )}
-            <label htmlFor="email">
-                Email
-                <input
-                    type="email"
+        <div className="h-full md:h-[80vh] w-full flex  justify-between max-w-[100%] md:max-w-[80%] p-8 bg-white rounded-md shadow">
+            <div className="w-full  lg:w-1/2 h-full flex-col  flex p-6 items-center justify-center  dark:bg-gray-900">
+                <h2>{isRegistration ? 'Create an account' : 'Login'}</h2>
+                <form
+                    className="flex flex-col w-full max-w-md md:gap-7 sm:gap-2 text-xs md:text-base"
+                    onSubmit={handleSubmit(onSubmit)}
+                >
+                    {isRegistration && (
+                        <label htmlFor="fullName" className="flex flex-col">
+                            Full Name
+                            <input
+                                type="text"
+                                placeholder="Enter your name"
+                                {...register('fullName', { required: true })}
+                                className="p-2 border border-gray-300 rounded mt-1"
+                            />
+                        </label>
+                    )}
+
+                    <label htmlFor="email" className="flex flex-col">
+                        Email
+                        <input
+                            type="email"
+                            placeholder="Enter your email"
+                            {...register('email', {
+                                required: true,
+                                pattern: /^\S+@\S+$/i,
+                            })}
+                            className="p-2 border border-gray-300 rounded mt-1"
+                        />
+                        {errors.email && (
+                            <p className="text-red-500">
+                                Please enter a valid email
+                            </p>
+                        )}
+                    </label>
+
+                    <label htmlFor="password" className="flex flex-col">
+                        <div className="flex justify-between">
+                            <p>Password</p>
+                            {!isRegistration && <Link to="#">Forgot password?</Link>}
+                        </div>
+                        <input
+                            type="password"
+                            id="password"
+                            {...register('password', {
+                                required: true,
+                                minLength: 6,
+                            })}
+                            className="p-2 border border-gray-300 rounded mt-1"
+                        />
+                        {errors.password && (
+                            <p className="text-red-500">
+                                Please enter a valid password
+                            </p>
+                        )}
+                    </label>
+
                     
-                    ref={register('email',{required: true, pattern: /^\S+@\S+$/i})}
-                />
-                {errors.email && <p>Please enter a valid email</p>}
-            </label>
-            <label htmlFor="password">
-                Password
-                <input 
-                type="password" 
-                id="password" 
-                ref={register('password',{required: true, minLength: 6})}
-                />
-                {errors.password && <p>Please enter a valid password</p>}
-            </label>
+                    <div className="flex items-center">
+                        <input
+                            type="checkbox"
+                            {...register('keepLoggedIn')}
+                            className="mr-2 border max-w-[20px] border-gray-300 rounded p-2"
+                        />
+                        <label htmlFor="keepLoggedIn">Keep me logged in</label>
+                    </div>
 
-                <label htmlFor="keep me logged in">
-                    <input type="checkbox" name="keep me logged in" id="keep me logged in" /> Keep me logged in
-                </label>
+                    <button
+                    style={{backgroundColor: 'gray', color: 'white'}}
 
-            <button type="submit" onClick={handleSubmit(onSubmit)}>
-                {isRegistration ? 'Sign up' : 'Sign in'}
-            </button>
+                        className="bg-slate-300 hover:bg-slate-400 text-black py-2 rounded"
+                        type="submit"
+                        onClick={handleSubmit(onSubmit)}
+                    >
+                        {isRegistration ? 'Sign up' : 'Sign in'}
+                    </button>
 
-            <p>
-                or
-            </p>
+                    <p className="text-center">or</p>
 
-            <button>
-                {isRegistration ? 'Sign in with Google' : 'Sign up with Google'}
-            </button>
-
-        </form>
+                    <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white py-2 rounded">
+                        {isRegistration
+                            ? 'Sign in with Google'
+                            : 'Sign up with Google'}
+                    </button>
+                </form>
+            </div>
+            <div className="w-1/2 lg:flex hidden items-center bg-gray-200 dark:bg-gray-900"></div>
+        </div>
     );
 };
 
