@@ -27,7 +27,7 @@ const Layout = ({ children }) => {
         <div className='flex flex-col min-h-screen px-4'>
             <Header />
             <div className='flex-1 flex'>
-                <Sidebar products={products} />
+                <Sidebar className="hidden" products={products} />
                 <main className='flex-1 overflow-x-hidden overflow-y-auto'>
                     <div className='container mx-auto px-4 py-6'>
                         {children}

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
 
 const Sidebar = ({ products, onFilterChange }) => {
     const [brandsWithCount, setBrandsWithCount] = useState([]);
@@ -94,8 +96,20 @@ const Sidebar = ({ products, onFilterChange }) => {
         setSearchColor(event.target.value);
     };
 
+    const location = useLocation();
+    const paths = ['/', '/products', '/login', '/register', '/products/:productId'];
+
+    const isHidden = paths.some((path) => {
+        if (path.includes(':')) {
+            const regex = new RegExp(`^${path.replace(/:[^/]+/g, '[^/]+')}$`);
+            return regex.test(location.pathname);
+        } else {
+            return location.pathname === path;
+        }
+    });
+
     return (
-        <div className="sidebar">
+        <div className={isHidden ? 'hidden' : 'block'}>
             <div>
                 <h4>Brand</h4>
                 <input
@@ -190,8 +204,6 @@ const Sidebar = ({ products, onFilterChange }) => {
                     />
                 </div>
             </div>
-
-            {/* ... (rest of the component remains unchanged) ... */}
         </div>
     );
 };
