@@ -17,8 +17,7 @@ const ProductDetails = ({ products }) => {
 
   return (
     <div className="max-w-[1400px] mx-auto">
-    <div className="product-header flex lg:flex-row flex-col">
-      <div>
+      <div className='w-full'>
         {pathnameSegments.map((segment, index) => (
           <React.Fragment key={segment}>
             <Link to={`/${pathnameSegments.slice(0, index + 1).join('/')}`}>{segment}</Link>
@@ -26,12 +25,11 @@ const ProductDetails = ({ products }) => {
           </React.Fragment>
         ))}
       </div>
-      <div>
-        <div>
+    <div className="product-header flex justify-around lg:flex-row gap-10 flex-col pt-[50px]">
+      <div className="product-image max-w-[60%]">
           <ImageCarousel product={product} />
-        </div>
       </div>
-      <div className="product-details max-w-[33%]">
+      <div className="product-details max-w-[40%] pl-10">
         <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
         <p>Rating: {product.rating}</p>
         <p className="text-gray-600 mb-2">{product.category}</p>
