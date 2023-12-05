@@ -197,4 +197,3 @@ const Sidebar = ({ products, onFilterChange }) => {
     );
 };
 
-export default Sidebar;
