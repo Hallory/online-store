@@ -3,6 +3,7 @@ import { IoSearchSharp } from "react-icons/io5";
 
 const SearchBar = () => {
     return (
+
         <div className='relative max-w-xl w-full'>
             <input
                 type='text'

@@ -2,17 +2,27 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Button from '../elements/Button';
 import { IoMdHeartEmpty } from "react-icons/io";
+import { useDispatch } from 'react-redux';
+import { addToWishlist } from '../../redux/slices/wishlistSlice';
 
 const ProductCard = ({ product }) => {
+    const dispatch = useDispatch();
+
+    const handleAddToWishlist = () => {
+        dispatch(addToWishlist(product));
+    }
+
     return (
         <motion.div
             className='rounded-md overflow-hidden border border-gray-200'
         >
-            <img class='h-60 w-full object-cover object-center' src={product.thumbnail} alt='product img' />
-            <div class='px-3 pt-3'>
-                <h3 class=''>{product.title}</h3>
-                <div class=''>
-                    <p class=''>${product.price}</p>
+            {product.thumbnail && (
+                <img className='h-60 w-full object-cover object-center' src={product.thumbnail} alt='product img' />
+            )}
+            <div className='px-3 pt-3'>
+                <h3 className=''>{product.title}</h3>
+                <div className=''>
+                    <p className=''>${product.price}</p>
                 </div>
             </div>
             <div className='flex justify-center gap-1 pb-4 pt-2'>
@@ -23,7 +33,7 @@ const ProductCard = ({ product }) => {
                 />
                 <Button
                     icon={IoMdHeartEmpty}
-                    onClick={() => { console.log('Click!'); }}
+                    onClick={handleAddToWishlist}
                     variant='icon'
                 />
             </div>

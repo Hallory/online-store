@@ -6,3 +6,6 @@ form input {
     @apply w-full outline-none  border border-slate-300 rounded-xl;
 }
 
+img{
+    @apply rounded-md;
+}
