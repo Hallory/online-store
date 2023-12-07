@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import './App.css';
-import { BrowserRouter } from 'react-router-dom'; // Одновременно с BrowserRouter не используйте Routes и Route
 import { AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import Login from './pages/login/Login';
@@ -9,15 +8,18 @@ import Register from './pages/register/Register';
 import Home from './pages/home/Home';
 import ProductDetails from './pages/product-details/ProductDetails';
 import Products from './pages/products/Products';
+import { useDispatch, useSelector } from 'react-redux';
 
 function App() {
   const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+  const baseUrl = useSelector((state) => state.baseUrl.value);
   const [prevPath, setPrevPath] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const url = 'https://dummyjson.com/products';
+    const url = baseUrl
     axios
       .get(url)
       .then((res) => {
@@ -29,9 +31,8 @@ function App() {
         console.log(err);
       });
 
-    // Set the previous path when the route changes
     setPrevPath(location.pathname);
-  }, [location.pathname]);
+  }, [location.pathname, baseUrl]);
 
   const shouldAnimate = prevPath && (prevPath.includes('/login') || prevPath.includes('/register'));
 
