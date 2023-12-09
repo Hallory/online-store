@@ -5,11 +5,13 @@ import { Link } from 'react-router-dom/dist';
 const Logo = () => {
     return (
         <div className='relative'>
-            <Link to=''>
-                <img className='' src='' alt='Header logo' />
+            <Link to='/'>
+                ElectroMagic
             </Link>
         </div>
+        
     );
+
 };
 
 export default Logo;

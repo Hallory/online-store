@@ -4,6 +4,7 @@ import adminReducer from "./slices/adminSlice";
 import baseUrlReducer from "./slices/baseUrlSlice";
 import productsReducer from "./slices/productsSlice";
 import wishlistReducer from "./slices/wishlistSlice";
+import filtersReducer from "../redux/slices/filtersSlice";
 
 const rootReducer = combineReducers({
     orders:ordersReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
     baseUrl:baseUrlReducer,
     products: productsReducer,
     wishlist: wishlistReducer,
+    filters: filtersReducer
     
 })
 
