@@ -32,7 +32,7 @@ function App() {
       });
 
     setPrevPath(location.pathname);
-  }, [location.pathname, baseUrl]);
+  }, []);
 
   const shouldAnimate = prevPath && (prevPath.includes('/login') || prevPath.includes('/register'));
 
