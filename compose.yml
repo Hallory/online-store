@@ -1,0 +1,32 @@
+services:
+  backend:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - 8080:8080
+    environment:
+      - POSTGRES_DB=es-dev
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres-dev
+    networks:
+      - es-backend-dev
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_DB=es-dev
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres-dev
+    volumes:
+      - es-pg-dev:/var/lib/postgresql/data
+    expose:
+      - 5432
+    networks:
+      - es-backend-dev
+
+volumes:
+  es-pg-dev:
+
+networks:
+  es-backend-dev:
