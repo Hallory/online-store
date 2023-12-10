@@ -9,6 +9,7 @@ services:
       - POSTGRES_DB=es-dev
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres-dev
+      - POSTGRES_HOST=db
     networks:
       - es-backend-dev
   db:

@@ -4,15 +4,17 @@ server:
 spring:
   profiles.active: test
   datasource:
-    url: jdbc:h2:mem:${POSTGRES_DB}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
-  jpa:
-    hibernate.ddl-auto: create-drop
 
 ---
 spring:
   config.activate.on-profile: test
+  datasource:
+    url: jdbc:h2:mem:${POSTGRES_DB}
+  jpa:
+    hibernate.ddl-auto: create-drop
+    show-sql: true
 server:
   port: 0
 
@@ -20,18 +22,15 @@ server:
 spring:
   config.activate.on-profile: dev
   datasource:
-    url: jdbc:postgresql://db:5432/${POSTGRES_DB}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://${POSTGRES_HOST}:5432/${POSTGRES_DB}
   jpa:
-    hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: update
+    show-sql: true
 
 ---
 spring:
   config.activate.on-profile: prod
   datasource:
-    url: jdbc:postgresql://db:5432/${POSTGRES_DB}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://${POSTGRES_HOST}:5432/${POSTGRES_DB}
   jpa:
     hibernate.ddl-auto: none
