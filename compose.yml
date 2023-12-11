@@ -2,32 +2,32 @@ services:
   backend:
     build: .
     depends_on:
-      - db
+      - db-sample
     ports:
       - 8080:8080
     environment:
-      - POSTGRES_DB=es-dev
+      - POSTGRES_DB=es-sample
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres-dev
-      - POSTGRES_HOST=db
+      - POSTGRES_PASSWORD=postgres-sample
+      - POSTGRES_HOST=db-sample
     networks:
-      - es-backend-dev
-  db:
+      - es-backend-sample
+  db-sample:
     image: postgres:latest
     restart: always
     environment:
-      - POSTGRES_DB=es-dev
+      - POSTGRES_DB=es-sample
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres-dev
+      - POSTGRES_PASSWORD=postgres-sample
     volumes:
-      - es-pg-dev:/var/lib/postgresql/data
+      - es-pg-sample:/var/lib/postgresql/data
     expose:
       - 5432
     networks:
-      - es-backend-dev
+      - es-backend-sample
 
 volumes:
-  es-pg-dev:
+  es-pg-sample:
 
 networks:
-  es-backend-dev:
+  es-backend-sample:
