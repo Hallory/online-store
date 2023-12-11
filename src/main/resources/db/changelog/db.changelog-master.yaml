@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: classpath:db/changes/001-initial-schema.sql
+  - include:
+      file: classpath:db/changes/002-insert-data-products.sql

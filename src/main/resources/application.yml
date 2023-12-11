@@ -6,12 +6,17 @@ spring:
   datasource:
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
+  liquibase:
+    changeLog: classpath:db/changelog/db.changelog-master.yaml
+    enabled: false
 
 ---
 spring:
   config.activate.on-profile: test
   datasource:
-    url: jdbc:h2:mem:${POSTGRES_DB}
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:5433/${POSTGRES_DB:es-test}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres-test}
   jpa:
     hibernate.ddl-auto: create-drop
     show-sql: true
@@ -24,8 +29,9 @@ spring:
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST}:5432/${POSTGRES_DB}
   jpa:
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: none
     show-sql: true
+  liquibase.enabled: true
 
 ---
 spring:
@@ -34,3 +40,4 @@ spring:
     url: jdbc:postgresql://${POSTGRES_HOST}:5432/${POSTGRES_DB}
   jpa:
     hibernate.ddl-auto: none
+  liquibase.enabled: true
