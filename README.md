@@ -22,24 +22,8 @@ docker compose down --volumes
 Print containers logs
 docker compose logs
 
-Standalone postgres container
-docker run -dit \
---name es-postgres-instant \
--e POSTGRES_DB=es-dev \
--e POSTGRES_USER=postgres \
--e POSTGRES_PASSWORD=postgres-dev \
--p 5432:5432 \
--v local-es-pg-dev:/var/lib/postgresql/data \
-postgres
+Prepare local dev and test pg container dbs
+docker compose -f compose-pg-local.yml up -d
 
-Only backend service
-docker build . && \
-docker run -dit \
---name es-backend
--e POSTGRES_DB=es-dev \
--e POSTGRES_USER=postgres \
--e POSTGRES_PASSWORD=postgres-dev \
--e POSTGRES_HOST=localhost \
--e spring.profiles.active=dev \
--p 8080:8080 \
-online-store-backend
+Remove local dev and test pg container dbs
+docker compose -f compose-pg-local.yml down --volumes

@@ -1,0 +1,28 @@
+services:
+  db-dev:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_DB=es-dev
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres-dev
+    volumes:
+      - es-pg-dev:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  db-test:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_DB=es-test
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres-test
+    volumes:
+      - es-pg-test:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+
+volumes:
+  es-pg-dev:
+  es-pg-test:
