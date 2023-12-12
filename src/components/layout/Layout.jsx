@@ -6,7 +6,7 @@ import Sidebar from './Sidebar/Sidebar';
 const Layout = ({ children }) => {
 
     return (
-        <div className='flex flex-col min-h-screen px-4'>
+        <div className='flex flex-col max-w-[90rem] min-h-screen mx-auto'>
             <Header />
             <div className='flex-1 flex'>
                 <Sidebar />
@@ -16,7 +16,7 @@ const Layout = ({ children }) => {
                     </div>
                 </main>
             </div>
-            <Footer />
+            <Footer className='bg-gray-800 text-white py-4 text-center'/>
         </div>
     )
 }

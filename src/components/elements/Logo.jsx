@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom/dist';
 
 const Logo = () => {
     return (
-        <div className='relative'>
+        <div className='pr-12'>
             <Link to='/'>
-                ElectroMagic
+                <span className='text-[2rem] font-bold leading-[110%] py-1'>
+                    ElectroMagic
+                </span>
             </Link>
         </div>
         
