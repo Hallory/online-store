@@ -6,7 +6,7 @@ const ImageCarousel = ({product}) => {
   
         return (
             <div className="flex ">
-                <div className='all-images md:flex flex-col hidden gap-6'>
+                <div className='all-images md:flex flex-col hidden gap-6 max-h-[500px] overflow-y-auto overflow-x-hidden '>
            
                     {images.map((image, index) => (
                         <div
@@ -18,7 +18,7 @@ const ImageCarousel = ({product}) => {
                         </div>
                     ))}
                 </div>
-                <div className='main-image w-full max-h-full h-[500px] pl-10'>
+                <div className='main-image w-full max-h-full h-[500px] pl-10 pr-10'>
            
                     <img className='w-full h-full' src={images[currentIndex]} alt=""/>
                 </div>
