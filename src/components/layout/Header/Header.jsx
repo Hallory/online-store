@@ -10,7 +10,7 @@ import Navigation from './Header_nav/Navigation';
 const Header = (props) => {
 
     return (
-        <header className='px-6 flex flex-col items-center py-4 gap-y-4 bg-bg_secondary'>
+        <header className='px-6 flex flex-col items-center py-4 gap-y-4 bg-bg_secondary border-b border-solid border-b-brd shadow-sm'>
             <div className='flex justify-start items-center w-full'>
                 <Logo />
                 <Navigation />  

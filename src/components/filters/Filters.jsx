@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from "../../redux/slices/productsSlice";
+import { filteredProducts } from "../../redux/slices/productsSlice";
 
 const Filters = () => {
     const dispatch = useDispatch();
@@ -14,24 +15,6 @@ const Filters = () => {
     const uniqueBrands = [...new Set(list.map((product) => product.brand))];
     console.log(uniqueBrands);
 
-    const [selectedBrands, setSelectedBrands] = useState([]);
-    console.log(selectedBrands);
-
-    const handleBrandChange = (brand) => {
-
-        if (selectedBrands.includes(brand)) {
-            setSelectedBrands(selectedBrands.filter((selectedBrand) => selectedBrand !== brand));
-
-        } else {
-
-            setSelectedBrands([...selectedBrands, brand]);
-
-        }
-
-        dispatch(getProducts(selectedBrands));
-
-    };
-
     return (
         <div>
             {uniqueBrands.map((brand) => (
@@ -39,8 +22,7 @@ const Filters = () => {
                     <input
                         type="checkbox"
                         id={brand}
-                        checked={selectedBrands.includes(brand)}
-                        onChange={() => handleBrandChange(brand)}
+                        onChange={() => dispatch(filteredProducts(brand))}
                     />
                     <label htmlFor="{brand}">
                         {brand}

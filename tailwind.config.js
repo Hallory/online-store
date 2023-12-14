@@ -20,9 +20,10 @@ module.exports = {
       //SEARCH BAR COLORS
       brd: '#E6E6EA',
       placeholder: '#757283',
+      //TEXT COLORS
+      clr_txt: '#9190A1',
+      clr_txt_secondary: '#504F59',
       //FOOTER COLORS
-      clr_foo_txt: '#9190A1',
-      clr_foo_txt_secondary: '#504F59',
       clr_foo_bg_line: '#AAAAAA',
     },
     extend: {
