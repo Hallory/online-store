@@ -17,8 +17,7 @@ const Sidebar = ({ products }) => {
     });
 
     return (
-        <div className={isHidden ? 'hidden' : 'block'}>
-            Sidebar
+        <div className={`${isHidden ? 'hidden' : 'block'} pl-4`}>
             <Filter/>
 
         </div>

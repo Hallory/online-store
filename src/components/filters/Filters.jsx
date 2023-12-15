@@ -10,25 +10,47 @@ const Filters = () => {
     useEffect(()=>{
         dispatch(getProducts());
 
-    },[dispatch]);
+    }, [dispatch]);
+    
+    const brandCounts = {};
+    list.forEach(product => {
+        brandCounts[product.brand] = (brandCounts[product.brand] || 0) + 1;
+    });
 
     const uniqueBrands = [...new Set(list.map((product) => product.brand))];
     console.log(uniqueBrands);
 
     return (
-        <div>
-            {uniqueBrands.map((brand) => (
-                <div key={brand}>
-                    <input
-                        type="checkbox"
-                        id={brand}
-                        onChange={() => dispatch(filteredProducts(brand))}
-                    />
-                    <label htmlFor="{brand}">
-                        {brand}
-                    </label>
+        <div className="p-4">
+            {/* Filtering by brands */}
+            <div className="">
+                <div className="flex justify-between">
+                    <h3>Brand</h3>
+                    <button>V</button>
                 </div>
-            ))}
+                <div>
+                    <input type="text" />
+                </div>
+                <div className="max-h-[275px] overflow-y-auto">
+                    {uniqueBrands.map((brand) => (
+                        <div key={brand} className="flex items-center">
+                            <input
+                                type="checkbox"
+                                id={brand}
+                            onChange={() => dispatch(filteredProducts(brand))}
+                                className="mr-2"
+                            />
+                            <label htmlFor={brand} className="cursor-pointer">
+                                {brand} {brandCounts[brand]}
+                            </label>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div>
+                Filter by price
+                {/* Filtering by price */}
+            </div>
         </div>
     );
 }

@@ -21,7 +21,7 @@ const Breadcrumbs = () => {
 
     return (
         <div className={isHidden ? 'block' : 'hidden'}>
-            <div className='flex justify-between mt-4 px-6 pb-6 border-b border-solid border-b-brd '>
+            <div className='flex justify-between mt-4 mb-4 px-6 pb-6 border-b border-solid border-b-brd '>
                 <div className='flex flex-col'>
                     <div className=''>
                         <PathName />
@@ -42,8 +42,6 @@ const Breadcrumbs = () => {
                                 <option value="featured">Featured</option>
                                 <option value="expensive">Most Expensive</option>
                                 <option value="cheapest">Cheapest</option>
-                                <option value="rating">By Rating</option>
-                                <option value="new">New Products</option>
                             </select>
                         </div>
                     )}
