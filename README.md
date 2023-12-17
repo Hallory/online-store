@@ -6,8 +6,6 @@ http://localhost:8080/v3/api-docs
 Swagger docs
 http://localhost:8080/swagger-ui/index.html
 
-Generated OpenAPI docs in json report
-/target/openapi.json
 
 
 Prepare backend from Dockerfile and pull postgres:latest
@@ -22,8 +20,10 @@ docker compose down --volumes
 Print containers logs
 docker compose logs
 
+
+
 Prepare local dev and test pg container dbs
-docker compose -f compose-pg-local.yml up -d
+docker compose -f compose-pg-standalone.yml up -d
 
 Remove local dev and test pg container dbs
-docker compose -f compose-pg-local.yml down --volumes
+docker compose -f compose-pg-standalone.yml down --volumes

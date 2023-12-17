@@ -1,15 +1,12 @@
 package org.electronicsstore.backend.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.electronicsstore.backend.model.Product;
+import org.electronicsstore.backend.dtos.ProductDto;
 import org.electronicsstore.backend.services.ProductService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -17,17 +14,41 @@ import java.util.Map;
 public class ProductController {
     private final ProductService productService;
     @GetMapping
-    public ResponseEntity<?> products() {
-        return ResponseEntity.ok(Map.of("products", productService.findAll()));
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProductDto> products() {
+        return productService.findAll();
+    }
+
+    @GetMapping({"{productId}"})
+    @ResponseStatus(HttpStatus.OK)
+    public ProductDto productById(@PathVariable(name = "productId", required = true) String productId) {
+        return productService.findById(productId);
     }
 
     @PostMapping
-    public ResponseEntity<?> addProduct() {
-        Product product = new Product();
-        product.setArticle("article");
-        product.setSku("sku");
-        product.setDescription("desc");
-        productService.addProduct(product);
-        return ResponseEntity.ok(Map.of("id", productService.addProduct(product).getId()));
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductDto addProduct(@RequestBody ProductDto productDto) {
+        return productService.saveOne(productDto);
+    }
+
+    // 200 ok / 204 no_content
+    // !201 created
+    // !409 conflict
+    // 400 bad request // with explanation
+    @PutMapping({"{productId}"})
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateById(
+            @PathVariable(name = "productId", required = true) String productId,
+            @RequestBody ProductDto productDto) {
+        productService.updateOne(productId, productDto);
+    }
+
+    // 204 no_content
+    // 202 accepted not completed
+    // 200 with response required
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping({"{productId}"})
+    public void deleteById(@PathVariable(name = "productId", required = true) String productId) {
+        productService.deleteOne(productId);
     }
 }
