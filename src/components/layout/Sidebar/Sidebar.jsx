@@ -1,6 +1,7 @@
 import React from 'react';
-import Filter from '../../filters/Filters';
 import { useLocation } from 'react-router-dom';
+import FilterBrands from '../../filters/FilterBrands';
+import FilterPrices from '../../filters/FilterPrices';
 
 
 const Sidebar = ({ products }) => {
@@ -17,9 +18,9 @@ const Sidebar = ({ products }) => {
     });
 
     return (
-        <div className={`${isHidden ? 'hidden' : 'block'} pl-4`}>
-            <Filter/>
-
+        <div className={`${isHidden ? 'hidden' : 'block'} pl-4 max-w-[315px] w-full`}>
+            <FilterBrands/>
+            <FilterPrices />    
         </div>
     )
 };

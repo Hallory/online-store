@@ -1,7 +1,7 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { selectBaseUrl } from "./baseUrlSlice";
-import { list } from "postcss";
+
 
 
 export const getProducts = createAsyncThunk('products/fetchProducts', async (_, thunkAPI) => {
@@ -24,15 +24,14 @@ filteredProducts: (state, action) => {
     try {
         const brand = action.payload;
         
-        // Перевіряємо, чи бренд вже є в масиві
         const isBrandAlreadySelected = state.filteredProducts.some(product => product.brand === brand);
 
         if (!isBrandAlreadySelected) {
-            // Якщо бренду ще немає в масиві, додаємо всі відповідні товари
+
             const brandProducts = state.list.filter(product => product.brand === brand);
             state.filteredProducts = [...state.filteredProducts, ...brandProducts];
         } else {
-            // Якщо бренд вже є в масиві, видаляємо всі його товари
+
             state.filteredProducts = state.filteredProducts.filter(product => product.brand !== brand);
         }
 
@@ -59,8 +58,7 @@ sortProducts: (state, action) => {
                 console.log(state.sortProducts);
                 break;
             case 'featured':
-                // Your logic for 'featured' sorting
-                filteredAndSorted = state.list;  // You might want to sort or filter here
+                filteredAndSorted = state.list; 
                 state.sortProducts = filteredAndSorted;
                 console.log(state.sortProducts);
                 break;
@@ -68,9 +66,7 @@ sortProducts: (state, action) => {
                 return state;
         }
 
-        // Apply additional filters if present
         if (state.filteredProducts.length > 0) {
-            // Apply your filtering logic to filteredAndSorted array
             filteredAndSorted = filteredAndSorted.filter(product =>
                 state.filteredProducts.some(filteredProduct => filteredProduct.brand === product.brand)
             );

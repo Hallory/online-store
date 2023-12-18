@@ -8,12 +8,9 @@ const Products = ({ products }) => {
     const sortProducts = useSelector(state => state.products.sortProducts);
     const allProducts = useSelector(state => state.products.list);
 
-    // Функція для об'єднання сортування та фільтрації
     const applySortingAndFiltering = (items) => {
-        // Спробуйте використати сортування, якщо воно присутнє
         const sortedItems = sortProducts.length > 0 ? sortProducts : items;
 
-        // Повертаємо відфільтровані та відсортовані товари
         return filteredProducts.length > 0
             ? sortedItems.filter(product =>
                 filteredProducts.some(filteredProduct => filteredProduct.brand === product.brand)
@@ -21,7 +18,6 @@ const Products = ({ products }) => {
             : sortedItems;
     };
 
-    // Отримуємо відсортовані та відфільтровані товари
     const displayedProducts = applySortingAndFiltering(allProducts);
 
     return (

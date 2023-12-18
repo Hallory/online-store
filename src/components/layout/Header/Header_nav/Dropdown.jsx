@@ -8,8 +8,6 @@ const Dropdown = () => {
     };
 
         const handleBuyersClick = () => {
-        // Add your logic for handling the "For Buyers" dropdown item click here
-        // For example, you can navigate to a specific page or perform some action.
         console.log('Buyers clicked!');
     };
 
