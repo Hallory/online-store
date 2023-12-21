@@ -7,9 +7,12 @@ import { HiOutlineShoppingCart } from "react-icons/hi";
 
 
 
+
+
 const Menu = () => {
     return (
         <nav className='max-w-lg'>
+
             <ul className='flex flex-wrap'>
                 <li>
                     <MenuItem name='Compare' icon={LuScale} route='/compare' />

@@ -3,13 +3,20 @@ import { Link } from 'react-router-dom';
 import ProductCard from '../../components/product/ProductCard';
 import { useSelector } from 'react-redux';
 
-const Products = ({ products }) => {
+const Products = () => {
     const filteredProducts = useSelector(state => state.products.filteredProducts);
     const sortProducts = useSelector(state => state.products.sortProducts);
+    const priceFilter = useSelector(state => state.products.priceFilter);
     const allProducts = useSelector(state => state.products.list);
 
     const applySortingAndFiltering = (items) => {
-        const sortedItems = sortProducts.length > 0 ? sortProducts : items;
+        let sortedItems = sortProducts.length > 0 ? sortProducts : items;
+
+        if (priceFilter.length > 0) {
+            sortedItems = sortedItems.filter(product =>
+                product.price >= priceFilter[0] && product.price <= priceFilter[1]
+            );
+        }
 
         return filteredProducts.length > 0
             ? sortedItems.filter(product =>

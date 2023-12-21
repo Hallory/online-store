@@ -18,7 +18,7 @@ const Sidebar = ({ products }) => {
     });
 
     return (
-        <div className={`${isHidden ? 'hidden' : 'block'} pl-4 max-w-[315px] w-full`}>
+        <div className={`${isHidden ? 'hidden' : 'block'} pl-4 max-w-[345px] w-full`}>
             <FilterBrands/>
             <FilterPrices />    
         </div>

@@ -1,92 +1,77 @@
-import React, { useState, useEffect} from "react";
-import ReactSlider from 'react-slider';
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { getProducts } from "../../redux/slices/productsSlice";
+import { getProducts, filteringByPrice } from "../../redux/slices/productsSlice";
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+import './FilterPrices.css';
+
+
 
 const FilterPrices = () => {
-
     const dispatch = useDispatch();
     const { list } = useSelector(state => state.products);
 
-    
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(getProducts());
-
     }, [dispatch]);
-    
-    const priceCounts = [];
-    list.forEach(product => {
-        priceCounts.push(product.price);
-    });
 
-    
-    
-    console.log(priceCounts);
-    
+    const prices = [...new Set(list.map(product => product.price))];
+    console.log(prices);
 
-
-    const MIN = 100;
-    const MAX = 12000;
+    const MIN = prices.length > 0 ? Math.min(...prices) : 0;
+    const MAX = prices.length > 0 ? Math.max(...prices) : 0;;
 
     const [values, setValues] = useState([MIN, MAX]);
-    const [minInputValue, setMinInputValue] = useState(MIN.toString());
-    const [maxInputValue, setMaxInputValue] = useState(MAX.toString());
+    const [highlightedInput, setHighlightedInput] = useState(null);
 
-    const handleMinInputChange = (e) => {
-        const newValue = parseInt(e.target.value, 10);
-        if (!isNaN(newValue) && newValue >= MIN && newValue <= values[1]) {
-            setMinInputValue(newValue.toString());
-            setValues([newValue, values[1]]);
-        }
+    const handleSliderChange = (newValues) => {
+        setValues(newValues);
+        dispatch(filteringByPrice(newValues)); 
     };
 
-    const handleMaxInputChange = (e) => {
-        const newValue = parseInt(e.target.value, 10);
-        if (!isNaN(newValue) && newValue <= MAX && newValue >= values[0]) {
-            setMaxInputValue(newValue.toString());
-            setValues([values[0], newValue]);
-        }
-    };
+    const handleInputChange = (index, e) => {
+        const newValue = e.target.value;
+        const newValues = [...values];
 
-    const handleSliderChange = (newValue) => {
-        setValues(newValue);
-        setMinInputValue(newValue[0].toString());
-        setMaxInputValue(newValue[1].toString());
+        if (newValue === '' || (!isNaN(newValue) && newValue >= MIN && newValue <= MAX)) {
+            newValues[index] = newValue === '' ? MIN : parseInt(newValue, 10);
+            setValues(newValues);
+            dispatch(filteringByPrice(newValues)); 
+        } else {
+            setHighlightedInput(index);
+            setTimeout(() => {
+                setHighlightedInput(null);
+                newValues[index] = index === 0 ? MIN : MAX;
+                setValues(newValues);
+                dispatch(filteringByPrice(newValues)); 
+            }, 2000);
+        }
     };
 
     return (
-        <div className="p-4">
-            <div className="mb-4">
-                Filter by price
-                <div className="text-lg font-semibold">{`$${values[0]} - $${values[1]}`}</div>
+        <div>
+            <div className="pb-[16px]">
+                <Slider
+                    value={values}
+                    min={MIN}
+                    max={MAX}
+                    onChange={handleSliderChange}
+                    range
+                    tipFormatter={(value) => `$${value}`}
+                />
             </div>
-            <ReactSlider
-                className="horizontal-slider"
-                thumbClassName="example-thumb"
-                trackClassName="example-track"
-                defaultValue={values}
-                onChange={handleSliderChange}
-                value={values}
-                min={MIN}
-                max={MAX}
-                ariaLabel={['Lower thumb', 'Upper thumb']}
-                ariaValuetext={(state) => `Thumb value ${state.valueNow}`}
-                renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
-                pearling
-                minDistance={10}
-            />
-            <div className="flex justify-between mt-2">
+            <div>
                 <input
-                    className="border border-gray-300 p-2 w-1/2"
-                    value={minInputValue}
-                    onChange={handleMinInputChange}
+                    value={values[0]}
+                    className="w-[50%]"
                     type="text"
+                    onChange={(e) => handleInputChange(0, e)}
                 />
                 <input
-                    className="border border-gray-300 p-2 w-1/2"
-                    value={maxInputValue}
-                    onChange={handleMaxInputChange}
+                    value={values[1]}
+                    className="w-[50%]"
                     type="text"
+                    onChange={(e) => handleInputChange(1, e)}
                 />
             </div>
         </div>
