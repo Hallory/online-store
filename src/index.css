@@ -2,10 +2,22 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/tailwind.css';
 
-form input {
+/* form input {
     @apply w-full outline-none  border border-slate-300 rounded-xl;
 }
 
 img{
     @apply rounded-md;
 }
+ */
+
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .font-poppins {
+        font-family: 'Poppins', sans-serif;
+    }
+
+
+    

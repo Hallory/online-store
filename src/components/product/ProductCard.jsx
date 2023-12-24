@@ -2,8 +2,16 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Button from '../elements/Button';
 import { IoMdHeartEmpty } from "react-icons/io";
+import { useDispatch } from 'react-redux';
+import { addToWishlist } from '../../redux/slices/wishlistSlice';
 
 const ProductCard = ({ product }) => {
+    const dispatch = useDispatch();
+
+    const handleAddToWishlist = () => {
+        dispatch(addToWishlist(product));
+    }
+
     return (
         <motion.div
             className='rounded-md overflow-hidden border border-gray-200'
@@ -25,7 +33,7 @@ const ProductCard = ({ product }) => {
                 />
                 <Button
                     icon={IoMdHeartEmpty}
-                    onClick={() => { console.log('Click!'); }}
+                    onClick={handleAddToWishlist}
                     variant='icon'
                 />
             </div>

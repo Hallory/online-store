@@ -9,6 +9,7 @@ import Home from './pages/home/Home';
 import ProductDetails from './pages/product-details/ProductDetails';
 import Products from './pages/products/Products';
 import { useDispatch, useSelector } from 'react-redux';
+import Wishlist from './pages/wishlist/Wishlist';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -37,11 +38,12 @@ function App() {
   const shouldAnimate = prevPath && (prevPath.includes('/login') || prevPath.includes('/register'));
 
   return (
-    <div className={location.pathname === "/login" || location.pathname === "/register" ? "pt-0" : "pt-[50px]"}>
+    <div className={location.pathname === "/login" || location.pathname === "/register" ? "pt-0" : "pt-[28px]"}>
       <Routes>
         <Route path="/" element={<Home products={products} />} />
         <Route path="/products" element={<Products products={products} />} />
         <Route path="/products/:productId" element={<ProductDetails products={products} />} />
+        <Route path="/wishlist" element={<Wishlist products={products} />} />
         <Route
           path="/login"
           element={

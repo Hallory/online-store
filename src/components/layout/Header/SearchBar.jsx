@@ -1,17 +1,19 @@
 import React from 'react';
-import { IoSearchSharp } from "react-icons/io5";
+import { IoSearchOutline } from "react-icons/io5";
 
 const SearchBar = () => {
-    return (
 
-        <div className='relative max-w-xl w-full'>
+    
+
+    return (
+        <div className='flex max-w-[43.75rem] w-full max-h-[2.75rem] h-full min-h-[2.75rem] px-3 py-2 ml-6 gap-1 items-center self-stretch bg-default border border-brd rounded-md text-black focus-visible:outline-none'>
             <input
                 type='text'
-                placeholder='I search...'
-                className='w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                placeholder='Search for products'
+                className='grow text-[1.125rem] overflow-hidden text-black leading-[140%] bg-transparent placeholder:text-[0.875rem] placeholder:text-placeholder placeholder:text-ellipsis placeholder:whitespace-nowrap placeholder:font-normal focus-visible:outline-none'
             />
-            <button className='absolute inset-y-0 right-0 flex items-center px-4 text-gray-700 bg-gray-100 border border-gray-300 rounded-r-md hover:bg-gray-200'>
-                <IoSearchSharp className='w-6 h-6' />
+            <button className=''>
+                <IoSearchOutline  className='w-6 h-6 text-placeholder' />
             </button>
         </div>
     );
