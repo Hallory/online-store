@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
 
+import HeroBanner from '../../components/blocks/landingPageMane/HeroBanner';
+
 
 const Home = () => {
     return (
@@ -8,6 +10,7 @@ const Home = () => {
             <h1 className='text-[3.375rem] font-bold'>
                 Welcome to Electronics Store
             </h1>
+            <HeroBanner />       
 
         </div>
     );

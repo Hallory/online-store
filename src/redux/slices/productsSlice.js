@@ -65,6 +65,12 @@ const productsSlice = createSlice({
                         filteredAndSorted = state.list;
                         state.sortProducts = filteredAndSorted;
                         break;
+                    case 'rating':
+
+                        break;
+                    case 'newest':
+
+                        break;
                     default:
                         return state;
                 }

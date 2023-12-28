@@ -5,11 +5,11 @@ const Button = ({ onClick, icon: Icon, label, variant = 'primary' }) => {
     const getVariantStyles = () => {
         switch (variant) {
             case 'primary':
-                return 'px-6 py-3 bg-btn_primary text-default hover:bg-btn_primary__hover active:bg-btn_primary__active';
+                return 'px-6 py-3 bg-primary-500 text-black-100 hover:bg-primary-700 active:bg-primary-800';
             case 'primary-outline':
-                return 'px-6 py-[0.69rem] border border-btn_primary text-btn_primary shadow-sm hover:text-btn_outline__hover hover:border-btn_outline__hover active:text-btn_primary__active active:border-btn_primary__active';
+                return 'px-6 py-[0.69rem] border border-primary-500 text-primary-500 shadow-sm hover:text-primary-600 hover:border-primary-600 active:text-primary-800 active:border-primary-800';
             case 'primary-footer':
-                return ' w-full px-6 py-3 bg-btn_primary text-default hover:bg-btn_primary__hover active:bg-btn_primary__active';
+                return ' w-full px-6 py-3 bg-primary-500 text-black-100 hover:bg-primary-700 active:bg-primary-800';
             case 'icon':
                 return 'px-3 py-3 border border-gray-300 rounded-md shadow-sm hover:bg-blue-600';
             default:

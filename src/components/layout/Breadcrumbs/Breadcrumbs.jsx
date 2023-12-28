@@ -21,12 +21,12 @@ const Breadcrumbs = () => {
 
     return (
         <div className={isHidden ? 'block' : 'hidden'}>
-            <div className='flex justify-between mt-4 mb-4 px-6 pb-6 border-b border-solid border-b-brd '>
+            <div className='flex justify-between mt-4 mb-4 px-6 pb-6 border-b border-solid border-b-black-200 '>
                 <div className='flex flex-col'>
                     <div className=''>
                         <PathName />
                     </div>
-                    <h3 className='text-black text-[1.5rem] font-bold'>
+                    <h3 className='text-black-900 text-[1.5rem] font-bold'>
                         Marketplace Products
                     </h3>
                 </div>
@@ -34,14 +34,16 @@ const Breadcrumbs = () => {
                     {location.pathname !== '/products' ? (
                         <div>Product code: { }</div>
                     ) : (
-                        <div className='flex justify-center items-center py-1 pl-3 gap-1 border border-brd rounded-sm text-[0.875rem] leading-[140%]'>
-                            <label htmlFor="sortDropdown" className='text-clr_txt'>
+                        <div className='flex justify-center items-center py-1 pl-3 gap-1 border border-black-200 rounded-sm text-[0.875rem] leading-[140%]'>
+                            <label htmlFor="sortDropdown" className='text-black-600 '>
                                 Sort by
                             </label>
-                            <select onChange={(e) => dispatch(sortProducts(e.target.value))} className='text-black focus:outline-none' id="sortDropdown">
-                                <option value="featured">Featured</option>
-                                <option value="expensive">Most Expensive</option>
-                                <option value="cheapest">Cheapest</option>
+                            <select onChange={(e) => dispatch(sortProducts(e.target.value))} className='text-black-900 focus:outline-none ' id="sortDropdown">
+                                <option selected value="featured">Featured</option>
+                                <option value="cheapest">From Cheap to Expensive</option>
+                                <option value="expensive">From Expensive to Cheap</option>
+                                <option value="rating">By rating</option>
+                                <option value="newest">Newest first</option>
                             </select>
                         </div>
                     )}

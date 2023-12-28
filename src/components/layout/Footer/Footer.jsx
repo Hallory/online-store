@@ -50,23 +50,23 @@ const Footer = (props) => {
 ]
 
     return (
-        <footer className='py-10 bg-bg_secondary '>
+        <footer className='py-10 bg-gray-200 '>
             <div className='flex justify-around max-w-[68.75rem] w-full mx-auto'>
                 <div className='px-6 max-w-[16.6rem] w-full'>
                     <Logo />
-                    <p className='text-[1.125rem] text-clr_txt mt-6'>
+                    <p className='text-[1.125rem] text-black-600 mt-6'>
                         ElectroMagic is your guide in the world of advanced technologies, offering innovative smartphones and laptops to improve your experience.
                     </p>
                 </div>
                 <div>
-                    <h6 className='text-[1.125rem] text-clr_txt font-bold'>
+                    <h6 className='text-[1.125rem] text-black-600 font-bold'>
                         Category
                     </h6>
                     <ul>
                         {categoryData.map((item, index) => {
                             return (
                                 <li key={index}
-                                    className='mt-8 leading-[140%] text-clr_txt_secondary'>
+                                    className='mt-8 leading-[140%] text-black-800'>
                                     <Link to={item.link}>
                                         {item.name}
                                     </Link>
@@ -76,14 +76,14 @@ const Footer = (props) => {
                     </ul>
                 </div>
                 <div>
-                    <h6 className='text-[1.125rem] text-clr_txt font-bold'>
+                    <h6 className='text-[1.125rem] text-black-600 font-bold'>
                         Help
                     </h6>
                     <ul>
                         {helpData.map((item, index) => {
                             return (
                                 <li key={index}
-                                    className='mt-8 leading-[140%] text-clr_txt_secondary'>
+                                    className='mt-8 leading-[140%] text-black-800'>
                                     <Link to={item.link}>
                                         {item.title}
                                     </Link>
@@ -93,12 +93,12 @@ const Footer = (props) => {
                     </ul>
                 </div>
                 <div className='max-w-[15rem] w-full'>
-                    <h6 className='text-[1.125rem] text-clr_txt font-bold mb-8'>
+                    <h6 className='text-[1.125rem] text-black-600 font-bold mb-8'>
                         Newsletter
                     </h6>
-                    <div className='px-3 py-2 mb-3 items-center self-stretch bg-default border border-brd rounded-md text-black focus-visible:outline-none'>
+                    <div className='px-3 py-2 mb-3 items-center self-stretch bg-black-100 border border-black-200 rounded-md text-black-900 focus-visible:outline-none'>
                         <input
-                            className='text-[1.125rem] overflow-hidden text-black leading-[140%] bg-transparent placeholder:text-[1.125rem] placeholder:text-placeholder placeholder:text-ellipsis placeholder:whitespace-nowrap placeholder:font-normal focus-visible:outline-none'
+                            className='text-[1.125rem] overflow-hidden text-black-900 leading-[140%] bg-transparent placeholder:text-[1.125rem] placeholder:text-black-700 placeholder:text-ellipsis placeholder:whitespace-nowrap placeholder:font-normal focus-visible:outline-none'
                             type="text"
                             placeholder='Enter your email address' />
                     </div>
