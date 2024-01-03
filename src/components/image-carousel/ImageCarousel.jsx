@@ -6,7 +6,7 @@ const ImageCarousel = ({product}) => {
     const images = product.images;
   
         return (
-            <div className="flex ">
+            <div className="flex select-none">
                 <div className='all-images md:flex flex-col hidden gap-6 max-h-[500px] overflow-y-auto overflow-x-hidden '>
            
                     {images.map((image, index) => (
