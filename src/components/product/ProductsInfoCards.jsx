@@ -14,7 +14,7 @@ const ProductInfoCard = ({ product, products }) => {
             case 'reviews':
                 return <ReviewsContent products={products} />;
             default:
-                return null;
+                return <MainContent product={product} />;
         }
     };
 
