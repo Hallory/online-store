@@ -1,7 +1,6 @@
 import React from 'react';
 import { useParams} from 'react-router-dom';
 import ProductInfoCard from '../../components/product/ProductsInfoCards';
-import MainContent from './main-content/MainContent';
 const ProductDetails = ({ products }) => {
  
   const { productId } = useParams();
@@ -14,9 +13,9 @@ const ProductDetails = ({ products }) => {
   }
 
   return (
-    <div className="max-w-[1400px] mx-auto">
+    <div className="w-full">
         <ProductInfoCard product={product} products={products}/>
-      <div className="product-header flex lg:flex-row  justify-around lg:gap-10 gap-2 pt-[50px]">
+      <div className="product-header flex lg:flex-row  justify-around lg:gap-10 gap-2 ">
       </div>
       <div className="other-details pt-10">
         asdad
