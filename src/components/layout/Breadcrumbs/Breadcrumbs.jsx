@@ -1,7 +1,8 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { sortProducts } from "../../../redux/slices/productsSlice";
+import { ChevronRightIcon } from '@heroicons/react/solid';
 import PathName from '../../elements/pathname-segment/PathName';
 
 const Breadcrumbs = () => {
@@ -23,8 +24,11 @@ const Breadcrumbs = () => {
         <div className={isHidden ? 'block' : 'hidden'}>
             <div className='flex justify-between mt-4 mb-4 px-6 pb-6 border-b border-solid border-b-black-200 '>
                 <div className='flex flex-col'>
-                    <div className=''>
+                    <div className='flex gap-2 text-sm'>
+                        <Link to='/'>Home</Link>
+                        <ChevronRightIcon className='w-4 h-4'/>    
                         <PathName />
+
                     </div>
                     <h3 className='text-black-900 text-[1.5rem] font-bold'>
                         Marketplace Products

@@ -3,9 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 const wishlistSlice = createSlice({
     name: "wishlist",
     initialState: [],
-    reducers: {
+        reducers: {
         addToWishlist: (state, action) => {
-            state.push(action.payload);
+            const newProduct = action.payload;
+            const isProductInWishlist = state.some(product => product.id === newProduct.id);
+
+            if (!isProductInWishlist) {
+                state.push(newProduct);
+            }
         }
     }
 

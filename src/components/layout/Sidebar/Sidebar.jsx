@@ -8,7 +8,7 @@ import FilterColors from '../../filters/FilterColors';
 const Sidebar = ({ products }) => {
 
     const location = useLocation();
-    const paths = ['/', '/login', '/register', '/products/:productId'];
+    const paths = ['/products'];
     const isHidden = paths.some((path) => {
         if (path.includes(':')) {
             const regex = new RegExp(`^${path.replace(/:[^/]+/g, '[^/]+')}$`);
@@ -19,7 +19,7 @@ const Sidebar = ({ products }) => {
     });
 
     return (
-        <div className={`${isHidden ? 'hidden' : 'block'} pl-4 max-w-[345px] w-full flex flex-col gap-y-4`}>
+        <div className={`${!isHidden ? 'hidden' : 'block'} pl-4 max-w-[345px] w-full flex flex-col gap-y-4`}>
             <FilterBrands />
             <FilterPrices />
             <FilterColors />

@@ -5,6 +5,8 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import './FilterPrices.css';
 
+const createSliderWithTooltip = Slider.createSliderWithTooltip;
+const Range = createSliderWithTooltip(Slider.Range);
 
 const FilterPrices = () => {
     const dispatch = useDispatch();
@@ -17,8 +19,8 @@ const FilterPrices = () => {
     const prices = [...new Set(list.map(product => product.price))];
     console.log('prices', prices);
 
-    const MIN = prices.length > 0 ? Math.min(...prices) : 0;
-    const MAX = prices.length > 0 ? Math.max(...prices) : 10000;
+    const MIN = Math.min(...prices);
+    const MAX = Math.max(...prices);
 
     const [values, setValues] = useState([MIN, MAX]);
     const [highlightedInput, setHighlightedInput] = useState(null);
@@ -49,15 +51,21 @@ const FilterPrices = () => {
 
     return (
         <div className="p-4 border border-gray-150 rounded-md">
-            <h3>Filter by price</h3>
+            <h3 className="pb-6">Filter by price</h3>
             <div className="mb-4 mt-6">
-                <Slider
+                <Range
                     value={values}
                     min={MIN}
                     max={MAX}
                     onChange={handleSliderChange}
                     range
-                    tipFormatter={(value) => `$${value}`}
+                    tipFormatter={(value) => `${value}`}
+                    tipProps={{
+                        placement: 'top',
+                        prefixCls: 'tooltip-prefix', 
+                        visible: true, 
+                    }}
+                    
                 />
             </div>
             <div className="flex gap-4">

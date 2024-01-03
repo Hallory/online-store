@@ -38,7 +38,7 @@ function App() {
   const shouldAnimate = prevPath && (prevPath.includes('/login') || prevPath.includes('/register'));
 
   return (
-    <div className={location.pathname === "/login" || location.pathname === "/register" ? "pt-0" : "pt-[28px]"}>
+    <div className={location.pathname === "/login" || location.pathname === "/register" ? "pt-0" : "pt-0"}>
       <Routes>
         <Route path="/" element={<Home products={products} />} />
         <Route path="/products" element={<Products products={products} />} />

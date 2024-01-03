@@ -17,25 +17,21 @@ const ProductCard = ({ product }) => {
             className='rounded-md overflow-hidden border border-gray-200'
         >
             {product.thumbnail && (
-                <img className='h-60 w-full object-cover object-center' src={product.thumbnail} alt='product img' />
+                <div className='w-[242px] h-[202px] p-4 m-auto'>
+                    <img className='mx-auto w-full h-full object-cover object-center' src={product.thumbnail} alt='product img' />
+                    <Button
+                        className='absolute'
+                        icon={IoMdHeartEmpty}
+                        onClick={handleAddToWishlist}
+                        variant='icon'
+                    />
+                </div>
             )}
             <div className='px-3 pt-3'>
                 <h3 className=''>{product.title}</h3>
                 <div className=''>
                     <p className=''>${product.price}</p>
                 </div>
-            </div>
-            <div className='flex justify-center gap-1 pb-4 pt-2'>
-                <Button
-                    label='Add to Cart'
-                    onClick={() => { console.log('Click!'); }}
-                    variant=''
-                />
-                <Button
-                    icon={IoMdHeartEmpty}
-                    onClick={handleAddToWishlist}
-                    variant='icon'
-                />
             </div>
         </motion.div>
     );

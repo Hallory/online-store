@@ -66,7 +66,8 @@ const productsSlice = createSlice({
                         state.sortProducts = filteredAndSorted;
                         break;
                     case 'rating':
-
+                        filteredAndSorted = sorted.sort((a, b) => b.rating - a.rating);
+                        state.sortProducts = filteredAndSorted;
                         break;
                     case 'newest':
 

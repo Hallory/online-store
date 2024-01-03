@@ -1,9 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToWishlist } from '../../redux/slices/wishlistSlice';
 import ProductCard from '../../components/product/ProductCard';
-import { useSelector } from 'react-redux';
+import Button from '../../components/elements/Button';
+import { IoMdHeartEmpty } from "react-icons/io";
 
 const Products = () => {
+    const dispatch = useDispatch();
+
     const filteredProducts = useSelector(state => state.products.filteredProducts);
     const sortProducts = useSelector(state => state.products.sortProducts);
     const priceFilter = useSelector(state => state.products.priceFilter);
@@ -27,12 +32,32 @@ const Products = () => {
 
     const displayedProducts = applySortingAndFiltering(allProducts);
 
+    const handleAddToWishlist = (product) => {
+        dispatch(addToWishlist(product));
+    }
+
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
             {displayedProducts.map((product) => (
-                <Link to={`/products/${product.id}`} key={product.id}>
-                    <ProductCard product={product} />
-                </Link>
+                <div
+                    className='max-w-[21.563rem] w-full border border-gray-150 rounded-md'
+                    key={product.id}>
+                    <Link to={`/products/${product.id}`}>
+                        <ProductCard product={product} />
+                    </Link>
+                    <div className='flex justify-center gap-1 pb-4 pt-2'>
+                        <Button
+                            label='Add to Cart'
+                            onClick={() => { console.log('Click!'); }}
+                            variant=''
+                        />
+                        <Button
+                            icon={IoMdHeartEmpty}
+                            onClick={() => handleAddToWishlist(product)}
+                            variant='icon'
+                        />
+                    </div>
+                </div>
             ))}
         </div>
     );

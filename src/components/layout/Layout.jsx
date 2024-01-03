@@ -7,7 +7,7 @@ import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
 const Layout = ({ children }) => {
 
     return (
-        <div className='flex flex-col max-w-[90rem] min-h-screen mx-auto'>
+        <div className='flex flex-col min-h-screen mx-auto'>
             <Header />
             <Breadcrumbs />
             <div className='flex-1 flex'>
