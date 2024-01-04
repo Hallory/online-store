@@ -31,7 +31,7 @@ const MainProductsDescriptions = ({ product }) => {
             <button className={`p-3 rounded-t-md ${mainDetails === 'description' ? 'bg-primary-300' : ''}`} onClick={() => setMainDetails('description')}>Description</button>
             </div>
             
-            <div className={`w-full flex bg-gray-100 p-10 rounded-md flex-col max-h-[100px] ${mainDetails==='performance' ? 'rounded-tl-none' : ''}`}>
+            <div className={`w-full flex bg-gray-100 pl-2 rounded-md flex-col  ${mainDetails==='performance' ? 'rounded-tl-none' : ''}`}>
                 {handleMainDetails()}
             </div>
         </div>
