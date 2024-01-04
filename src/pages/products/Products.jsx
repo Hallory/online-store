@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist } from '../../redux/slices/wishlistSlice';
 import ProductCard from '../../components/product/ProductCard';
 import Button from '../../components/elements/Button';
-import { IoMdHeartEmpty } from "react-icons/io";
+import { ShoppingCartIcon } from '@heroicons/react/outline/';
 
 const Products = () => {
     const dispatch = useDispatch();
@@ -45,16 +45,17 @@ const Products = () => {
                     <Link to={`/products/${product.id}`}>
                         <ProductCard product={product} />
                     </Link>
-                    <div className='flex justify-center gap-1 pb-4 pt-2'>
+                    <div className='flex justify-center gap-1 pb-6 px-2'>
                         <Button
-                            label='Add to Cart'
+                            label='Buy now'
                             onClick={() => { console.log('Click!'); }}
-                            variant=''
+                            variant='primary-outline'
+
                         />
                         <Button
-                            icon={IoMdHeartEmpty}
+                            icon={ShoppingCartIcon}
                             onClick={() => handleAddToWishlist(product)}
-                            variant='icon'
+                            variant='icon-fill'
                         />
                     </div>
                 </div>

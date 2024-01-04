@@ -9,7 +9,7 @@ const Breadcrumbs = () => {
     const dispatch = useDispatch();
 
     const location = useLocation();
-    const paths = ['/products', '/products/:productId'];
+    const paths = ['/products', '/products/:productId', '/compare'];
 
     const isHidden = paths.some((path) => {
         if (path.includes(':')) {
