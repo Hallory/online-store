@@ -1,6 +1,8 @@
 services:
   backend:
+    container_name: backend
     build: .
+    image: es-backend
     depends_on:
       - db-sample
     ports:
@@ -10,6 +12,9 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres-sample
       - POSTGRES_HOST=db-sample
+      - AUTH_HOST=localhost # TODO real domain name
+      - AUTH_PORT=8080
+      - AUTH_REALM=quickstart
     networks:
       - es-backend-sample
   db-sample:

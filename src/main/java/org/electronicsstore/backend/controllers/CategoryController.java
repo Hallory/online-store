@@ -2,7 +2,6 @@ package org.electronicsstore.backend.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.electronicsstore.backend.dtos.CategoryDto;
-import org.electronicsstore.backend.dtos.ProductDto;
 import org.electronicsstore.backend.services.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +11,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/categories")
+@CrossOrigin(
+        origins = "http://localhost:4200",
+        allowedHeaders = "*",
+        methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE }
+)
 public class CategoryController {
     private final CategoryService categoryService;
     @GetMapping

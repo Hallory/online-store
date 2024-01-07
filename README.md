@@ -1,29 +1,27 @@
-spring boot init
+# spring boot init
 
-OpenAPI docs
+## general
+### OpenAPI docs<br />
 http://localhost:8080/v3/api-docs
 
-Swagger docs
+### Swagger docs<br />
 http://localhost:8080/swagger-ui/index.html
 
+### Build 
+- backends image of Dockerfile, 
+- pull postgres, 
+- pull and config keycloak (for dev purpose here must be ./keycloak/realm.quickstart.json)
+- !TODO real domain name for auth service<br /><br />
+//docker compose up -d
 
-
-Prepare backend from Dockerfile and pull postgres:latest
-docker compose up -d
-
-Delete current containers
+### Delete containers<br />
 docker compose down
 
-Delete current containers with volumes and networks
+### Delete containers with volumes and networks<br />
 docker compose down --volumes
 
-Print containers logs
-docker compose logs
 
+## other
+docker compose -f compose-standalone.yml up -d
 
-
-Prepare local dev and test pg container dbs
-docker compose -f compose-pg-standalone.yml up -d
-
-Remove local dev and test pg container dbs
-docker compose -f compose-pg-standalone.yml down --volumes
+docker compose -f compose-standalone.yml down --volumes

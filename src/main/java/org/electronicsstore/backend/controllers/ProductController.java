@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.electronicsstore.backend.dtos.ProductDto;
 import org.electronicsstore.backend.services.ProductService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,6 +12,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/products")
+@CrossOrigin(
+        origins = "http://localhost:4200",
+        allowedHeaders = "*",
+        methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE }
+)
 public class ProductController {
     private final ProductService productService;
     @GetMapping
@@ -19,7 +25,7 @@ public class ProductController {
         return productService.findAll();
     }
 
-    @GetMapping({"{productId}"})
+    @GetMapping(value = {"{productId}"}, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ProductDto productById(@PathVariable(name = "productId", required = true) String productId) {
         return productService.findById(productId);

@@ -1,14 +1,21 @@
 server:
   port: 8080
 
+logging.level.org.springframework.security: TRACE
+
 spring:
+  application.name: backend
   profiles.active: test
+
   datasource:
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
   liquibase:
     changeLog: classpath:db/changelog/db.changelog-master.yaml
     enabled: false
+
+  security:
+    oauth2.resourceserver.jwt.issuer-uri: http://${AUTH_HOST:localhost}:${AUTH_PORT:9000}/realms/${AUTH_REALM:quickstart}
 
 ---
 spring:

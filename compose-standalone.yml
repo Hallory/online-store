@@ -23,6 +23,20 @@ services:
     ports:
       - 5433:5432
 
+  kc-dev:
+    container_name: kc-dev
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    command:
+      - start-dev
+      - --import-realm
+    volumes:
+      - ./keycloak/realm-quickstart.json:/opt/keycloak/data/import/realm.json
+    ports:
+      - 9000:8080
+
 volumes:
   es-pg-dev:
   es-pg-test:
