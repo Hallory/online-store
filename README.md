@@ -8,11 +8,13 @@ http://localhost:8080/v3/api-docs
 http://localhost:8080/swagger-ui/index.html
 
 ### Build 
-- backends image of Dockerfile, 
-- pull postgres, 
+1) up backend and auth 
 - pull and config keycloak (for dev purpose here must be ./keycloak/realm.quickstart.json)
-- !TODO real domain name for auth service<br /><br />
-//docker compose up -d
+docker compose up -d
+
+2) up dockerized frontend app 
+- in existing network - es-backend-sample
+- oauth2 client - fe-dev-dockerized
 
 ### Delete containers<br />
 docker compose down

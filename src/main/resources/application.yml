@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 logging.level.org.springframework.security: TRACE
 
@@ -15,7 +15,7 @@ spring:
     enabled: false
 
   security:
-    oauth2.resourceserver.jwt.issuer-uri: http://${AUTH_HOST:localhost}:${AUTH_PORT:9000}/realms/${AUTH_REALM:quickstart}
+    oauth2.resourceserver.jwt.issuer-uri: http://${AUTH_HOST:localhost}:${AUTH_PORT:8080}/realms/${AUTH_REALM:quickstart}
 
 ---
 spring:

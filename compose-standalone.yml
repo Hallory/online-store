@@ -35,7 +35,7 @@ services:
     volumes:
       - ./keycloak/realm-quickstart.json:/opt/keycloak/data/import/realm.json
     ports:
-      - 9000:8080
+      - 8080:8080
 
 volumes:
   es-pg-dev:
