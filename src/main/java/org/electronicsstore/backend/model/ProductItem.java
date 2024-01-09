@@ -46,6 +46,9 @@ public class ProductItem {
     )
     private Set<ProductItemVariationOption> productItemVariationOptions;
 
+    @ManyToMany(mappedBy = "productItems")
+    private Set<Promo> promos;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

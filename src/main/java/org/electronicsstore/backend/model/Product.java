@@ -18,8 +18,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     @Column(nullable = false, unique = true) // probably unique
-    private String name; // general name
-    private String desc; // general info
+    private String name;
+    private String description;
     private String productImage; // general image in the product list
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

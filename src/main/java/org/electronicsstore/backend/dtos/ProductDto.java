@@ -1,34 +1,35 @@
 package org.electronicsstore.backend.dtos;
 
 import org.electronicsstore.backend.model.Product;
+import org.electronicsstore.backend.model.ProductItem;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public record ProductDto(
         String id,
-        String title,
+        String name,
         String description,
-        Double price,
-        Double discountPercentage,
-        Double rating,
-        Integer stock,
-        String brand,
-        String category,
-        String thumbnail,
-        List<String> images
+        String productImage,
+        LocalDateTime createdAt,
+        LocalDateTime modifiedAt,
+        LocalDateTime deletedAt,
+        String productCategoryId,
+        Set<String> productItemIds
 ) {
     public static ProductDto productToProductDto(Product product) {
         return new ProductDto(
                 product.getId(),
-                product.getTitle(),
+                product.getName(),
                 product.getDescription(),
-                product.getPrice().doubleValue(),
-                product.getDiscountPercentage(),
-                product.getRating(),
-                product.getStock(),
-                product.getBrand(),
-                product.getCategory().getName(),
-                product.getThumbnail(),
-                product.getImages());
+                product.getProductImage(),
+                product.getCreatedAt(),
+                product.getModifiedAt(),
+                product.getDeletedAt(),
+                product.getProductCategory().getId(),
+                product.getProductItems().stream().map(ProductItem::getId).collect(Collectors.toSet())
+        );
     }
 }

@@ -9,13 +9,13 @@ import org.springframework.web.context.request.WebRequest;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler({ProductNotFoundException.class, CategoryNotFoundException.class})
+    @ExceptionHandler({ProductNotFoundException.class, ProductCategoryNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorMessage resourceNotFoundException(RuntimeException ex, WebRequest req) {
         return new ErrorMessage(ex.getMessage());
     }
 
-    @ExceptionHandler({ProductAlreadyExistsException.class, CategoryAlreadyExistsException.class})
+    @ExceptionHandler({ProductAlreadyExistsException.class, ProductCategoryAlreadyExistsException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorMessage resourceNotRequiredException(RuntimeException ex, WebRequest req) {
         return new ErrorMessage(ex.getMessage());

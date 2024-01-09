@@ -1,8 +1,8 @@
 package org.electronicsstore.backend.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.electronicsstore.backend.dtos.CategoryDto;
-import org.electronicsstore.backend.services.CategoryService;
+import org.electronicsstore.backend.dtos.ProductCategoryDto;
+import org.electronicsstore.backend.services.ProductCategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,24 +16,24 @@ import java.util.List;
         allowedHeaders = "*",
         methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE }
 )
-public class CategoryController {
-    private final CategoryService categoryService;
+public class ProductCategoryController {
+    private final ProductCategoryService productCategoryService;
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CategoryDto> products() {
-        return categoryService.findAll();
+    public List<ProductCategoryDto> products() {
+        return productCategoryService.findAll();
     }
 
     @GetMapping({"{categoryId}"})
     @ResponseStatus(HttpStatus.OK)
-    public CategoryDto productById(@PathVariable(name = "categoryId", required = true) String categoryId) {
-        return categoryService.findById(categoryId);
+    public ProductCategoryDto productById(@PathVariable(name = "categoryId", required = true) String categoryId) {
+        return productCategoryService.findById(categoryId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryDto addProduct(@RequestBody CategoryDto categoryDto) {
-        return categoryService.saveOne(categoryDto);
+    public ProductCategoryDto addProduct(@RequestBody ProductCategoryDto categoryDto) {
+        return productCategoryService.saveOne(categoryDto);
     }
 
     // 200 ok / 204 no_content
@@ -44,8 +44,8 @@ public class CategoryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateById(
             @PathVariable(name = "productId", required = true) String categoryId,
-            @RequestBody CategoryDto categoryDto) {
-        categoryService.updateOne(categoryId, categoryDto);
+            @RequestBody ProductCategoryDto productCategoryDto) {
+        productCategoryService.updateOne(categoryId, productCategoryDto);
     }
 
     // 204 no_content
@@ -54,6 +54,6 @@ public class CategoryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping({"{categoryId}"})
     public void deleteById(@PathVariable(name = "categoryId", required = true) String categoryId) {
-        categoryService.deleteOne(categoryId);
+        productCategoryService.deleteOne(categoryId);
     }
 }

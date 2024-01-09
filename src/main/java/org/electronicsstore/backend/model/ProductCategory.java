@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,11 +19,7 @@ public class ProductCategory {
     private String id;
     @Column(nullable = false)
     private String name;
-    private String desc;
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
-    private LocalDateTime deletedAt;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "parent_product_category_id", nullable = true)
@@ -34,7 +29,10 @@ public class ProductCategory {
     private Set<ProductCategory> childCategories;
 
     @OneToMany(mappedBy = "productCategory")
-    private ProductItemVariation productItemVariation;
+    private Set<ProductItemVariation> productItemVariations;
+
+    @OneToMany(mappedBy = "productCategory")
+    private Set<Product> products;
 
     @Override
     public boolean equals(Object o) {

@@ -24,7 +24,7 @@ public class ProductItemVariation {
     @JoinColumn(name = "product_category_id", nullable = false)
     private ProductCategory productCategory;
 
-    @OneToMany(mappedBy = "productVariation")
+    @OneToMany(mappedBy = "productItemVariation")
     private Set<ProductItemVariationOption> productItemVariationOptions;
 
     @Override

@@ -1,5 +1,6 @@
 services:
   db-dev:
+    container_name: db-dev
     image: postgres:latest
     restart: always
     environment:
@@ -12,6 +13,7 @@ services:
       - 5432:5432
 
   db-test:
+    container_name: db-test
     image: postgres:latest
     restart: always
     environment:
@@ -26,6 +28,7 @@ services:
   kc-dev:
     container_name: kc-dev
     image: quay.io/keycloak/keycloak:latest
+    restart: always
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin

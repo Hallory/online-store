@@ -19,6 +19,7 @@ services:
       - es-backend-sample
 
   db-sample:
+    container_name: db-sample
     image: postgres:latest
     restart: always
     environment:

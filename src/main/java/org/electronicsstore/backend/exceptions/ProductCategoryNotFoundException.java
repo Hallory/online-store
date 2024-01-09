@@ -1,8 +1,8 @@
 package org.electronicsstore.backend.exceptions;
 
-public class CategoryNotFoundException extends RuntimeException {
+public class ProductCategoryNotFoundException extends RuntimeException {
     private static final String MESSAGE_PATTERN = "Category %s not found";
-    public CategoryNotFoundException(String identifier) {
+    public ProductCategoryNotFoundException(String identifier) {
         super(String.format(MESSAGE_PATTERN, identifier));
     }
 }

@@ -1,11 +1,5 @@
 databaseChangeLog:
   - include:
-      file: classpath:db/changes/001-create_category-schema.sql
+      file: classpath:db/changes/001-create_products-schema.sql
   - include:
-      file: classpath:db/changes/002-create_product-schema.sql
-  - include:
-      file: classpath:db/changes/003-add-product_category_relation.sql
-  - include:
-      file: classpath:db/changes/004-insert-category.sql
-  - include:
-      file: classpath:db/changes/005-insert-product.sql
+      file: classpath:db/changes/002-update_products-schema.sql
