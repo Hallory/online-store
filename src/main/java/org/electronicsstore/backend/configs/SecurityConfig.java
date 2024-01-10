@@ -1,5 +1,6 @@
 package org.electronicsstore.backend.configs;
 
+import org.electronicsstore.backend.security.CustomJwtConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -19,9 +20,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers("/api/categories/**").permitAll()
+                                .requestMatchers("/api/auth/temp/public/**").permitAll()
                                 .requestMatchers("/api/products/**").authenticated()
                                 .anyRequest().authenticated())
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(new CustomJwtConverter())))
                 .build();
     }
+
+
 }

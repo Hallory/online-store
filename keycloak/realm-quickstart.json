@@ -30,6 +30,19 @@
       "realmRoles": [
         "ADMIN"
       ]
+    },
+    {
+      "username": "umoder",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "umoder"
+        }
+      ],
+      "realmRoles": [
+        "MODER"
+      ]
     }
   ],
   "roles": {
@@ -41,6 +54,10 @@
       {
         "name": "ADMIN",
         "description": "Admin role"
+      },
+      {
+        "name": "MODER",
+        "description": "Moder role"
       }
     ]
   },
