@@ -10,59 +10,103 @@ import ProductDetails from './pages/product-details/ProductDetails';
 import Products from './pages/products/Products';
 import { useDispatch, useSelector } from 'react-redux';
 import Wishlist from './pages/wishlist/Wishlist';
+import AdminPanel from './admin/admin-panel/AdminPanel';
+import Layout from './components/layout/Layout';
 
 function App() {
-  const [products, setProducts] = useState([]);
-  const dispatch = useDispatch();
-  const baseUrl = useSelector((state) => state.baseUrl.value);
-  const [prevPath, setPrevPath] = useState(null);
-  const location = useLocation();
-  const navigate = useNavigate();
+    const [products, setProducts] = useState([]);
+    const dispatch = useDispatch();
+    const baseUrl = useSelector((state) => state.baseUrl.value);
+    const [prevPath, setPrevPath] = useState(null);
+    const location = useLocation();
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    const url = baseUrl
-    axios
-      .get(url)
-      .then((res) => {
-        const data = res.data;
-        setProducts(data.products);
-        console.log(data.products);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    useEffect(() => {
+        const url = baseUrl;
+        axios
+            .get(url)
+            .then((res) => {
+                const data = res.data;
+                setProducts(data.products);
+                console.log(data.products);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
 
-    setPrevPath(location.pathname);
-  }, []);
+        setPrevPath(location.pathname);
+    }, []);
 
-  const shouldAnimate = prevPath && (prevPath.includes('/login') || prevPath.includes('/register'));
+    const shouldAnimate =
+        prevPath &&
+        (prevPath.includes('/login') || prevPath.includes('/register'));
 
-  return (
-    <div className={location.pathname === "/login" || location.pathname === "/register" ? "pt-0" : "pt-[28px]"}>
-      <Routes>
-        <Route path="/" element={<Home products={products} />} />
-        <Route path="/products" element={<Products products={products} />} />
-        <Route path="/products/:productId" element={<ProductDetails products={products} />} />
-        <Route path="/wishlist" element={<Wishlist products={products} />} />
-        <Route
-          path="/login"
-          element={
-            <AnimatePresence mode='wait'>
-              <Login shouldAnimate={shouldAnimate} key="login" />
-            </AnimatePresence>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <AnimatePresence mode='wait'>
-              <Register shouldAnimate={shouldAnimate} key="register" />
-            </AnimatePresence>
-          }
-        />
-      </Routes>
-    </div>
-  );
+    return (
+        <div className="w-full">
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <Layout>
+                            <Home products={products} />
+                        </Layout>
+                    }
+                />
+                <Route
+                    path="/products"
+                    element={
+                        <Layout>
+                            <Products products={products} />
+                        </Layout>
+                    }
+                />
+                <Route
+                    path="/products/:productId"
+                    element={
+                        <Layout>
+                            <ProductDetails products={products} />
+                        </Layout>
+                    }
+                />
+                <Route
+                    path="/wishlist"
+                    element={
+                        <Layout>
+                            <Wishlist products={products} />
+                        </Layout>
+                    }
+                />
+                <Route
+                    path="/login"
+                    element={
+                        <AnimatePresence mode="wait">
+                            <Layout>
+                                {' '}
+                                <Login
+                                    shouldAnimate={shouldAnimate}
+                                    key="login"
+                                />
+                            </Layout>
+                        </AnimatePresence>
+                    }
+                />
+                <Route
+                    path="/register"
+                    element={
+                        <AnimatePresence mode="wait">
+                            <Layout>
+                                <Register
+                                    shouldAnimate={shouldAnimate}
+                                    key="register"
+                                />
+                            </Layout>
+                        </AnimatePresence>
+                    }
+                />
+                <Route path="/admin/*" element={<AdminPanel />} />
+            </Routes>
+        </div>
+    );
 }
 
 export default App;
