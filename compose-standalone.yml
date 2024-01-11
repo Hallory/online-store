@@ -32,6 +32,7 @@ services:
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KEYCLOAK_LOGLEVEL=DEBUG
     command:
       - start-dev
       - --import-realm

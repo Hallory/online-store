@@ -17,6 +17,13 @@ spring:
   security:
     oauth2.resourceserver.jwt.issuer-uri: http://${AUTH_HOST:localhost}:${AUTH_PORT:8080}/realms/${AUTH_REALM:quickstart}
 
+keycloak:
+  backend-client:
+    auth-server-url: http://${AUTH_HOST:localhost}:${AUTH_PORT:8080}
+    realm: ${KEYCLOAK_BACKEND_CLIENT_REALM:quickstart}
+    client: ${KEYCLOAK_BACKEND_CLIENT_ID:admin-rest-backend}
+    credentials.secret: ${KEYCLOAK_BACKEND_CLIENT_SECRET}
+
 ---
 spring:
   config.activate.on-profile: test
