@@ -3,3 +3,7 @@ databaseChangeLog:
       file: classpath:db/changes/001-create_products-schema.sql
   - include:
       file: classpath:db/changes/002-update_products-schema.sql
+  - include:
+      file: classpath:db/changes/003-create_customers-schema.sql
+  - include:
+      file: classpath:db/changes/004-update_customers-schema.sql
