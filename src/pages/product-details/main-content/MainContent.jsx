@@ -6,12 +6,12 @@ import MainProductsDescriptions from './main-product-descriptions/MainProductsDe
 
 const MainContent = ({ product }) => {
     return (
-        <div className="w-full flex lg:flex-row flex-col">
-            <div className="product-image w-[50%]">
+        <div className="w-full flex lg:flex-row flex-col justify-between">
+            <div className="product-image w-[46.1111111%]">
                 <ImageCarousel product={product} />
             </div>
-            <div className="product-details w-[50%] pl-10">
-                <div className="w-full flex items-center gap-3 border-2 border-black p-10 mt-6 rounded-md">
+            <div className="product-details w-[49.16666667%] px-10">
+                <div className="w-full flex items-center max-h-[8.441rem] gap-6 border-2 border-black p-10 mt-6 rounded-md">
                     <span className=" flex flex-col ">
                         <div className="gap-2 flex items-center text-xs">
                             <span className="text-gray-500 line-through">
@@ -43,7 +43,7 @@ const MainContent = ({ product }) => {
                     <button className="text-2xl p-3 px-7 rounded-xl border-primary-500 border-2 text-primary-500">
                         Buy on credit
                     </button>
-                    <span className="flex items-center gap-4 text-2xl">
+                    <span className="flex items-center gap-4 text-3xl text-black-800">
                         <button>
                             <LuScale />
                         </button>

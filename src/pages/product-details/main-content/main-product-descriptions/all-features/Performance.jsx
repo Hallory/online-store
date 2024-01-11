@@ -15,7 +15,7 @@ const Performance = ({ product }) => {
 
     return (
         <div className="w-full flex bg-white rounded-md flex-col">
-            <div>
+            <div className="">
                 {(product.category === 'smartphones' ||
                     product.category === 'laptops') && (
                     <div className='flex gap-8 p-6 flex-col pb-10 '>
