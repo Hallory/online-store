@@ -5,17 +5,14 @@ import Managers from '../admin-pages/Managers';
 import Layout from '../components/layout/Layout';
 
 const AdminPanel = () => {
-    return (
-        <div>
-            <Layout>
-                <Routes>
-            <Route path="/" element={<Orders/>}/>
-            <Route path="/users" element={<Managers/>}/>
-           </Routes>
-            </Layout>
-           
-        </div>
-    );
+  return (
+    <Layout>
+      <Routes>
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/managers" element={<Managers />} />
+      </Routes>
+    </Layout>
+  );
 };
 
 export default AdminPanel;

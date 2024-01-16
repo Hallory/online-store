@@ -3,7 +3,7 @@ import React from 'react';
 const Managers = () => {
     return (
         <div>
-            Managers
+            Managers 
         </div>
     );
 };

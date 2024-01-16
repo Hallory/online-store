@@ -23,5 +23,12 @@ img{
         font-family: 'Poppins', sans-serif;
     }
 
+.active {
+    @apply bg-gray-100 text-primary-700;
+}
+
+.admin_link {
+    @apply h-12 flex items-center px-4 rounded-lg ;
+}
 
     
