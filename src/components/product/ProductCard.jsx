@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useDispatch } from 'react-redux';
 
 import { addToWishlist } from '../../redux/slices/wishlistSlice';
+import { addToCompare } from '../../redux/slices/compareSlice';
 
 import ProductRating from './ProductRating';
 import Button from '../elements/Button';
@@ -19,6 +20,13 @@ const ProductCard = ({ product }) => {
         e.stopPropagation(); 
         dispatch(addToWishlist(product)); 
         console.log('Added to wishlist!'); 
+    }
+
+    const handleAddToCompare = (e) => { 
+        e.preventDefault(); 
+        e.stopPropagation(); 
+        dispatch(addToCompare(product)); 
+        console.log('Added to compare!'); 
     }
 
     return (
@@ -40,7 +48,7 @@ const ProductCard = ({ product }) => {
                     <div className='absolute top-11 right-1 pl-2'>
                         <Button
                             icon={ScaleIcon}
-                            onClick={console.log('Added to compare!')}
+                            onClick={handleAddToCompare}
                             variant='icon'
                         />
                     </div>
@@ -52,7 +60,7 @@ const ProductCard = ({ product }) => {
                     <span>{product.id}</span>
                 </div>
                 <div className='text-[1.125rem] text-black-900'>
-                    <span className=''>Смартфон Motorola G72 8/128GB Meteorite Grey (PAVG0004RS)</span>
+                    <span className=''>Smartphone Motorola G72 8/128GB Meteorite Grey (PAVG0004RS)</span>
                 </div>
                 <div>
                     <ProductRating product={product}/>

@@ -105,7 +105,7 @@ const Footer = (props) => {
                     <Button
                         label='Subscribe Now'
                         onClick={() => { console.log('Click!'); }}
-                        variant='primary-footer'/>
+                        variant='primary-full'/>
                 </div>
             </div>
             <div className='h-[1px] max-w-[73.125rem] w-full bg-clr_foo_bg_line mx-auto my-16'>

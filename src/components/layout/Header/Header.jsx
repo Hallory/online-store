@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import Navigation from './Header_nav/Navigation';
 
 
-const Header = (props) => {
+const Header = (products) => {
 
     return (
         <header className='px-6 flex flex-col items-center py-4 gap-y-4 bg-gray-200 border-b border-solid border-b-black-200 shadow-sm'>
@@ -21,7 +21,7 @@ const Header = (props) => {
                     onClick={() => { console.log('Click!'); }}
                     variant='primary'/>
                 <SearchBar />
-                <Menu />
+                <Menu/>
                 <Link to='/login'>
                     <Button
                     label='Login'

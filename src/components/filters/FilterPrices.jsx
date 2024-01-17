@@ -22,7 +22,7 @@ const FilterPrices = () => {
     const MIN = Math.min(...prices);
     const MAX = Math.max(...prices);
 
-    const [values, setValues] = useState([MIN, MAX]);
+    const [values, setValues] = useState([MAX, MIN]);
     const [highlightedInput, setHighlightedInput] = useState(null);
 
     const handleSliderChange = (newValues) => {
@@ -36,15 +36,19 @@ const FilterPrices = () => {
 
         if (newValue === '' || (!isNaN(newValue) && newValue >= MIN && newValue <= MAX)) {
             newValues[index] = newValue === '' ? MIN : parseInt(newValue, 10);
-            setValues(newValues);
-            dispatch(filteringByPrice(newValues)); 
+            setValues((prevValues) => {
+                dispatch(filteringByPrice(newValues));
+                return newValues;
+            });
         } else {
             setHighlightedInput(index);
             setTimeout(() => {
                 setHighlightedInput(null);
                 newValues[index] = index === 0 ? MIN : MAX;
-                setValues(newValues);
-                dispatch(filteringByPrice(newValues)); 
+                setValues((prevValues) => {
+                    dispatch(filteringByPrice(newValues));
+                    return newValues;
+                });
             }, 2000);
         }
     };

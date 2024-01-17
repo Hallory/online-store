@@ -1,10 +1,12 @@
 import React from 'react';
 
-const Compare = () => {
+import TabsCompareCategory from './all-tabs/TabsCompareCategory';
+
+const Compare = (products) => {
 
     return (
         <div>
-            Hello
+            <TabsCompareCategory product={products}/>
         </div>
     );
 }

@@ -3,6 +3,7 @@ import Header from './Header/Header';
 import Footer from './Footer/Footer';
 import Sidebar from './Sidebar/Sidebar';
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
+import SideCart from './SideCart/SideCart';
 
 const Layout = ({ children }) => {
 
@@ -17,6 +18,7 @@ const Layout = ({ children }) => {
                         {children}
                     </div>
                 </main>
+            <SideCart />
             </div>
             <Footer className='bg-gray-800 text-white py-4 text-center'/>
         </div>

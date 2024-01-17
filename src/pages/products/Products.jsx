@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToWishlist } from '../../redux/slices/wishlistSlice';
+import { addToCart } from '../../redux/slices/cartSlice';
 import ProductCard from '../../components/product/ProductCard';
 import Button from '../../components/elements/Button';
 import { ShoppingCartIcon } from '@heroicons/react/outline/';
@@ -32,9 +32,13 @@ const Products = () => {
 
     const displayedProducts = applySortingAndFiltering(allProducts);
 
-    const handleAddToWishlist = (product) => {
-        dispatch(addToWishlist(product));
+    const addItemToCart = (product) => {
+        dispatch(addToCart(product));
+        console.log('Added to cart!');
     }
+
+    const cart = useSelector((state) => state.cart);
+    console.log('cart',cart);
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
@@ -48,13 +52,13 @@ const Products = () => {
                     <div className='flex justify-center gap-1 pb-6 px-2'>
                         <Button
                             label='Buy now'
-                            onClick={() => { console.log('Click!'); }}
+                            onClick={() => console.log('Buy now!')}
                             variant='primary-outline'
 
                         />
                         <Button
                             icon={ShoppingCartIcon}
-                            onClick={() => handleAddToWishlist(product)}
+                            onClick={() => addItemToCart(product)}
                             variant='icon-fill'
                         />
                     </div>

@@ -4,6 +4,8 @@ import adminReducer from "./slices/adminSlice";
 import baseUrlReducer from "./slices/baseUrlSlice";
 import productsReducer from "./slices/productsSlice";
 import wishlistReducer from "./slices/wishlistSlice";
+import compareReducer from "./slices/compareSlice";
+import cartReducer from "./slices/cartSlice";
 
 
 const rootReducer = combineReducers({
@@ -12,6 +14,8 @@ const rootReducer = combineReducers({
     baseUrl:baseUrlReducer,
     products: productsReducer,
     wishlist: wishlistReducer,
+    compare: compareReducer,
+    cart: cartReducer
     
 })
 
