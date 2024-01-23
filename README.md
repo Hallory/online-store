@@ -2,10 +2,10 @@
 
 ## general
 ### OpenAPI docs<br />
-http://localhost:8080/v3/api-docs
+http://localhost:8081/v3/api-docs
 
 ### Swagger docs<br />
-http://localhost:8080/swagger-ui/index.html
+http://localhost:8081/swagger-ui/index.html
 
 ### Build 
 1) up backend and auth 
