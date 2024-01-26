@@ -14,7 +14,7 @@ const Nav = () => {
         },
         {
         title: 'FAQ',
-        route: '/faq'
+        route: '/general-questions'
         }
     ];
 

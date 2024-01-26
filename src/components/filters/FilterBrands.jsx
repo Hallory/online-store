@@ -73,31 +73,19 @@ const FilterBrands = () => {
                                 id={brand}
                                 onChange={() => handleCheckboxChange(brand)}
                                 checked={selectedBrands.includes(brand)}
-                                className="peer
-                                            relative
-                                            appearance-none
-                                            w-5
-                                            h-5
-                                            m-0.5
-                                            bg-gray-150
-                                            border-2
-                                            border-primary-400
-                                            rounded-sm
-                                            focus:outline-none
-                                            checked:bg-primary-400
-                                            
-                                            "
+                                className="peer relative appearance-none w-5 h-5 m-0.5 bg-gray-150 border-2 border-primary-400 rounded-sm focus:outline-none checked:bg-primary-400"
                             />
                             <label
                                 htmlFor={brand}
-                                className={`flex justify-between w-full cursor-pointer ms-2 font-medium ${
+                                className={`flex justify-between w-full cursor-pointer relative ms-2 font-medium ${
                                     selectedBrands.includes(brand)
-                                        ? "text-white bg-blue-500 " // Колір тексту і фону при виборі
-                                        : "text-black-600 hover:text-black-900" // Колір тексту по дефолту
+                                        ? "text-white bg-blue-500" // Text and background color when selected
+                                        : "text-black-600 hover:text-black-900" // Default text color
                                 } dark:text-gray-300 hover:text-white`}
                             >
                                 <span>{brand}</span>
                                 <span>{brandCounts[brand]}</span>
+                                {selectedBrands.includes(brand) && <CheckIcon className="text-black-100 w-5 ml-2 absolute top-[0.125rem] left-[-2.313rem] " />}
                             </label>
                         </div>
                     ))}

@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Wishlist from './pages/wishlist/Wishlist';
 import Compare from './pages/compare/Compare';
 import Cart from './pages/cart/Cart';
+import FAQs from './pages/menu-items/FAQs';
+import Checkout from './pages/checkout/Сheckout';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -48,6 +50,8 @@ function App() {
         <Route path="/wishlist" element={<Wishlist products={products} />} />
         <Route path="/products/compare" element={<Compare products={products} />} />
         <Route path="/products/cart" element={<Cart products={products} />} />
+        <Route path="/general-questions" element={<FAQs products={products} />} />
+        <Route path="/checkout" element={<Checkout products={products} />} />
         <Route
           path="/login"
           element={

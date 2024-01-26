@@ -51,7 +51,7 @@ const Footer = (props) => {
 
     return (
         <footer className='py-10 bg-gray-200 '>
-            <div className='flex justify-around max-w-[68.75rem] w-full mx-auto'>
+            <div className='flex justify-around  w-full mx-auto'>
                 <div className='px-6 max-w-[16.6rem] w-full'>
                     <Logo />
                     <p className='text-[1.125rem] text-black-600 mt-6'>
