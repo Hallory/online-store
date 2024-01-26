@@ -31,4 +31,8 @@ img{
     @apply h-12 flex items-center px-4 rounded-lg ;
 }
 
-    
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
