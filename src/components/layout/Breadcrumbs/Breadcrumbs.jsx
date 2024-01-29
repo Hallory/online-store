@@ -1,16 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import Select from 'react-select'; 
+import Dropdown from 'react-dropdown';
+
 import { sortProducts } from "../../../redux/slices/productsSlice";
-import { ChevronRightIcon } from '@heroicons/react/solid';
+
 import PathName from '../../elements/pathname-segment/PathName';
+
+import './styleFilterDropDown.css';
+
+import { ChevronRightIcon } from '@heroicons/react/solid';
 
 
 const Breadcrumbs = () => {
     const dispatch = useDispatch();
 
     const location = useLocation();
+
     const paths = ['/products', '/products/:productId', '/products/compare', '/products/cart'];
+
+    const options = [
+        { value: 'featured', label: 'Featured' },
+        { value: 'cheapest', label: 'From Cheap to Expensive' },
+        { value: 'expensive', label: 'From Expensive to Cheap' },
+        { value: 'rating', label: 'By rating' },
+        { value: 'newest', label: 'Newest first' }
+    ];
+
+    const defaultOption = options[0];
 
     const [pageTitle, setPageTitle] = useState('');
 
@@ -35,8 +53,6 @@ const Breadcrumbs = () => {
         }
     })
 
-
-
     return (
         <div className={isHidden ? 'block' : 'hidden'}>
             <div className='flex justify-between mt-4 px-6 pb-6 border-b border-solid border-b-black-200 '>
@@ -57,13 +73,21 @@ const Breadcrumbs = () => {
                             <label htmlFor="sortDropdown" className='text-black-600 '>
                                 Sort by
                             </label>
-                            <select onChange={(e) => dispatch(sortProducts(e.target.value))} className='text-black-900 focus:outline-none ' id="sortDropdown">
+                            <Dropdown options={options} onChange={(e) => dispatch(sortProducts(e.value))}  placeholder="featured" />;
+{/*                             <Select
+                                options={options}
+                                onChange={(e) => dispatch(sortProducts(e.value))}
+                                classNamePrefix='react-select'
+                                defaultValue={options[0]}
+                            /> */}  
+
+                            {/* <select onChange={(e) => dispatch(sortProducts(e.target.value))} className='text-black-900 focus:outline-none ' id="sortDropdown">
                                 <option selected value="featured">Featured</option>
                                 <option value="cheapest">From Cheap to Expensive</option>
                                 <option value="expensive">From Expensive to Cheap</option>
                                 <option value="rating">By rating</option>
                                 <option value="newest">Newest first</option>
-                            </select>
+                            </select> */}
                         </div>
                     ) : null}
                     {location.pathname === '/products/:productId' ? (

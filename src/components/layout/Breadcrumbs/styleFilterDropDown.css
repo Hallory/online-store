@@ -1,0 +1,44 @@
+.react-select__control {
+    border: none !important;
+    font-size: 0.875rem !important;
+    color: var(--Black-900, #080817) !important; 
+    width: 200px !important;
+}
+
+.react-select__value-container {
+
+}
+
+.react-select__indicator-separator {
+
+
+}
+
+.react-select__dropdown-indicator {
+    display: none !important;
+}
+
+.react-select__indicators {
+    display: none !important;
+}
+
+.react-select__indicator {
+    display: none !important;
+}
+
+.react-select__menu {
+    width: 300px !important;
+    position: absolute !important;
+    top: 41px !important;
+    right: -1px !important;
+}
+
+
+.react-select__menu-list {}
+
+.react-select__option {}
+
+.react-select__control--menu-is-open {
+    
+    position: absolute;
+}
