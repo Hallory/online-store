@@ -12,8 +12,8 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"value", "product_item_variation_id"})})
-public class ProductItemVariationOption {
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"value", "product_item_char_id"})})
+public class ProductItemCharValue {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -21,22 +21,22 @@ public class ProductItemVariationOption {
     private String value; // black, xl
 
     @ManyToOne
-    @JoinColumn(name = "product_item_variation_id")
-    private ProductItemVariation productItemVariation;
+    @JoinColumn(name = "product_item_char_id")
+    private ProductItemChar productItemChar;
 
-    @ManyToMany(mappedBy = "productItemVariationOptions")
+    @ManyToMany(mappedBy = "productItemCharValues")
     private Set<ProductItem> productItems;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductItemVariationOption that = (ProductItemVariationOption) o;
-        return Objects.equals(value, that.value) && Objects.equals(productItemVariation, that.productItemVariation);
+        ProductItemCharValue that = (ProductItemCharValue) o;
+        return Objects.equals(value, that.value) && Objects.equals(productItemChar, that.productItemChar);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value, productItemVariation);
+        return Objects.hash(value, productItemChar);
     }
 }

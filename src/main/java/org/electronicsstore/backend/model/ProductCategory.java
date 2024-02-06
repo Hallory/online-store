@@ -29,7 +29,7 @@ public class ProductCategory {
     private Set<ProductCategory> childCategories;
 
     @OneToMany(mappedBy = "productCategory")
-    private Set<ProductItemVariation> productItemVariations;
+    private Set<ProductItemChar> productItemChars;
 
     @OneToMany(mappedBy = "productCategory")
     private Set<Product> products;

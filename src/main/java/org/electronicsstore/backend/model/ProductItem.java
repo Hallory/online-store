@@ -38,13 +38,13 @@ public class ProductItem {
     private Product product;
 
     @ManyToMany
-    @JoinTable(name = "product_item_variation_option_configuration_m2m",
+    @JoinTable(name = "product_item_char_value_conf_m2m",
         joinColumns =
             @JoinColumn(name = "product_item_id", referencedColumnName = "id"),
         inverseJoinColumns =
-            @JoinColumn(name = "product_item_variation_option_id", referencedColumnName = "id")
+            @JoinColumn(name = "product_item_char_value_id", referencedColumnName = "id")
     )
-    private Set<ProductItemVariationOption> productItemVariationOptions;
+    private Set<ProductItemCharValue> productItemCharValues;
 
     @ManyToMany(mappedBy = "productItems")
     private Set<Promo> promos;
