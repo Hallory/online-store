@@ -5,7 +5,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.electronicsstore.backend.dtos.ProductCategoryDto;
 import org.electronicsstore.backend.exceptions.ProductCategoryAlreadyExistsException;
 import org.electronicsstore.backend.exceptions.ProductCategoryNotFoundException;
-import org.electronicsstore.backend.model.ProductCategory;
+import org.electronicsstore.backend.model.product.ProductCategory;
 import org.electronicsstore.backend.repos.ProductCategoryRepo;
 import org.springframework.stereotype.Service;
 

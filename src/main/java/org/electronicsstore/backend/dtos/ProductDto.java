@@ -1,10 +1,9 @@
 package org.electronicsstore.backend.dtos;
 
-import org.electronicsstore.backend.model.Product;
-import org.electronicsstore.backend.model.ProductItem;
+import org.electronicsstore.backend.model.product.Product;
+import org.electronicsstore.backend.model.product.ProductItem;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 

@@ -1,7 +1,7 @@
 package org.electronicsstore.backend.dtos;
 
-import org.electronicsstore.backend.model.Product;
-import org.electronicsstore.backend.model.ProductCategory;
+import org.electronicsstore.backend.model.product.Product;
+import org.electronicsstore.backend.model.product.ProductCategory;
 
 import java.util.Set;
 import java.util.stream.Collectors;

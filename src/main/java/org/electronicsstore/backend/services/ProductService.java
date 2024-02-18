@@ -5,13 +5,10 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.electronicsstore.backend.dtos.ProductDto;
 import org.electronicsstore.backend.exceptions.ProductAlreadyExistsException;
 import org.electronicsstore.backend.exceptions.ProductNotFoundException;
-import org.electronicsstore.backend.model.ProductCategory;
-import org.electronicsstore.backend.model.Product;
+import org.electronicsstore.backend.model.product.Product;
 import org.electronicsstore.backend.repos.ProductRepo;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package org.electronicsstore.backend.model;
+package org.electronicsstore.backend.model.product;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
