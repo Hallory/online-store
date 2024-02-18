@@ -1,7 +1,6 @@
 package org.electronicsstore.backend.dtos;
 
 import org.electronicsstore.backend.model.product.Product;
-import org.electronicsstore.backend.model.product.ProductItem;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -11,24 +10,22 @@ public record ProductDto(
         String id,
         String name,
         String description,
-        String productImage,
+        String productIcon,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
         LocalDateTime deletedAt,
-        String productCategoryId,
-        Set<String> productItemIds
+        String productCategoryId
 ) {
     public static ProductDto productToProductDto(Product product) {
         return new ProductDto(
                 product.getId(),
                 product.getName(),
                 product.getDescription(),
-                product.getProductImage(),
+                product.getProductIcon(),
                 product.getCreatedAt(),
                 product.getModifiedAt(),
                 product.getDeletedAt(),
-                product.getProductCategory().getId(),
-                product.getProductItems().stream().map(ProductItem::getId).collect(Collectors.toSet())
+                product.getProductCategory().getId()
         );
     }
 }

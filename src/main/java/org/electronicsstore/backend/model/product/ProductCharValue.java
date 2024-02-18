@@ -12,8 +12,8 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"value", "product_item_char_id"})})
-public class ProductItemCharValue {
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"value", "product_char_id"})})
+public class ProductCharValue {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -21,22 +21,22 @@ public class ProductItemCharValue {
     private String value; // black, xl
 
     @ManyToOne
-    @JoinColumn(name = "product_item_char_id")
-    private ProductItemChar productItemChar;
+    @JoinColumn(name = "product_char_id")
+    private ProductChar productChar;
 
-    @ManyToMany(mappedBy = "productItemCharValues")
-    private Set<ProductItem> productItems;
+    @ManyToMany(mappedBy = "productCharValues")
+    private Set<Product> products;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductItemCharValue that = (ProductItemCharValue) o;
-        return Objects.equals(value, that.value) && Objects.equals(productItemChar, that.productItemChar);
+        ProductCharValue that = (ProductCharValue) o;
+        return Objects.equals(value, that.value) && Objects.equals(productChar, that.productChar);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value, productItemChar);
+        return Objects.hash(value, productChar);
     }
 }

@@ -35,6 +35,9 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     private Set<Address> addresses;
 
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ShoppingCart shoppingCart;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

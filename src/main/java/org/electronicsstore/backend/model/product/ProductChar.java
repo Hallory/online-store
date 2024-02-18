@@ -13,7 +13,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name", "product_category_id"}))
-public class ProductItemChar {
+public class ProductChar {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -24,14 +24,14 @@ public class ProductItemChar {
     @JoinColumn(name = "product_category_id", nullable = false)
     private ProductCategory productCategory;
 
-    @OneToMany(mappedBy = "productItemChar")
-    private Set<ProductItemCharValue> productItemCharValues;
+    @OneToMany(mappedBy = "productChar")
+    private Set<ProductCharValue> productCharValues;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductItemChar that = (ProductItemChar) o;
+        ProductChar that = (ProductChar) o;
         return Objects.equals(name, that.name) && Objects.equals(productCategory, that.productCategory);
     }
 

@@ -14,8 +14,8 @@ import java.util.Set;
 @Entity
 public class Promo {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue
+    private Long id;
     private String name;
     private String description;
     private Double discountRate;
@@ -23,11 +23,11 @@ public class Promo {
     private LocalDateTime endDate;
 
     @ManyToMany
-    @JoinTable(name = "promo_product_item_m2m",
+    @JoinTable(name = "promo_product_m2m",
         joinColumns = @JoinColumn(name = "promo_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "product_item_id", referencedColumnName = "id")
+        inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id")
     )
-    private Set<ProductItem> productItems;
+    private Set<Product> products;
 
     
 }
