@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.electronicsstore.backend.model.order.ShopOrder;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -32,11 +33,17 @@ public class Customer {
     private LocalDateTime modifiedAt;
     private LocalDateTime deletedAt;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Address> addresses;
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private ShoppingCart shoppingCart;
+
+    @OneToMany(mappedBy = "customer", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH }, orphanRemoval = false)
+    private Set<ShopOrder> shopOrders;
+
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CustomerReview> customerReview;
 
     @Override
     public boolean equals(Object o) {

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.electronicsstore.backend.model.customer.ShoppingCartItem;
+import org.electronicsstore.backend.model.order.OrderItem;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -26,7 +27,7 @@ public class Product {
     @Column(nullable = false)
     private Integer qtyInStock;
     private Set<String> productImages;
-    private BigDecimal price;
+    private Double price;
     private String brand; // should be extended to hierarchy
     @Column(nullable = false) // ?should be unique
     private String name;
@@ -52,6 +53,9 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "product_category_id")
     private ProductCategory productCategory;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true) // ?uni
+    private Set<OrderItem> orderItems;
 
     @Override
     public boolean equals(Object o) {
