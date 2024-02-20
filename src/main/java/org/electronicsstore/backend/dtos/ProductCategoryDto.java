@@ -7,11 +7,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public record ProductCategoryDto(
-        String id,
+        Long id,
         String name,
 
         String description,
-        String parentProductCategoryId,
+        Long parentProductCategoryId,
         Set<String> childProductCategories
 ) {
     public static ProductCategoryDto categoryToCategoryDto(ProductCategory productCategory) {

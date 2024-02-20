@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.electronicsstore.backend.model.customer.CustomerReview;
 import org.electronicsstore.backend.model.customer.ShoppingCartItem;
 import org.electronicsstore.backend.model.order.OrderItem;
 
@@ -47,8 +48,9 @@ public class Product {
     )
     private Set<ProductCharValue> productCharValues;
 
-    @ManyToMany(mappedBy = "products")
-    private Set<Promo> promos;
+    @ManyToOne
+    @JoinColumn(name = "promo_id")
+    private Promo promo;
 
     @ManyToOne
     @JoinColumn(name = "product_category_id")
@@ -56,6 +58,39 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true) // ?uni
     private Set<OrderItem> orderItems;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CustomerReview> customerReviews;
+
+    public void addCustomerReview(CustomerReview o) {
+        customerReviews.add(o);
+        o.setProduct(this);
+    }
+
+    public void removeCustomerReview(CustomerReview o) {
+        customerReviews.remove(o);
+        o.setProduct(null);
+    }
+
+    public void addOrderItem(OrderItem o) {
+        orderItems.add(o);
+        o.setProduct(this);
+    }
+
+    public void removeProduct(OrderItem o) {
+        orderItems.remove(o);
+        o.setProduct(null);
+    }
+
+    public void addProductCharValue(ProductCharValue o) {
+        productCharValues.add(o);
+        o.getProducts().add(this);
+    }
+
+    public void removeProductCharValue(ProductCharValue o) {
+        productCharValues.remove(o);
+        o.getProducts().remove(this);
+    }
 
     @Override
     public boolean equals(Object o) {

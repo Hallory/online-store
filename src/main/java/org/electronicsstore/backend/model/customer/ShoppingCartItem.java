@@ -17,15 +17,15 @@ import java.util.Objects;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"shopping_cart_id", "product_id"}))
 public class ShoppingCartItem {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     @Column(columnDefinition = "integer not null CHECK (qty > 0)")
     private Integer qty; // > 0
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "shopping_cart_id")
     private ShoppingCart shoppingCart;
 

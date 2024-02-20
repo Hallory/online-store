@@ -15,12 +15,22 @@ import java.util.Set;
 public class Country {
     @Id
     @GeneratedValue
-    private Integer id;
+    private Long id;
     @Column(unique = true)
     private String countryName;
 
     @OneToMany(mappedBy = "country")
     private Set<Address> addresses;
+
+    public void addAddress(Address o) {
+        addresses.add(o);
+        o.setCountry(this);
+    }
+
+    public void removeAddress(Address o) {
+        addresses.remove(o);
+        o.setCountry(null);
+    }
 
     @Override
     public boolean equals(Object o) {

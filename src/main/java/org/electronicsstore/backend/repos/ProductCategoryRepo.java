@@ -5,7 +5,7 @@ import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.Optional;
 
-public interface ProductCategoryRepo extends ListCrudRepository<ProductCategory, String> {
+public interface ProductCategoryRepo extends ListCrudRepository<ProductCategory, Long> {
     Optional<ProductCategory> findByName(String name);
     boolean existsByName(String name);
 }

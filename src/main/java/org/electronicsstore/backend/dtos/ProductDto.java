@@ -3,8 +3,6 @@ package org.electronicsstore.backend.dtos;
 import org.electronicsstore.backend.model.product.Product;
 
 import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public record ProductDto(
         String id,
@@ -14,7 +12,7 @@ public record ProductDto(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
         LocalDateTime deletedAt,
-        String productCategoryId
+        Long productCategoryId
 ) {
     public static ProductDto productToProductDto(Product product) {
         return new ProductDto(

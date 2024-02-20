@@ -1,9 +1,0 @@
-alter table if exists product add constraint FKcwclrqu392y86y0pmyrsi649r foreign key (product_category_id) references product_category;
-alter table if exists product_category add constraint FKm6jp2jgveiknys0ngx1ddt3mo foreign key (parent_product_category_id) references product_category;
-alter table if exists product_item add constraint FKa9mjpi98ark8eovbtnnreygbb foreign key (product_id) references product;
-alter table if exists product_item_variation_option_configuration_m2m add constraint FKe693lvy30f34f6d1hnr2r9ugp foreign key (product_item_variation_option_id) references product_item_variation_option;
-alter table if exists product_item_variation_option_configuration_m2m add constraint FKm9mm7r16kq13hwuqpfx6secrp foreign key (product_item_id) references product_item;
-alter table if exists product_item_variation add constraint FK8h8aslnepgiuh0p6y5vxddvi foreign key (product_category_id) references product_category;
-alter table if exists product_item_variation_option add constraint FKg3m9vjqq8jsg7bfebe8n4op39 foreign key (product_item_variation_id) references product_item_variation;
-alter table if exists promo_product_item_m2m add constraint FKgv4ic30j08qae31537q9gpmx8 foreign key (product_item_id) references product_item;
-alter table if exists promo_product_item_m2m add constraint FKdbcnic40m6im0t20nffep7fqr foreign key (promo_id) references promo;

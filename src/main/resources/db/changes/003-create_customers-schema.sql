@@ -1,3 +1,0 @@
-create table address (country_id integer, is_default boolean, address_line1 varchar(255), address_line2 varchar(255), city varchar(255), customer_id varchar(255) not null, id varchar(255) not null, postal_code varchar(255), region varchar(255), street_num varchar(255), unit_num varchar(255), primary key (id));
-create table country (id integer not null, country_name varchar(255) unique, primary key (id));
-create table customer (created_at timestamp(6) not null, deleted_at timestamp(6), modified_at timestamp(6), account_id varchar(255) unique, email varchar(255) unique, first_name varchar(255), id varchar(255) not null, last_name varchar(255), middle_name varchar(255), phone_num varchar(255), username varchar(255) unique, primary key (id));

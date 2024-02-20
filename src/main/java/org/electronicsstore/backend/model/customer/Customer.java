@@ -42,8 +42,38 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH }, orphanRemoval = false)
     private Set<ShopOrder> shopOrders;
 
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CustomerReview> customerReview;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CustomerReview> customerReviews;
+
+    public void addAddress(Address o) {
+        addresses.add(o);
+        o.setCustomer(this);
+    }
+
+    public void removeAddress(Address o) {
+        addresses.remove(o);
+        o.setCustomer(null);
+    }
+
+    public void addShopOrder(ShopOrder o) {
+        shopOrders.add(o);
+        o.setCustomer(this);
+    }
+
+    public void removeShopOrder(ShopOrder o) {
+        shopOrders.remove(o);
+        o.setCustomer(null);
+    }
+
+    public void addCustomerReview(CustomerReview o) {
+        customerReviews.add(o);
+        o.setCustomer(this);
+    }
+
+    public void removeShoppingCartItem(CustomerReview o) {
+        customerReviews.remove(o);
+        o.setCustomer(null);
+    }
 
     @Override
     public boolean equals(Object o) {

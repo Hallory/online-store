@@ -15,8 +15,8 @@ import java.util.Set;
 @Table(name = "product_category", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 public class ProductCategory {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue
+    private Long id;
     @Column(nullable = false)
     private String name;
     private String description;
@@ -28,11 +28,41 @@ public class ProductCategory {
     @OneToMany(mappedBy = "parentProductCategory")
     private Set<ProductCategory> childCategories;
 
-    @OneToMany(mappedBy = "productCategory")
+    @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductChar> productChars;
 
-    @OneToMany(mappedBy = "productCategory")
+    @OneToMany(mappedBy = "productCategory", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Set<Product> products;
+
+    public void addProductCategory(ProductCategory o) {
+        childCategories.add(o);
+        o.setParentProductCategory(this);
+    }
+
+    public void removeProductCategory(ProductCategory o) {
+        childCategories.remove(o);
+        o.setParentProductCategory(null);
+    }
+
+    public void addProductChar(ProductChar o) {
+        productChars.add(o);
+        o.setProductCategory(this);
+    }
+
+    public void removeProductChar(ProductChar o) {
+        productChars.remove(o);
+        o.setProductCategory(null);
+    }
+
+    public void addProduct(Product o) {
+        products.add(o);
+        o.setProductCategory(this);
+    }
+
+    public void removeProduct(Product o) {
+        products.remove(o);
+        o.setProductCategory(null);
+    }
 
     @Override
     public boolean equals(Object o) {

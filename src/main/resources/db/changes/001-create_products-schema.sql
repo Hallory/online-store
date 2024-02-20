@@ -1,8 +1,0 @@
-create table product (created_at timestamp(6) not null, deleted_at timestamp(6), modified_at timestamp(6), description varchar(255), id varchar(255) not null, name varchar(255) not null unique, product_category_id varchar(255), product_image varchar(255), primary key (id));
-create table product_category (description varchar(255), id varchar(255) not null, name varchar(255) not null, parent_product_category_id varchar(255), primary key (id), unique (name));
-create table product_item (price numeric(38,2), qty_in_stock integer not null, created_at timestamp(6) not null, deleted_at timestamp(6), modified_at timestamp(6), article varchar(255) not null unique, brand varchar(255), id varchar(255) not null, product_id varchar(255), sku varchar(255) not null unique, product_images varchar(255) array, primary key (id));
-create table product_item_variation_option_configuration_m2m (product_item_id varchar(255) not null, product_item_variation_option_id varchar(255) not null, primary key (product_item_id, product_item_variation_option_id));
-create table product_item_variation (id varchar(255) not null, name varchar(255) not null, product_category_id varchar(255) not null, primary key (id), unique (name, product_category_id));
-create table product_item_variation_option (id varchar(255) not null, product_item_variation_id varchar(255), value varchar(255) not null, primary key (id), unique (value, product_item_variation_id));
-create table promo (discount_rate float(53), end_date timestamp(6), start_date timestamp(6), description varchar(255), id varchar(255) not null, name varchar(255), primary key (id));
-create table promo_product_item_m2m (product_item_id varchar(255) not null, promo_id varchar(255) not null, primary key (product_item_id, promo_id));

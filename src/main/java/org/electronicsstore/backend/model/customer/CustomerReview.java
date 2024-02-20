@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.electronicsstore.backend.model.product.Product;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -26,6 +27,10 @@ public class CustomerReview {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @Override
     public boolean equals(Object o) {

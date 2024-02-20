@@ -24,7 +24,7 @@ public class ProductCategoryService {
         return productCategoryRepo.findAll().stream().map(ProductCategoryDto::categoryToCategoryDto).toList();
     }
 
-    public ProductCategoryDto findById(String categoryId) {
+    public ProductCategoryDto findById(Long categoryId) {
         ProductCategory productCategory = productCategoryRepo.findById(categoryId).orElseThrow(() -> new ProductCategoryNotFoundException(categoryId));
         return ProductCategoryDto.categoryToCategoryDto(productCategory);
     }
@@ -42,7 +42,7 @@ public class ProductCategoryService {
 //        return ProductCategoryDto.categoryToCategoryDto(productCategoryRepo.save(productCategory));
     }
 
-    public void updateOne(String categoryId, ProductCategoryDto categoryDto) {
+    public void updateOne(Long categoryId, ProductCategoryDto categoryDto) {
         ProductCategory productCategory = productCategoryRepo.findById(categoryId).orElseThrow(() -> new ProductCategoryNotFoundException(categoryId));;
         productCategory.setName(categoryDto.name());
 
@@ -50,7 +50,7 @@ public class ProductCategoryService {
 //        productCategoryRepo.save(productCategory);
     }
 
-    public void deleteOne(String categoryId) {
+    public void deleteOne(long categoryId) {
         ProductCategory productCategory = productCategoryRepo.findById(categoryId).orElseThrow(() -> new ProductCategoryNotFoundException(categoryId));;
 
         throw new NotImplementedException();

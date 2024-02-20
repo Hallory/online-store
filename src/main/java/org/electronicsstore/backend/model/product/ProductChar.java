@@ -15,8 +15,8 @@ import java.util.Set;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name", "product_category_id"}))
 public class ProductChar {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue
+    private Long id;
     @Column(nullable = false)
     private String name; // colour, size
 
@@ -24,8 +24,18 @@ public class ProductChar {
     @JoinColumn(name = "product_category_id", nullable = false)
     private ProductCategory productCategory;
 
-    @OneToMany(mappedBy = "productChar")
+    @OneToMany(mappedBy = "productChar", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductCharValue> productCharValues;
+
+    public void addProductCharValue(ProductCharValue o) {
+        productCharValues.add(o);
+        o.setProductChar(this);
+    }
+
+    public void removeProductCharValue(ProductCharValue o) {
+        productCharValues.remove(o);
+        o.setProductChar(null);
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -26,7 +26,7 @@ public class ProductCategoryController {
 
     @GetMapping({"{categoryId}"})
     @ResponseStatus(HttpStatus.OK)
-    public ProductCategoryDto productById(@PathVariable(name = "categoryId", required = true) String categoryId) {
+    public ProductCategoryDto productById(@PathVariable(name = "categoryId", required = true) Long categoryId) {
         return productCategoryService.findById(categoryId);
     }
 
@@ -43,7 +43,7 @@ public class ProductCategoryController {
     @PutMapping({"{categoryId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateById(
-            @PathVariable(name = "productId", required = true) String categoryId,
+            @PathVariable(name = "productId", required = true) Long categoryId,
             @RequestBody ProductCategoryDto productCategoryDto) {
         productCategoryService.updateOne(categoryId, productCategoryDto);
     }
@@ -53,7 +53,7 @@ public class ProductCategoryController {
     // 200 with response required
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping({"{categoryId}"})
-    public void deleteById(@PathVariable(name = "categoryId", required = true) String categoryId) {
+    public void deleteById(@PathVariable(name = "categoryId", required = true) Long categoryId) {
         productCategoryService.deleteOne(categoryId);
     }
 }

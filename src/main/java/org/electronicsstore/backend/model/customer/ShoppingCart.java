@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.electronicsstore.backend.model.order.ShopOrder;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -16,8 +17,8 @@ import java.util.Set;
 @Entity
 public class ShoppingCart {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     @Column(nullable = false)
     private Double total; // > 0
     @Column(nullable = false, updatable = false)
@@ -31,6 +32,16 @@ public class ShoppingCart {
 
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ShoppingCartItem> shoppingCartItems;
+
+    public void addShoppingCartItem(ShoppingCartItem o) {
+        shoppingCartItems.add(o);
+        o.setShoppingCart(this);
+    }
+
+    public void removeShoppingCartItem(ShoppingCartItem o) {
+        shoppingCartItems.remove(o);
+        o.setShoppingCart(null);
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.electronicsstore.backend.model.customer.Customer;
+import org.electronicsstore.backend.model.product.ProductCharValue;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -38,6 +39,26 @@ public class ShopOrder {
 
     @OneToMany(mappedBy = "shopOrder")
     private Set<OrderItem> orderItems;
+
+    public void addPayment(Payment o) {
+        payments.add(o);
+        o.setShopOrder(this);
+    }
+
+    public void removePayment(Payment o) {
+        payments.remove(o);
+        o.setShopOrder(null);
+    }
+
+    public void addOrderItem(OrderItem o) {
+        orderItems.add(o);
+        o.setShopOrder(this);
+    }
+
+    public void removeOrderItem(OrderItem o) {
+        orderItems.remove(o);
+        o.setShopOrder(null);
+    }
 
     @Override
     public boolean equals(Object o) {

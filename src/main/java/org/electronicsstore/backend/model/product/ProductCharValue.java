@@ -15,8 +15,8 @@ import java.util.Set;
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"value", "product_char_id"})})
 public class ProductCharValue {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue
+    private Long id;
     @Column(nullable = false)
     private String value; // black, xl
 

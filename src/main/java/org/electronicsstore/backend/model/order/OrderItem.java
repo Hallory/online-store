@@ -15,8 +15,8 @@ import java.util.Objects;
 @Entity
 public class OrderItem {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     @Column(nullable = false, updatable = false)
     private String productSKU;
     private Double pricePerItem;
