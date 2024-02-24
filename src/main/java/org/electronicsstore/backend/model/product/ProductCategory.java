@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,6 +23,11 @@ public class ProductCategory {
     @Column(nullable = false)
     private String name;
     private String description;
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    @UpdateTimestamp
+    private LocalDateTime modifiedAt;
 
     @ManyToOne
     @JoinColumn(name = "parent_product_category_id", nullable = true)

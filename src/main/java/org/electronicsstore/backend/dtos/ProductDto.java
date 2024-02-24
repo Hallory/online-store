@@ -14,7 +14,7 @@ public record ProductDto(
         LocalDateTime deletedAt,
         Long productCategoryId
 ) {
-    public static ProductDto productToProductDto(Product product) {
+    public static ProductDto productModelToDto(Product product) {
         return new ProductDto(
                 product.getId(),
                 product.getName(),

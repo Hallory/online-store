@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.electronicsstore.backend.model.customer.Customer;
 import org.electronicsstore.backend.model.product.ProductCharValue;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -23,7 +25,10 @@ public class ShopOrder {
     private String shippingAddress;
     private String status;
     @Column(nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
+    @UpdateTimestamp
+    private LocalDateTime modifiedAt;
     private LocalDateTime approvedAt;
 
     @ManyToOne

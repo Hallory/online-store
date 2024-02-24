@@ -6,6 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.electronicsstore.backend.model.order.ShopOrder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -16,13 +21,18 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 public class ShoppingCart {
+    {
+        total = 0.;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    @Column(nullable = false)
-    private Double total; // > 0
+    @Column(nullable = false, columnDefinition = "float(53) default 0.0 check(total >= 0.0)")
+    private Double total;
     @Column(nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
+    @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
     @NotNull

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.electronicsstore.backend.model.customer.CustomerReview;
 import org.electronicsstore.backend.model.customer.ShoppingCartItem;
 import org.electronicsstore.backend.model.order.OrderItem;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -34,8 +36,10 @@ public class Product {
     private String name;
     private String description;
     private String productIcon; // general image in the product list
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
+    @UpdateTimestamp
     private LocalDateTime modifiedAt;
     private LocalDateTime deletedAt;
 

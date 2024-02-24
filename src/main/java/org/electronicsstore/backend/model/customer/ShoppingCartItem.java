@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.electronicsstore.backend.model.product.Product;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -22,7 +24,9 @@ public class ShoppingCartItem {
     @Column(columnDefinition = "integer not null CHECK (qty > 0)")
     private Integer qty; // > 0
     @Column(nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
+    @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
     @ManyToOne

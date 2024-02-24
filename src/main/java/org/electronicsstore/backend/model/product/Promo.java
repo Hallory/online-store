@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -23,7 +25,9 @@ public class Promo {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     @Column(nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
+    @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
     @OneToMany(mappedBy = "promo", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})

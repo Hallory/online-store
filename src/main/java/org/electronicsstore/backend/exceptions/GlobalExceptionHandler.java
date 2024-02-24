@@ -17,7 +17,10 @@ public class GlobalExceptionHandler {
         return new ErrorMessage(ex.getMessage());
     }
 
-    @ExceptionHandler({ProductAlreadyExistsException.class, ProductCategoryAlreadyExistsException.class})
+    @ExceptionHandler({
+            ProductAlreadyExistsException.class,
+            ProductCategoryAlreadyExistsException.class,
+            AuthUserNotCreatedException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorMessage resourceNotRequiredException(RuntimeException ex, WebRequest req) {
         return new ErrorMessage(ex.getMessage());

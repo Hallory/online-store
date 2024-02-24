@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -19,6 +22,11 @@ public class ProductChar {
     private Long id;
     @Column(nullable = false)
     private String name; // colour, size
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    @UpdateTimestamp
+    private LocalDateTime modifiedAt;
 
     @ManyToOne // or m2m if restricted variety of products is chosen
     @JoinColumn(name = "product_category_id", nullable = false)

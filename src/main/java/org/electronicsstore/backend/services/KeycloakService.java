@@ -2,8 +2,10 @@ package org.electronicsstore.backend.services;
 
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
-import org.electronicsstore.backend.dtos.UserDto;
+import org.electronicsstore.backend.dtos.CustomerCreateReq;
 import org.electronicsstore.backend.dtos.UserRolesResponse;
+import org.electronicsstore.backend.exceptions.AuthUserNotCreatedException;
+import org.electronicsstore.backend.model.customer.Customer;
 import org.electronicsstore.backend.security.CustomJwt;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.CredentialRepresentation;
@@ -18,28 +20,30 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class KeycloakService {
+    private static final String CUSTOMER_REGISTER_ROLE_DEFAULT = Customer.CustomerRoles.USER.name();
     @Value("${keycloak.backend-client.realm}")
     private String keycloakRealm;
     private final Keycloak keycloak;
+    private final CustomerService customerService;
+    private final ShoppingCartService shoppingCartService;
 
-    public Response createUser(UserDto userDto) {
-        CredentialRepresentation credentials = prepareCredentialRepresentation(userDto.password());
-        UserRepresentation user = prepareUserRepresentation(userDto, credentials);
-        return keycloak.realm(keycloakRealm).users().create(user);
-    }
+    public Response createUserAndAssignRole(CustomerCreateReq dto) {
+        CredentialRepresentation credentials = prepareCredentialRepresentation(dto.password());
+        UserRepresentation user = prepareUserRepresentation(dto, credentials);
 
-    public Response createUserAndAssignRole(UserDto userDto) {
-        CredentialRepresentation credentials = prepareCredentialRepresentation(userDto.password());
-        UserRepresentation user = prepareUserRepresentation(userDto, credentials);
-        Response resp = keycloak.realm(keycloakRealm).users().create(user);
+        try (Response resp = keycloak.realm(keycloakRealm).users().create(user)) {
+            if (resp.getStatus() == 201) {
+                UserRepresentation createdUser = findUserByUsername(user.getUsername());
+                RoleRepresentation existedRole = findRoleByName(CUSTOMER_REGISTER_ROLE_DEFAULT); // static response
+                assignRole(createdUser.getId(), existedRole);
 
-        if (resp.getStatus() == 201) {
-            UserRepresentation createdUser = findUserByUsername(user.getUsername());
-            RoleRepresentation existedRole = findRoleByName(userDto.roleName());
-            assignRole(createdUser.getId(), existedRole);
+                customerService.saveOneInit(dto, createdUser.getId());
+
+                return resp;
+            }
         }
 
-        return resp;
+        throw new AuthUserNotCreatedException("Authorization server didn't create user.");
     }
 
     public UserRepresentation findUserByUsername(String name) {
@@ -77,13 +81,15 @@ public class KeycloakService {
                 .toRepresentation();
     }
 
-    private UserRepresentation prepareUserRepresentation(UserDto userDto, CredentialRepresentation credentials) {
+    private UserRepresentation prepareUserRepresentation(CustomerCreateReq dto, CredentialRepresentation credentials) {
         var user = new UserRepresentation();
-        user.setUsername(userDto.username());
+        user.setUsername(dto.username());
         user.setCredentials(List.of(credentials));
         user.setEnabled(true);
-        user.setEmail(userDto.email());
+        user.setEmail(dto.username());
         user.setEmailVerified(true);
+
+        user.setLastName(dto.lastName());
         return user;
     }
 

@@ -18,12 +18,12 @@ public class ProductService {
     private final ProductCategoryService productCategoryService;
 
     public List<ProductDto> findAll() {
-        return productRepo.findAll().stream().map(ProductDto::productToProductDto).toList();
+        return productRepo.findAll().stream().map(ProductDto::productModelToDto).toList();
     }
 
     public ProductDto findById(String productId) {
         Product product = productRepo.findById(productId).orElseThrow(() -> new ProductNotFoundException(productId));
-        return ProductDto.productToProductDto(product);
+        return ProductDto.productModelToDto(product);
     }
 
     public ProductDto saveOne(ProductDto productDto) {

@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.electronicsstore.backend.model.order.ShopOrder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -15,6 +19,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 public class Customer {
+    {
+        isDeleted = false;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -29,9 +36,12 @@ public class Customer {
     private String email;
     private String phoneNum;
     @Column(nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
+    @UpdateTimestamp
     private LocalDateTime modifiedAt;
     private LocalDateTime deletedAt;
+    private Boolean isDeleted;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Address> addresses;
@@ -42,8 +52,13 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH }, orphanRemoval = false)
     private Set<ShopOrder> shopOrders;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
     private Set<CustomerReview> customerReviews;
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+        shoppingCart.setCustomer(this);
+    }
 
     public void addAddress(Address o) {
         addresses.add(o);
@@ -86,5 +101,9 @@ public class Customer {
     @Override
     public int hashCode() {
         return Objects.hash(accountId, username, email);
+    }
+
+    public enum CustomerRoles {
+        USER, MODER, ADMIN;
     }
 }
