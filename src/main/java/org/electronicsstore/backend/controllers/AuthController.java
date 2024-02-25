@@ -2,12 +2,9 @@ package org.electronicsstore.backend.controllers;
 
 import jakarta.ws.rs.core.Response;
 import lombok.AllArgsConstructor;
-import org.electronicsstore.backend.dtos.CustomerCreateReq;
-import org.electronicsstore.backend.dtos.CustomerDto;
-import org.electronicsstore.backend.dtos.UserDto;
+import org.electronicsstore.backend.dtos.CustomerCreateRequest;
 import org.electronicsstore.backend.dtos.UserRolesResponse;
 import org.electronicsstore.backend.security.CustomJwt;
-import org.electronicsstore.backend.services.CustomerService;
 import org.electronicsstore.backend.services.KeycloakService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +22,7 @@ public class AuthController {
 
     @PostMapping(value = {"public/users"}, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> createUser(@RequestBody CustomerCreateReq dto) {
+    public ResponseEntity<?> createUser(@RequestBody CustomerCreateRequest dto) {
         Response resp = keycloakService.createUserAndAssignRole(dto);
         return ResponseEntity.created(resp.getLocation()).build();
     }

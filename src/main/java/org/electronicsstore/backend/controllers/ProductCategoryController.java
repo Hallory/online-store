@@ -1,11 +1,16 @@
 package org.electronicsstore.backend.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.electronicsstore.backend.dtos.ProductCategoryCreateRequest;
 import org.electronicsstore.backend.dtos.ProductCategoryDto;
+import org.electronicsstore.backend.dtos.ProductCategoryUpdateRequest;
 import org.electronicsstore.backend.services.ProductCategoryService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,40 +25,46 @@ public class ProductCategoryController {
     private final ProductCategoryService productCategoryService;
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ProductCategoryDto> products() {
-        return productCategoryService.findAll();
+    public ResponseEntity<List<ProductCategoryDto>> categories() {
+        return ResponseEntity.ok(productCategoryService.findAll().stream().map(ProductCategoryDto::modelToDto).toList());
     }
 
     @GetMapping({"{categoryId}"})
     @ResponseStatus(HttpStatus.OK)
-    public ProductCategoryDto productById(@PathVariable(name = "categoryId", required = true) Long categoryId) {
-        return productCategoryService.findById(categoryId);
+    public ResponseEntity<ProductCategoryDto> categoryById(@PathVariable(name = "categoryId", required = true) Long categoryId) {
+        return ResponseEntity.ok(ProductCategoryDto.modelToDto(productCategoryService.findById(categoryId)));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductCategoryDto addProduct(@RequestBody ProductCategoryDto categoryDto) {
-        return productCategoryService.saveOne(categoryDto);
+    public ResponseEntity<?> createCategory(@RequestBody ProductCategoryCreateRequest dto, HttpServletRequest req) {
+        var category = productCategoryService.saveOneInit(dto);
+        return ResponseEntity.created(
+                URI.create(req.getRequestURI())
+                        .resolve("/api/categories")
+                        .resolve(category.getId().toString()))
+                .build();
     }
 
-    // 200 ok / 204 no_content
-    // !201 created
-    // !409 conflict
-    // 400 bad request // with explanation
     @PutMapping({"{categoryId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateById(
-            @PathVariable(name = "productId", required = true) Long categoryId,
-            @RequestBody ProductCategoryDto productCategoryDto) {
-        productCategoryService.updateOne(categoryId, productCategoryDto);
+    public void updateCategory(
+            @PathVariable(name = "categoryId", required = true) Long categoryId,
+            @RequestBody ProductCategoryUpdateRequest dto) {
+        productCategoryService.updateOne(categoryId, dto);
     }
 
-    // 204 no_content
-    // 202 accepted not completed
-    // 200 with response required
+    @PatchMapping({"{categoryId}"})
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void patchCategory(
+            @PathVariable(name = "categoryId", required = true) Long categoryId,
+            @RequestBody ProductCategoryUpdateRequest dto) {
+        productCategoryService.patchOne(categoryId, dto);
+    }
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping({"{categoryId}"})
-    public void deleteById(@PathVariable(name = "categoryId", required = true) Long categoryId) {
+    public void deleteCategory(@PathVariable(name = "categoryId", required = true) Long categoryId) {
         productCategoryService.deleteOne(categoryId);
     }
 }

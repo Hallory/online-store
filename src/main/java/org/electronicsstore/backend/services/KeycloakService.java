@@ -2,7 +2,7 @@ package org.electronicsstore.backend.services;
 
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
-import org.electronicsstore.backend.dtos.CustomerCreateReq;
+import org.electronicsstore.backend.dtos.CustomerCreateRequest;
 import org.electronicsstore.backend.dtos.UserRolesResponse;
 import org.electronicsstore.backend.exceptions.AuthUserNotCreatedException;
 import org.electronicsstore.backend.model.customer.Customer;
@@ -27,7 +27,7 @@ public class KeycloakService {
     private final CustomerService customerService;
     private final ShoppingCartService shoppingCartService;
 
-    public Response createUserAndAssignRole(CustomerCreateReq dto) {
+    public Response createUserAndAssignRole(CustomerCreateRequest dto) {
         CredentialRepresentation credentials = prepareCredentialRepresentation(dto.password());
         UserRepresentation user = prepareUserRepresentation(dto, credentials);
 
@@ -81,7 +81,7 @@ public class KeycloakService {
                 .toRepresentation();
     }
 
-    private UserRepresentation prepareUserRepresentation(CustomerCreateReq dto, CredentialRepresentation credentials) {
+    private UserRepresentation prepareUserRepresentation(CustomerCreateRequest dto, CredentialRepresentation credentials) {
         var user = new UserRepresentation();
         user.setUsername(dto.username());
         user.setCredentials(List.of(credentials));

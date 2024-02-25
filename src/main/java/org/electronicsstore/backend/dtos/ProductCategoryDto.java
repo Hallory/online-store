@@ -3,8 +3,7 @@ package org.electronicsstore.backend.dtos;
 import org.electronicsstore.backend.model.product.Product;
 import org.electronicsstore.backend.model.product.ProductCategory;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 public record ProductCategoryDto(
         Long id,
@@ -12,14 +11,18 @@ public record ProductCategoryDto(
 
         String description,
         Long parentProductCategoryId,
-        Set<String> childProductCategories
+        List<String> childProductCategories
 ) {
-    public static ProductCategoryDto categoryToCategoryDto(ProductCategory productCategory) {
+    public static ProductCategoryDto modelToDto(ProductCategory productCategory) {
+        var parentProductCategoryId =
+                (productCategory.getParent() != null)
+                        ? productCategory.getParent().getId()
+                        : null;
         return new ProductCategoryDto(
                 productCategory.getId(),
                 productCategory.getName(),
                 productCategory.getDescription(),
-                productCategory.getParentProductCategory().getId(),
-                productCategory.getProducts().stream().map(Product::getId).collect(Collectors.toSet()));
+                parentProductCategoryId,
+                productCategory.getProducts().stream().map(Product::getId).toList());
     }
 }

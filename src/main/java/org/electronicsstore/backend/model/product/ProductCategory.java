@@ -8,6 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -29,12 +31,12 @@ public class ProductCategory {
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_product_category_id", nullable = true)
-    private ProductCategory parentProductCategory;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "parent_id", nullable = true)
+    private ProductCategory parent;
 
-    @OneToMany(mappedBy = "parentProductCategory")
-    private Set<ProductCategory> childCategories;
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    private Set<ProductCategory> children;
 
     @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductChar> productChars;
@@ -42,34 +44,91 @@ public class ProductCategory {
     @OneToMany(mappedBy = "productCategory", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Set<Product> products;
 
-    public void addProductCategory(ProductCategory o) {
-        childCategories.add(o);
-        o.setParentProductCategory(this);
+    public Set<ProductCategory> getChildren() {
+        return (children == null) ? children = new HashSet<>() : children;
     }
 
-    public void removeProductCategory(ProductCategory o) {
-        childCategories.remove(o);
-        o.setParentProductCategory(null);
+    public Set<ProductChar> getProductChars() {
+        return (productChars == null) ? productChars = new HashSet<>() : productChars;
+    }
+
+    public Set<Product> getProducts() {
+        return (products == null) ? products = new HashSet<>() : products;
+    }
+
+    public void addParent(ProductCategory o) {
+        setParent(o);
+        o.getChildren().add(o);
+    }
+
+    public void removeParent() {
+        parent.removeChild(this);
+        parent = null;
+    }
+
+    public void addChild(ProductCategory o) {
+        getChildren().add(o);
+        o.setParent(this);
+    }
+
+    public void addChild(Collection<ProductCategory> productCategories) {
+        getChildren().addAll(productCategories);
+        productCategories.forEach(c -> c.setParent(this));
+    }
+
+    public void removeChild(ProductCategory o) {
+        getChildren().remove(o);
+        o.setParent(null);
+    }
+
+    public void removeChild() {
+        getChildren().forEach(c -> c.setParent(null));
+        getChildren().clear();
     }
 
     public void addProductChar(ProductChar o) {
-        productChars.add(o);
+        getProductChars().add(o);
         o.setProductCategory(this);
+    }
+
+    public void addProductChar(Collection<ProductChar> o) {
+        getProductChars().addAll(o);
+        o.forEach(c -> c.setProductCategory(this));
     }
 
     public void removeProductChar(ProductChar o) {
-        productChars.remove(o);
+        getProductChars().remove(o);
         o.setProductCategory(null);
+    }
+
+    public void removeProductChar() {
+        getProductChars().forEach(c -> c.setProductCategory(null));
+        getProductChars().clear();
     }
 
     public void addProduct(Product o) {
-        products.add(o);
+        getProducts().add(o);
         o.setProductCategory(this);
     }
 
+    public void addProduct(Collection<Product> products) {
+        this.getProducts().addAll(products);
+        products.forEach(p -> p.setProductCategory(this));
+    }
+
     public void removeProduct(Product o) {
-        products.remove(o);
+        getProducts().remove(o);
         o.setProductCategory(null);
+    }
+
+    public void removeProduct(Collection<Product> o) {
+        getProducts().removeAll(o);
+        o.forEach(c -> c.setProductCategory(null));
+    }
+
+    public void removeProduct() {
+        getProducts().forEach(c -> c.setProductCategory(null));
+        getProducts().clear();
     }
 
     @Override
@@ -83,5 +142,20 @@ public class ProductCategory {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return "ProductCategory{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", createdAt=" + createdAt +
+                ", modifiedAt=" + modifiedAt +
+                ", parent=" + ((parent == null) ? null : String.valueOf(parent.getId())) +
+                ", children=" + getChildren().stream().map(ProductCategory::getId).toList() +
+                ", productChars=" + getProductChars().stream().map(ProductChar::getId).toList() +
+                ", products=" + getProducts().stream().map(Product::getId).toList() +
+                '}';
     }
 }

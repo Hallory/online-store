@@ -9,13 +9,13 @@ import org.electronicsstore.backend.model.product.Product;
 import org.electronicsstore.backend.repos.ProductRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class ProductService {
     private final ProductRepo productRepo;
-    private final ProductCategoryService productCategoryService;
 
     public List<ProductDto> findAll() {
         return productRepo.findAll().stream().map(ProductDto::productModelToDto).toList();
@@ -24,6 +24,10 @@ public class ProductService {
     public ProductDto findById(String productId) {
         Product product = productRepo.findById(productId).orElseThrow(() -> new ProductNotFoundException(productId));
         return ProductDto.productModelToDto(product);
+    }
+
+    public List<Product> findAllById(Collection<String> ids) {
+        return productRepo.findAllById(ids);
     }
 
     public ProductDto saveOne(ProductDto productDto) {

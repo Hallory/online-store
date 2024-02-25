@@ -20,6 +20,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 public class Product {
+    {
+        price = 0.;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -30,6 +33,7 @@ public class Product {
     @Column(nullable = false)
     private Integer qtyInStock;
     private Set<String> productImages;
+    @Column(columnDefinition = "float(53) not null check(price >= 0.0)")
     private Double price;
     private String brand; // should be extended to hierarchy
     @Column(nullable = false) // ?should be unique

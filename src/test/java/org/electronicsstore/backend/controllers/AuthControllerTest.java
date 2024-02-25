@@ -2,7 +2,7 @@ package org.electronicsstore.backend.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.entity.ContentType;
-import org.electronicsstore.backend.dtos.CustomerCreateReq;
+import org.electronicsstore.backend.dtos.CustomerCreateRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,8 +27,8 @@ public class AuthControllerTest {
     @Test
     public void shouldCreateCustomer() throws Exception {
         String hash = UUID.randomUUID().toString();
-        CustomerCreateReq req = new CustomerCreateReq(
-                "test-" + hash,
+        CustomerCreateRequest req = new CustomerCreateRequest(
+                "test@email.test",
                 "test-" + hash,
                 "test-" + hash,
                 "test"
