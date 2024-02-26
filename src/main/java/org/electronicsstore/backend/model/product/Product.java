@@ -12,6 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -47,7 +48,7 @@ public class Product {
     private LocalDateTime modifiedAt;
     private LocalDateTime deletedAt;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(name = "product_char_value_conf_m2m",
         joinColumns =
             @JoinColumn(name = "product_id", referencedColumnName = "id"),
@@ -64,40 +65,43 @@ public class Product {
     @JoinColumn(name = "product_category_id")
     private ProductCategory productCategory;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true) // ?uni
-    private Set<OrderItem> orderItems;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CustomerReview> customerReviews;
-
-    public void addCustomerReview(CustomerReview o) {
-        customerReviews.add(o);
-        o.setProduct(this);
+    public Set<ProductCharValue> getProductCharValues() {
+        return (productCharValues == null) ? productCharValues = new HashSet<>() : productCharValues;
     }
 
-    public void removeCustomerReview(CustomerReview o) {
-        customerReviews.remove(o);
-        o.setProduct(null);
+    public void assignPromo(Promo promo) {
+        this.promo = promo;
+        promo.addProduct(this);
     }
 
-    public void addOrderItem(OrderItem o) {
-        orderItems.add(o);
-        o.setProduct(this);
+    public void denyPromo(Promo promo) {
+        this.promo = null;
+        promo.getProducts().remove(this);
     }
 
-    public void removeProduct(OrderItem o) {
-        orderItems.remove(o);
-        o.setProduct(null);
+    public void assignProductCategory(ProductCategory category) {
+        this.productCategory = category;
+        category.addProduct(this);
+    }
+
+    public void denyProductCategory(ProductCategory category) {
+        this.productCategory = null;
+        category.getProducts().remove(this);
     }
 
     public void addProductCharValue(ProductCharValue o) {
-        productCharValues.add(o);
+        getProductCharValues().add(o);
         o.getProducts().add(this);
     }
 
     public void removeProductCharValue(ProductCharValue o) {
-        productCharValues.remove(o);
+        getProductCharValues().remove(o);
         o.getProducts().remove(this);
+    }
+
+    public void removeProductCharValue() {
+        getProductCharValues().forEach(c -> c.getProducts().remove(this));
+        getProductCharValues().clear();
     }
 
     @Override

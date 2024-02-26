@@ -28,13 +28,17 @@ public class CustomerReview {
     private LocalDateTime modifiedAt;
     private LocalDateTime deletedAt;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public void assignCustomer(Customer customer) {
+        setCustomer(customer);
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,7 +1,16 @@
 server:
   port: 8081
 
-logging.level.org.springframework.security: TRACE
+logging:
+  level.org.springframework.security: TRACE
+  file.name: ${logging.file.path}/backend.log
+  file.path: logs/dev
+  logback:
+    rollingpolicy.file-name-pattern: ${logging.file.name}.%d{yyyy-MM-dd}.%i.gz
+    rollingpolicy.clean-history-on-start: false
+    rollingpolicy.max-file-size: 10MB
+    rollingpolicy.total-size-cap: 100MB
+    rollingpolicy.max-history: 7
 
 spring:
   application.name: backend
@@ -35,8 +44,12 @@ spring:
     hibernate.ddl-auto: create-drop
     show-sql: true
 server:
-  port: 0
+  port: 8081
 
+logging:
+  level.org.springframework.security: TRACE
+  file.name: ${logging.file.path}/backend-test.log
+  file.path: logs/test
 ---
 spring:
   config.activate.on-profile: dev

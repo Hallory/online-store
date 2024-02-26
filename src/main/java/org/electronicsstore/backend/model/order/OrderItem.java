@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.electronicsstore.backend.model.product.Product;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Data
@@ -23,13 +22,17 @@ public class OrderItem {
     private Double totalAmount;
     private Integer qty;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "product_id", updatable = false)
     private Product product;
 
     @ManyToOne
     @JoinColumn(name = "shop_order_id")
     private ShopOrder shopOrder;
+
+    public void assignProduct(Product product) {
+        setProduct(product);
+    }
 
     @Override
     public boolean equals(Object o) {
