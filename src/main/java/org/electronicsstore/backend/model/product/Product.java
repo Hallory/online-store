@@ -4,13 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.electronicsstore.backend.model.customer.CustomerReview;
-import org.electronicsstore.backend.model.customer.ShoppingCartItem;
-import org.electronicsstore.backend.model.order.OrderItem;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -48,7 +45,8 @@ public class Product {
     private LocalDateTime modifiedAt;
     private LocalDateTime deletedAt;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ToString.Exclude
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "product_char_value_conf_m2m",
         joinColumns =
             @JoinColumn(name = "product_id", referencedColumnName = "id"),
@@ -57,11 +55,13 @@ public class Product {
     )
     private Set<ProductCharValue> productCharValues;
 
-    @ManyToOne
+    @ToString.Exclude
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "promo_id")
     private Promo promo;
 
-    @ManyToOne
+    @ToString.Exclude
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "product_category_id")
     private ProductCategory productCategory;
 
@@ -69,24 +69,8 @@ public class Product {
         return (productCharValues == null) ? productCharValues = new HashSet<>() : productCharValues;
     }
 
-    public void assignPromo(Promo promo) {
-        this.promo = promo;
-        promo.addProduct(this);
-    }
-
-    public void denyPromo(Promo promo) {
-        this.promo = null;
-        promo.getProducts().remove(this);
-    }
-
-    public void assignProductCategory(ProductCategory category) {
-        this.productCategory = category;
-        category.addProduct(this);
-    }
-
-    public void denyProductCategory(ProductCategory category) {
-        this.productCategory = null;
-        category.getProducts().remove(this);
+    public ProductCategory getProductCategory() {
+        return (productCategory == null) ? productCategory = new ProductCategory() : productCategory;
     }
 
     public void addProductCharValue(ProductCharValue o) {

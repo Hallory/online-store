@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -28,20 +30,26 @@ public class ProductChar {
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
-    @ManyToOne // or m2m if restricted variety of products is chosen
+    @ToString.Exclude
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}) // or m2m if restricted variety of products is chosen
     @JoinColumn(name = "product_category_id", nullable = false)
     private ProductCategory productCategory;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "productChar", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductCharValue> productCharValues;
 
+    public Set<ProductCharValue> getProductCharValues() {
+        return (productCharValues == null) ? productCharValues = new HashSet<>() : productCharValues;
+    }
+
     public void addProductCharValue(ProductCharValue o) {
-        productCharValues.add(o);
+        getProductCharValues().add(o);
         o.setProductChar(this);
     }
 
     public void removeProductCharValue(ProductCharValue o) {
-        productCharValues.remove(o);
+        getProductCharValues().remove(o);
         o.setProductChar(null);
     }
 

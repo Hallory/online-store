@@ -27,19 +27,6 @@ public class ShippingMethod {
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
-    @OneToMany(mappedBy = "shippingMethod") // ?uni
-    private Set<ShopOrder> shopOrders;
-
-    public void addShopOrder(ShopOrder o) {
-        shopOrders.add(o);
-        o.setShippingMethod(this);
-    }
-
-    public void removeShopOrder(ShopOrder o) {
-        shopOrders.remove(o);
-        o.setShippingMethod(null);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

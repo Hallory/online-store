@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.electronicsstore.backend.model.product.Product;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -28,17 +29,15 @@ public class CustomerReview {
     private LocalDateTime modifiedAt;
     private LocalDateTime deletedAt;
 
+    @ToString.Exclude
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @ManyToOne
+    @ToString.Exclude
+    @ManyToOne(cascade = {})
     @JoinColumn(name = "product_id")
     private Product product;
-
-    public void assignCustomer(Customer customer) {
-        setCustomer(customer);
-    }
 
     @Override
     public boolean equals(Object o) {

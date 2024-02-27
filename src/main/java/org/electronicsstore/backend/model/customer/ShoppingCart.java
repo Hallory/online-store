@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.electronicsstore.backend.model.order.ShopOrder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -13,6 +14,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -35,21 +37,27 @@ public class ShoppingCart {
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
+    @ToString.Exclude
     @NotNull
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "customer_id", unique = true) // nullable = false
     private Customer customer;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ShoppingCartItem> shoppingCartItems;
 
+    public Set<ShoppingCartItem> getShoppingCartItems() {
+        return (shoppingCartItems == null) ? shoppingCartItems = new HashSet<>() : shoppingCartItems;
+    }
+
     public void addShoppingCartItem(ShoppingCartItem o) {
-        shoppingCartItems.add(o);
+        getShoppingCartItems().add(o);
         o.setShoppingCart(this);
     }
 
     public void removeShoppingCartItem(ShoppingCartItem o) {
-        shoppingCartItems.remove(o);
+        getShoppingCartItems().remove(o);
         o.setShoppingCart(null);
     }
 

@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -30,17 +32,27 @@ public class Promo {
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
-    @OneToMany(mappedBy = "promo", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ToString.Exclude
+    @OneToMany(mappedBy = "promo", cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     private Set<Product> products;
 
+    public Set<Product> getProducts() {
+        return (products == null) ? products = new HashSet<>() : products;
+    }
+
     public void addProduct(Product product) {
-        products.add(product);
+        getProducts().add(product);
         product.setPromo(this);
     }
 
     public void removeProduct(Product product) {
-        products.remove(product);
+        getProducts().remove(product);
         product.setPromo(null);
+    }
+
+    public void removeProduct() {
+        getProducts().forEach(p -> p.setPromo(null));
+        getProducts().clear();
     }
 
     @Override

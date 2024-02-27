@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.electronicsstore.backend.model.order.ShopOrder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -41,50 +43,59 @@ public class Customer {
     private LocalDateTime deletedAt;
     private Boolean isDeleted;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Address> addresses;
 
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private ShoppingCart shoppingCart;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "customer", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH }, orphanRemoval = false)
     private Set<ShopOrder> shopOrders;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "customer", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
     private Set<CustomerReview> customerReviews;
 
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
-        shoppingCart.setCustomer(this);
+    public Set<Address> getAddresses() {
+        return (addresses == null) ? addresses = new HashSet<>() : addresses;
     }
 
+    public Set<ShopOrder> getShopOrders() {
+        return (shopOrders == null) ? shopOrders = new HashSet<>() : shopOrders;
+    }
+
+    public Set<CustomerReview> getCustomerReviews() { return (customerReviews == null) ? customerReviews = new HashSet<>() : customerReviews; }
+
     public void addAddress(Address o) {
-        addresses.add(o);
+        getAddresses().add(o);
         o.setCustomer(this);
     }
 
     public void removeAddress(Address o) {
-        addresses.remove(o);
+        getAddresses().remove(o);
         o.setCustomer(null);
     }
 
     public void addShopOrder(ShopOrder o) {
-        shopOrders.add(o);
+        getShopOrders().add(o);
         o.setCustomer(this);
     }
 
     public void removeShopOrder(ShopOrder o) {
-        shopOrders.remove(o);
+        getShopOrders().remove(o);
         o.setCustomer(null);
     }
 
     public void addCustomerReview(CustomerReview o) {
-        customerReviews.add(o);
+        getCustomerReviews().add(o);
         o.setCustomer(this);
     }
 
     public void removeShoppingCartItem(CustomerReview o) {
-        customerReviews.remove(o);
+        getCustomerReviews().remove(o);
         o.setCustomer(null);
     }
 

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.electronicsstore.backend.model.product.Product;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -29,12 +30,14 @@ public class ShoppingCartItem {
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
-    @ManyToOne
+    @ToString.Exclude
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "shopping_cart_id")
     private ShoppingCart shoppingCart;
 
+    @ToString.Exclude
     @NotNull
-    @OneToOne // optional = false
+    @OneToOne(cascade = {}) // optional = false
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 

@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.electronicsstore.backend.model.customer.Customer;
 import org.electronicsstore.backend.model.product.ProductCharValue;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -31,37 +33,49 @@ public class ShopOrder {
     private LocalDateTime modifiedAt;
     private LocalDateTime approvedAt;
 
-    @ManyToOne
+    @ToString.Exclude
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @OneToMany(mappedBy = "shopOrder")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "shopOrder", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.PERSIST}, orphanRemoval = false)
     private Set<Payment> payments;
 
-    @ManyToOne
+    @ToString.Exclude
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "shipping_method_id")
     private ShippingMethod shippingMethod;
 
-    @OneToMany(mappedBy = "shopOrder")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "shopOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderItem> orderItems;
 
+    public Set<Payment> getPayments() {
+        return (payments == null) ? payments = new HashSet<>() : payments;
+    }
+
+    public Set<OrderItem> getOrderItems() {
+        return (orderItems == null) ? orderItems = new HashSet<>() : orderItems;
+    }
+
     public void addPayment(Payment o) {
-        payments.add(o);
+        getPayments().add(o);
         o.setShopOrder(this);
     }
 
     public void removePayment(Payment o) {
-        payments.remove(o);
+        getPayments().remove(o);
         o.setShopOrder(null);
     }
 
     public void addOrderItem(OrderItem o) {
-        orderItems.add(o);
+        getOrderItems().add(o);
         o.setShopOrder(this);
     }
 
     public void removeOrderItem(OrderItem o) {
-        orderItems.remove(o);
+        getOrderItems().remove(o);
         o.setShopOrder(null);
     }
 
@@ -70,11 +84,11 @@ public class ShopOrder {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ShopOrder shopOrder = (ShopOrder) o;
-        return Objects.equals(createdAt, shopOrder.createdAt) && Objects.equals(customer, shopOrder.customer) && orderItems.equals(shopOrder.orderItems);
+        return Objects.equals(shippingAddress, shopOrder.shippingAddress) && Objects.equals(createdAt, shopOrder.createdAt) && Objects.equals(customer, shopOrder.customer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(createdAt, customer, orderItems);
+        return Objects.hash(shippingAddress, createdAt, customer);
     }
 }

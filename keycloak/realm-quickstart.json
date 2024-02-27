@@ -1,6 +1,9 @@
 {
   "realm": "quickstart",
   "enabled": true,
+  "registrationEmailAsUsername": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
   "requiredCredentials": [
     "password"
   ],

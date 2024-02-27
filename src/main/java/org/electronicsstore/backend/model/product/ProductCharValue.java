@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -30,22 +31,14 @@ public class ProductCharValue {
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ToString.Exclude
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "product_char_id")
     private ProductChar productChar;
 
-    @ManyToMany(mappedBy = "productCharValues", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "productCharValues", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Set<Product> products;
-
-    public void assignProductChar(ProductChar productChar) {
-        this.productChar = productChar;
-        productChar.getProductCharValues().add(this);
-    }
-
-    public void denyProductChar(ProductChar productChar) {
-        this.productChar = null;
-        productChar.getProductCharValues().remove(this);
-    }
 
     public Set<Product> getProducts() {
         return (products == null) ? products = new HashSet<>() : products;

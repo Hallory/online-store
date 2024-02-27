@@ -1,12 +1,17 @@
 package org.electronicsstore.backend.model.customer;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -18,19 +23,10 @@ public class Country {
     private Long id;
     @Column(unique = true)
     private String countryName;
-
-    @OneToMany(mappedBy = "country")
-    private Set<Address> addresses;
-
-    public void addAddress(Address o) {
-        addresses.add(o);
-        o.setCountry(this);
-    }
-
-    public void removeAddress(Address o) {
-        addresses.remove(o);
-        o.setCountry(null);
-    }
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    @UpdateTimestamp
+    private LocalDateTime modifiedAt;
 
     @Override
     public boolean equals(Object o) {

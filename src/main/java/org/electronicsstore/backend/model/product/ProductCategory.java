@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -31,16 +32,20 @@ public class ProductCategory {
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @ToString.Exclude
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "parent_id", nullable = true)
     private ProductCategory parent;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ProductCategory> children;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductChar> productChars;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "productCategory", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Set<Product> products;
 
@@ -142,20 +147,5 @@ public class ProductCategory {
     @Override
     public int hashCode() {
         return Objects.hash(name);
-    }
-
-    @Override
-    public String toString() {
-        return "ProductCategory{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", createdAt=" + createdAt +
-                ", modifiedAt=" + modifiedAt +
-                ", parent=" + ((parent == null) ? null : String.valueOf(parent.getId())) +
-                ", children=" + getChildren().stream().map(ProductCategory::getId).toList() +
-                ", productChars=" + getProductChars().stream().map(ProductChar::getId).toList() +
-                ", products=" + getProducts().stream().map(Product::getId).toList() +
-                '}';
     }
 }
