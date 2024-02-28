@@ -27,12 +27,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/api/categories/**").permitAll()
-                                .requestMatchers("/api/auth/public/users/**").permitAll()
-                                .requestMatchers("/api/auth/temp/public/**", HttpMethod.GET).permitAll()
-                                .requestMatchers("/api/auth/temp/data/**", HttpMethod.GET).permitAll()
-                                .requestMatchers("/api/products/**").authenticated()
-                                .requestMatchers("/api/auth/**").authenticated()
+                                .requestMatchers("/api/auth/public/**", HttpMethod.POST).permitAll()
+                                .requestMatchers("/api/**", HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE).authenticated()
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(new CustomJwtConverter())))
                 .build();

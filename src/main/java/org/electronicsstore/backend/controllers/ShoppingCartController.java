@@ -11,7 +11,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/carts")
+@RequestMapping("/api/customers/{customerId}/carts")
 @CrossOrigin(
         origins = {"http://frontend:4200", "http://localhost:4200"},
         allowedHeaders = "*",

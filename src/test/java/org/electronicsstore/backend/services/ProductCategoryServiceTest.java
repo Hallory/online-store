@@ -3,7 +3,6 @@ package org.electronicsstore.backend.services;
 import lombok.extern.slf4j.Slf4j;
 import org.electronicsstore.backend.dtos.ProductCategoryCreateRequest;
 import org.electronicsstore.backend.dtos.ProductCategoryUpdateRequest;
-import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
 import org.electronicsstore.backend.repos.ProductCategoryRepo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -11,10 +10,11 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 @Transactional
@@ -50,7 +50,7 @@ public class ProductCategoryServiceTest {
                 "desc1",
                 null
         );
-        productCategoryService.saveOneInit(req);
+        productCategoryService.createOne(req);
         assertEquals(6, productCategoryRepo.findAll().size());
     }
 

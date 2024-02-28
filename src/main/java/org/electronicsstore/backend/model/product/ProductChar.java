@@ -24,6 +24,7 @@ public class ProductChar {
     private Long id;
     @Column(nullable = false)
     private String name; // colour, size
+    private String dataType;
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
