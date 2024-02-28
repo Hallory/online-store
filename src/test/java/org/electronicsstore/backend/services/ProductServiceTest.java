@@ -1,9 +1,10 @@
 package org.electronicsstore.backend.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.electronicsstore.backend.model.product.ProductChar;
+import org.electronicsstore.backend.dtos.ProductCreateRequest;
+import org.electronicsstore.backend.model.product.Product;
 import org.electronicsstore.backend.repos.ProductCategoryRepo;
-import org.electronicsstore.backend.repos.ProductCharRepo;
+import org.electronicsstore.backend.repos.ProductRepo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -13,17 +14,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 @Transactional
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(args = {"--KEYCLOAK_BACKEND_CLIENT_SECRET=yWzrTIs2DWRX28mYhPPWgNrVewBYmU8a"})
-public class ProductCharServiceTest {
+public class ProductServiceTest {
     @Autowired
-    private ProductCharService productCharService;
+    private ProductService productService;
     @Autowired
-    private ProductCharRepo productCharRepo;
+    private ProductRepo productRepo;
     @Autowired
     private ProductCategoryService categoryService;
     @Autowired
@@ -33,24 +35,25 @@ public class ProductCharServiceTest {
     void initBeforeAll() {
         var category1 = categoryService.createRandomCategory();
         categoryRepo.save(category1);
-        var productChar1 = productCharService.createRandomProductChar(category1);
-        productCharRepo.save(productChar1);
-    }
-    @Test
-    public void findAllTest() {
-        assertFalse(productCharRepo.findAll().isEmpty());
     }
 
     @Test
-    public void createProductCharTest() {
+    public void createOneTest() {
         var category = categoryRepo.findById(1L).get();
-        String randomText = UUID.randomUUID().toString();
-        var productChar = new ProductChar();
-        productChar.setName(randomText);
-        productChar.setDataType(randomText);
-        productChar.setProductCategory(category);
-        productCharRepo.save(productChar);
-        var createdProductChar = productCharRepo.findById(2L);
-        assertEquals(1L, createdProductChar.get().getProductCategory().getId());
+        String testText = UUID.randomUUID().toString();
+        var product = new ProductCreateRequest(
+                testText,
+                testText,
+                testText,
+                5,
+                null,
+                1.,
+                testText,
+                null,
+                category.getId(),
+                testText
+        );
+        productService.createOne(product);
+        assertTrue(productRepo.findAll().stream().anyMatch(p -> p.getName().equals(testText)));
     }
 }

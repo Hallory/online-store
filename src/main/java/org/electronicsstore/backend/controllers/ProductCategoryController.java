@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.electronicsstore.backend.dtos.ProductCategoryCreateRequest;
 import org.electronicsstore.backend.dtos.ProductCategoryDto;
+import org.electronicsstore.backend.dtos.ProductCategoryPatchRequest;
 import org.electronicsstore.backend.dtos.ProductCategoryUpdateRequest;
 import org.electronicsstore.backend.services.ProductCategoryService;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,6 @@ public class ProductCategoryController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<ProductCategoryDto>> categories() {
-        log.info("abc");
         return ResponseEntity.ok(productCategoryService.findAllDto());
     }
 
@@ -62,7 +62,7 @@ public class ProductCategoryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void patchCategory(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
-            @RequestBody ProductCategoryUpdateRequest dto) {
+            @RequestBody ProductCategoryPatchRequest dto) {
         productCategoryService.patchOneDto(categoryId, dto);
     }
 

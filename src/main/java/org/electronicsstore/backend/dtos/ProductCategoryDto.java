@@ -4,6 +4,8 @@ import org.electronicsstore.backend.model.product.Product;
 import org.electronicsstore.backend.model.product.ProductCategory;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public record ProductCategoryDto(
         Long id,
@@ -11,7 +13,7 @@ public record ProductCategoryDto(
 
         String description,
         Long parentProductCategoryId,
-        List<String> childProductCategories
+        Set<String> childProductCategoryIds
 ) {
     public static ProductCategoryDto modelToDto(ProductCategory productCategory) {
         var parentProductCategoryId =
@@ -23,6 +25,6 @@ public record ProductCategoryDto(
                 productCategory.getName(),
                 productCategory.getDescription(),
                 parentProductCategoryId,
-                productCategory.getProducts().stream().map(Product::getId).toList());
+                productCategory.getProducts().stream().map(Product::getId).collect(Collectors.toSet()));
     }
 }

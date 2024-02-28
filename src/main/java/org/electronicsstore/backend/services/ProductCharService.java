@@ -14,11 +14,13 @@ import org.electronicsstore.backend.model.product.ProductChar;
 import org.electronicsstore.backend.repos.ProductCategoryRepo;
 import org.electronicsstore.backend.repos.ProductCharRepo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+@Transactional
 @Slf4j
 @AllArgsConstructor
 @Service
@@ -96,7 +98,7 @@ public class ProductCharService {
         productCharRepo.delete(product);
     }
 
-    ProductChar createRandomCategory(ProductCategory category) {
+    ProductChar createRandomProductChar(ProductCategory category) {
         String randomText = UUID.randomUUID().toString();
         var productChar = new ProductChar();
         productChar.setName(randomText);

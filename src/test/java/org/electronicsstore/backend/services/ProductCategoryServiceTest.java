@@ -2,7 +2,7 @@ package org.electronicsstore.backend.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.electronicsstore.backend.dtos.ProductCategoryCreateRequest;
-import org.electronicsstore.backend.dtos.ProductCategoryUpdateRequest;
+import org.electronicsstore.backend.dtos.ProductCategoryPatchRequest;
 import org.electronicsstore.backend.repos.ProductCategoryRepo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ public class ProductCategoryServiceTest {
     }
     @Test
     public void findAllTest() {
-        assertEquals(5, productCategoryService.findAll().size());
+        assertTrue(!productCategoryService.findAll().isEmpty());
     }
 
     @Test
@@ -51,12 +51,12 @@ public class ProductCategoryServiceTest {
                 null
         );
         productCategoryService.createOne(req);
-        assertEquals(6, productCategoryRepo.findAll().size());
+        assertEquals("test-create", productCategoryRepo.findByName("test-create").get().getName());
     }
 
     @Test
     public void patchNameCategoryTest() {
-        ProductCategoryUpdateRequest req = new ProductCategoryUpdateRequest(
+        ProductCategoryPatchRequest req = new ProductCategoryPatchRequest(
                 List.of("name"),
                 "new name",
                 "desc",

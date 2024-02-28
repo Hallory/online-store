@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.electronicsstore.backend.dtos.ProductCategoryCreateRequest;
 import org.electronicsstore.backend.dtos.ProductCategoryDto;
+import org.electronicsstore.backend.dtos.ProductCategoryPatchRequest;
 import org.electronicsstore.backend.dtos.ProductCategoryUpdateRequest;
 import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
 import org.electronicsstore.backend.model.product.ProductCategory;
@@ -100,7 +101,7 @@ public class ProductCategoryService {
         return ProductCategoryDto.modelToDto(updateOne(categoryId, dto));
     }
 
-    public ProductCategory patchOne(Long categoryId, ProductCategoryUpdateRequest dto) {
+    public ProductCategory patchOne(Long categoryId, ProductCategoryPatchRequest dto) {
         ProductCategory productCategory = findById(categoryId);
         for (String field : dto.fields()) {
             switch (field) {
@@ -132,7 +133,7 @@ public class ProductCategoryService {
         return productCategoryRepo.save(productCategory);
     }
 
-    public ProductCategoryDto patchOneDto(Long categoryId, ProductCategoryUpdateRequest dto) {
+    public ProductCategoryDto patchOneDto(Long categoryId, ProductCategoryPatchRequest dto) {
         return ProductCategoryDto.modelToDto(patchOne(categoryId, dto));
     }
 

@@ -10,6 +10,7 @@ import org.electronicsstore.backend.dtos.ProductUpdateRequest;
 import org.electronicsstore.backend.exceptions.CustomEntityExistsException;
 import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
 import org.electronicsstore.backend.model.product.Product;
+import org.electronicsstore.backend.model.product.ProductCategory;
 import org.electronicsstore.backend.repos.ProductCategoryRepo;
 import org.electronicsstore.backend.repos.ProductCharValueRepo;
 import org.electronicsstore.backend.repos.ProductRepo;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -70,20 +72,6 @@ public class ProductService {
 
     public Product updateOne(String productId, ProductUpdateRequest dto) {
         throw new NotImplementedException();
-//        var product = productRepo.findById(productId).orElse(new Product());
-//        product.setArticle(dto.article());
-//        product.setSKU(dto.SKU());
-//        product.setBarcode(dto.barcode());
-//        product.setQtyInStock(dto.qtyInStock());
-//        product.setPrice(dto.price());
-//        product.setDescription(dto.description());
-//        product.setName(dto.name());
-//        product.setPromo(promoService.findById(dto.promoId()));
-//        product.setProductImages(dto.productImages());
-//        product.setProductIcon(dto.productIcon());
-//        product.addProductCharValue(productCharValueService.findAllById(dto.productCharValues())); // todo create
-//        product.setProductCategory(categoryService.findById(dto.categoryId()));
-//        return productRepo.save(product);
     }
 
     public ProductDto updateOneDto(String productId, ProductUpdateRequest dto) {
@@ -117,5 +105,16 @@ public class ProductService {
     public void deleteOne(String productId) {
         var product = findById(productId);
         productRepo.delete(product);
+    }
+
+    Product createRandomProduct() {
+        String randomText = UUID.randomUUID().toString();
+        var product = new Product();
+        product.setArticle(randomText);
+        product.setName(randomText);
+        product.setSKU(randomText);
+        product.setQtyInStock(1);
+        product.setPrice(1.);
+        return product;
     }
 }
