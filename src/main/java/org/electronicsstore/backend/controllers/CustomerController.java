@@ -15,7 +15,7 @@ import java.util.List;
 @CrossOrigin(
         origins = {"http://frontend:4200", "http://localhost:4200"},
         allowedHeaders = "*",
-        methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE }
+        methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH }
 )
 public class CustomerController {
     private final CustomerService customerService;

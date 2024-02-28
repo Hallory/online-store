@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -20,6 +21,7 @@ import java.util.Set;
 public class Product {
     {
         price = 0.;
+        qtyInStock = 0;
     }
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -28,7 +30,8 @@ public class Product {
     private String article; // ?should it be unique
     @Column(nullable = false, unique = true)
     private String SKU; // probably unique
-    @Column(nullable = false)
+    private String barcode;
+    @Column(columnDefinition = "integer not null check(price >= 0)")
     private Integer qtyInStock;
     private Set<String> productImages;
     @Column(columnDefinition = "float(53) not null check(price >= 0.0)")
@@ -76,6 +79,11 @@ public class Product {
     public void addProductCharValue(ProductCharValue o) {
         getProductCharValues().add(o);
         o.getProducts().add(this);
+    }
+
+    public void addProductCharValue(Collection<ProductCharValue> o) {
+        getProductCharValues().addAll(o);
+        o.forEach(p -> p.getProducts().add(this));
     }
 
     public void removeProductCharValue(ProductCharValue o) {

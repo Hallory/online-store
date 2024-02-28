@@ -5,4 +5,5 @@ import org.springframework.data.repository.ListCrudRepository;
 
 public interface ProductRepo extends ListCrudRepository<Product, String> {
     boolean existsByName(String name);
+    boolean existsByArticle(String name);
 }

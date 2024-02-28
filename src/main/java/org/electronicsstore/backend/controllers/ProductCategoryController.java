@@ -2,6 +2,7 @@ package org.electronicsstore.backend.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.electronicsstore.backend.dtos.ProductCategoryCreateRequest;
 import org.electronicsstore.backend.dtos.ProductCategoryDto;
 import org.electronicsstore.backend.dtos.ProductCategoryUpdateRequest;
@@ -13,36 +14,39 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/categories")
 @CrossOrigin(
         origins = {"http://frontend:4200", "http://localhost:4200"},
         allowedHeaders = "*",
-        methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE }
+        methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH }
 )
 public class ProductCategoryController {
     private final ProductCategoryService productCategoryService;
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<ProductCategoryDto>> categories() {
-        return ResponseEntity.ok(productCategoryService.findAll().stream().map(ProductCategoryDto::modelToDto).toList());
+        log.info("abc");
+        return ResponseEntity.ok(productCategoryService.findAllDto());
     }
 
     @GetMapping({"{categoryId}"})
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ProductCategoryDto> categoryById(@PathVariable(name = "categoryId", required = true) Long categoryId) {
-        return ResponseEntity.ok(ProductCategoryDto.modelToDto(productCategoryService.findById(categoryId)));
+        return ResponseEntity.ok(productCategoryService.findByIdDto(categoryId));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> createCategory(@RequestBody ProductCategoryCreateRequest dto, HttpServletRequest req) {
-        var category = productCategoryService.saveOneInit(dto);
+        var category = productCategoryService.createOneDto(dto);
         return ResponseEntity.created(
                 URI.create(req.getRequestURI())
                         .resolve("/api/categories")
-                        .resolve(category.getId().toString()))
+                        .resolve(category.id().toString()))
                 .build();
     }
 
@@ -51,7 +55,7 @@ public class ProductCategoryController {
     public void updateCategory(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
             @RequestBody ProductCategoryUpdateRequest dto) {
-        productCategoryService.updateOne(categoryId, dto);
+        productCategoryService.updateOneDto(categoryId, dto);
     }
 
     @PatchMapping({"{categoryId}"})
@@ -59,7 +63,7 @@ public class ProductCategoryController {
     public void patchCategory(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
             @RequestBody ProductCategoryUpdateRequest dto) {
-        productCategoryService.patchOne(categoryId, dto);
+        productCategoryService.patchOneDto(categoryId, dto);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
