@@ -25,41 +25,67 @@ public class ProductCharValueController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ProductCharValueDto> charValues() {
+    public List<ProductCharValueDto> charValues(
+            @PathVariable(name = "categoryId", required = true) Long categoryId,
+            @PathVariable(name = "productId", required = true) String productId,
+            @PathVariable(name = "charId", required = true) Long charId
+    ) {
         return productCharValueService.findAllDto();
     }
 
     @GetMapping(value = {"{charValueId}"}, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ProductCharValueDto charValueById(@PathVariable(name = "charValueId", required = true) Long charValueId) {
+    public ProductCharValueDto charValueById(
+            @PathVariable(name = "categoryId", required = true) Long categoryId,
+            @PathVariable(name = "productId", required = true) String productId,
+            @PathVariable(name = "charId", required = true) Long charId,
+            @PathVariable(name = "charValueId", required = true) Long charValueId
+    ) {
         return productCharValueService.findByIdDto(charValueId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductCharValueDto createCharValue(@RequestBody ProductCharValueCreateRequest dto) {
+    public ProductCharValueDto createCharValue(
+            @PathVariable(name = "categoryId", required = true) Long categoryId,
+            @PathVariable(name = "productId", required = true) String productId,
+            @PathVariable(name = "charId", required = true) Long charId,
+            @RequestBody ProductCharValueCreateRequest dto
+    ) {
         return productCharValueService.createOneDto(dto);
     }
 
     @PutMapping({"{charValueId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateCharValueById(
-            @PathVariable(name = "charValueId", required = true) Long charId,
+            @PathVariable(name = "categoryId", required = true) Long categoryId,
+            @PathVariable(name = "productId", required = true) String productId,
+            @PathVariable(name = "charId", required = true) Long charId,
+            @PathVariable(name = "charValueId", required = true) Long charValueId,
             @RequestBody ProductCharValueUpdateRequest dto) {
-        productCharValueService.updateOneDto(charId, dto);
+        productCharValueService.updateOneDto(charValueId, dto);
     }
 
     @PatchMapping({"{charValueId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void patchCharValueById(
+            @PathVariable(name = "categoryId", required = true) Long categoryId,
+            @PathVariable(name = "productId", required = true) String productId,
+            @PathVariable(name = "charId", required = true) Long charId,
             @PathVariable(name = "charValueId", required = true) Long charValueId,
-            @RequestBody ProductCharValuePatchRequest dto) {
+            @RequestBody ProductCharValuePatchRequest dto
+    ) {
         productCharValueService.patchOneDto(charValueId, dto);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping({"{charValueId}"})
-    public void deleteCharValueById(@PathVariable(name = "charValueId", required = true) Long charValueId) {
+    public void deleteCharValueById(
+            @PathVariable(name = "categoryId", required = true) Long categoryId,
+            @PathVariable(name = "productId", required = true) String productId,
+            @PathVariable(name = "charId", required = true) Long charId,
+            @PathVariable(name = "charValueId", required = true) Long charValueId
+    ) {
         productCharValueService.deleteOne(charValueId);
     }
 }

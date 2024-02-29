@@ -25,7 +25,7 @@ public class ProductController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ProductDto> products() {
+    public List<ProductDto> products(@PathVariable(name = "categoryId", required = true) Long categoryId) {
         return productService.findAllDto();
     }
 
@@ -37,13 +37,17 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductDto createProduct(@RequestBody ProductCreateRequest dto) {
+    public ProductDto createProduct(
+            @PathVariable(name = "categoryId", required = true) Long categoryId,
+            @RequestBody ProductCreateRequest dto
+    ) {
         return productService.createOneDto(dto);
     }
 
     @PutMapping({"{productId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateById(
+            @PathVariable(name = "categoryId", required = true) Long categoryId,
             @PathVariable(name = "productId", required = true) String productId,
             @RequestBody ProductUpdateRequest productDto) {
         productService.updateOneDto(productId, productDto);
@@ -52,6 +56,7 @@ public class ProductController {
     @PatchMapping({"{productId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void patchById(
+            @PathVariable(name = "categoryId", required = true) Long categoryId,
             @PathVariable(name = "productId", required = true) String productId,
             @RequestBody ProductPatchRequest productDto) {
         productService.patchOneDto(productId, productDto);
@@ -59,7 +64,10 @@ public class ProductController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping({"{productId}"})
-    public void deleteById(@PathVariable(name = "productId", required = true) String productId) {
+    public void deleteById(
+            @PathVariable(name = "categoryId", required = true) Long categoryId,
+            @PathVariable(name = "productId", required = true) String productId
+    ) {
         productService.deleteOne(productId);
     }
 }

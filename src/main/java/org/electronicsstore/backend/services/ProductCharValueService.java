@@ -57,7 +57,7 @@ public class ProductCharValueService {
         var productCharValue = ProductCharValueCreateRequest.dtoToModel(
                 dto,
                 (productCharId) -> productCharRepo.findById(productCharId).orElseThrow(() -> new CustomEntityNotFoundException("Characteristic not found, id = " + productCharId)),
-                (productIds) -> new HashSet<>(productRepo.findAllById(productIds)));
+                (productIds) -> new HashSet<>(productRepo.findAllById(productIds))); // not required; added via product
         return productCharValueRepo.save(productCharValue);
     }
 
@@ -65,12 +65,12 @@ public class ProductCharValueService {
         return ProductCharValueDto.modelToDto(createOne(dto));
     }
 
-    public ProductCharValue updateOne(Long charId, ProductCharValueUpdateRequest dto) {
+    public ProductCharValue updateOne(Long charValueId, ProductCharValueUpdateRequest dto) {
         throw new NotImplementedException();
     }
 
-    public ProductCharValueDto updateOneDto(Long charId, ProductCharValueUpdateRequest dto) {
-        return ProductCharValueDto.modelToDto(updateOne(charId, dto));
+    public ProductCharValueDto updateOneDto(Long charValueId, ProductCharValueUpdateRequest dto) {
+        return ProductCharValueDto.modelToDto(updateOne(charValueId, dto));
     }
 
     public ProductCharValue patchOne(Long charValueId, ProductCharValuePatchRequest dto) {

@@ -11,16 +11,16 @@ import org.electronicsstore.backend.exceptions.CustomEntityExistsException;
 import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
 import org.electronicsstore.backend.model.product.Product;
 import org.electronicsstore.backend.model.product.ProductCategory;
-import org.electronicsstore.backend.repos.ProductCategoryRepo;
-import org.electronicsstore.backend.repos.ProductCharValueRepo;
-import org.electronicsstore.backend.repos.ProductRepo;
-import org.electronicsstore.backend.repos.PromoRepo;
+import org.electronicsstore.backend.model.product.ProductCharValue;
+import org.electronicsstore.backend.repos.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -31,6 +31,7 @@ public class ProductService {
     private final ProductCategoryRepo categoryRepo;
     private final PromoRepo promoRepo;
     private final ProductCharValueRepo productCharValueRepo;
+    private final ProductCharRepo productCharRepo;
 
     public List<Product> findAll() {
         return productRepo.findAll();
@@ -91,7 +92,22 @@ public class ProductService {
                 case "name": product.setName(dto.name()); break;
                 case "promoId": {
                     product.setPromo(promoRepo.findById(dto.promoId()).orElseThrow(() -> new CustomEntityNotFoundException("Promo not found, id = " + dto.promoId())));
-                } break;
+                    break;
+                }
+                case "productCharValues": {
+                    var charDataMap = dto.productCharValues().stream().collect(
+                                    Collectors.groupingBy(ProductPatchRequest.CharacterMap::charId));
+                    var newProductCharValues = productCharRepo.findAllById(charDataMap.keySet()).stream()
+                            .map(pc -> {
+                                var pcv = new ProductCharValue();
+                                pcv.setData(charDataMap.get(pc.getId()).getFirst().data());
+                                pcv.setProductChar(pc);
+                                return pcv;
+                            })
+                            .collect(Collectors.toSet());
+                    product.addProductCharValue(newProductCharValues);
+                    break;
+                }
                 default: log.warn("Such field is not expected {}", field);
             }
         }

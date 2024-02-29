@@ -5,7 +5,6 @@ import org.electronicsstore.backend.model.customer.Customer;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.function.Function;
 
 public record CustomerDto (
         String id,
@@ -22,7 +21,7 @@ public record CustomerDto (
         String shoppingCartId,
         List<String> addressIds
 ) {
-    public static CustomerDto customerModelToDto(Customer customer) {
+    public static CustomerDto modelToDto(Customer customer) {
         return new CustomerDto(
                 customer.getId(),
                 customer.getAccountId(),

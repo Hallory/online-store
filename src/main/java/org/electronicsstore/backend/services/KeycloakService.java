@@ -2,6 +2,7 @@ package org.electronicsstore.backend.services;
 
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.electronicsstore.backend.dtos.CustomerCreateRequest;
 import org.electronicsstore.backend.dtos.UserRolesResponse;
 import org.electronicsstore.backend.exceptions.AuthUserNotCreatedException;
@@ -17,15 +18,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Slf4j
 @RequiredArgsConstructor
+@Service
 public class KeycloakService {
     private static final String CUSTOMER_REGISTER_ROLE_DEFAULT = Customer.CustomerRoles.USER.name();
     @Value("${keycloak.backend-client.realm}")
     private String keycloakRealm;
     private final Keycloak keycloak;
     private final CustomerService customerService;
-    private final ShoppingCartService shoppingCartService;
 
     public Response createUserAndAssignRole(CustomerCreateRequest dto) {
         CredentialRepresentation credentials = prepareCredentialRepresentation(dto.password());
@@ -37,7 +38,7 @@ public class KeycloakService {
                 RoleRepresentation existedRole = findRoleByName(CUSTOMER_REGISTER_ROLE_DEFAULT); // static response
                 assignRole(createdUser.getId(), existedRole);
 
-                customerService.saveOneInit(dto, createdUser.getId());
+                customerService.createOne(dto, createdUser.getId());
 
                 return resp;
             }

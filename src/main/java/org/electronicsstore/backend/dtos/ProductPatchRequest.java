@@ -11,6 +11,12 @@ public record ProductPatchRequest(
         Double price,
         String description,
         String name,
-        Long promoId
-        // todo productImages, productIcon, productCharValues, category
-) { }
+        Long promoId,
+        Set<CharacterMap> productCharValues
+//        todo productImages, productIcon, category
+) {
+    public record CharacterMap(
+            Long charId,
+            String data
+    ) {}
+}
