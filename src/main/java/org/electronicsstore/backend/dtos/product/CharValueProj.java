@@ -6,4 +6,5 @@ public interface CharValueProj {
     Long getId();
     String getData();
     LocalDateTime getCreatedA();
+    // todo
 }

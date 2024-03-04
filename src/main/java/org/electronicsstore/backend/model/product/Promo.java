@@ -1,5 +1,6 @@
 package org.electronicsstore.backend.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +33,7 @@ public class Promo {
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
+    @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "promo", cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     private Set<Product> products;

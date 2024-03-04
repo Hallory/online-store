@@ -30,7 +30,6 @@ public class SecurityConfig {
                         auth
                                 .requestMatchers("/api/auth/public/**", HttpMethod.POST).permitAll()
                                 .requestMatchers("/api/**", HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE).authenticated()
-                                .requestMatchers("/api/**", HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE).permitAll()
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(new CustomJwtConverter())))
                 .build();

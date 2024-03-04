@@ -1,7 +1,6 @@
 package org.electronicsstore.backend.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.electronicsstore.backend.dtos.ProductCreateRequest;
 import org.electronicsstore.backend.model.product.Product;
 import org.electronicsstore.backend.repos.ProductCategoryRepo;
 import org.electronicsstore.backend.repos.ProductRepo;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
@@ -41,18 +39,13 @@ public class ProductServiceTest {
     public void createOneTest() {
         var category = categoryRepo.findById(1L).get();
         String testText = UUID.randomUUID().toString();
-        var product = new ProductCreateRequest(
-                testText,
-                testText,
-                testText,
-                5,
-                null,
-                1.,
-                testText,
-                null,
-                category.getId(),
-                testText
-        );
+        var product = new Product();
+                product.setName(testText);
+                product.setArticle(testText);
+                product.setSKU(testText);
+                product.setQtyInStock(5);
+                product.setPrice(1.);
+                product.setProductCategory(category);
         productService.createOne(product);
         assertTrue(productRepo.findAll().stream().anyMatch(p -> p.getName().equals(testText)));
     }

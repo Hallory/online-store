@@ -8,8 +8,6 @@ import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
 import org.electronicsstore.backend.model.product.ProductCategory;
 import org.electronicsstore.backend.repos.BaseService;
 import org.electronicsstore.backend.repos.ProductCategoryRepo;
-import org.electronicsstore.backend.repos.ProductCharRepo;
-import org.electronicsstore.backend.repos.ProductRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +20,6 @@ import java.util.UUID;
 @Service
 public class ProductCategoryService implements BaseService<ProductCategory, Long> {
     private final ProductCategoryRepo productCategoryRepo;
-    private final ProductRepo productRepo;
-    private final ProductCharRepo productCharRepo;
 
     @Override
     public List<ProductCategory> findAll() {
@@ -58,17 +54,20 @@ public class ProductCategoryService implements BaseService<ProductCategory, Long
     @Valid
     @Override
     public ProductCategory createOne(ProductCategory entity) {
+        if (productCategoryRepo.existsByName(entity.getName())) {
+            throw new CustomEntityNotFoundException("Product category is already present, name = " + entity.getName());
+        }
         return productCategoryRepo.save(entity);
     }
 
-    @Valid
-    public ProductCategory createOne(ProductCategoryCreateRequest req) {
-        if (productCategoryRepo.existsByName(req.name())) {
-            throw new CustomEntityNotFoundException("Product category is already present, name = " + req.name());
-        }
-        var productCategory = assignParentProductCategory(req);
-        return createOne(productCategory);
-    }
+//    @Valid
+//    public ProductCategory createOne(ProductCategoryCreateRequest req) { // todo children manipulating
+//        if (productCategoryRepo.existsByName(req.name())) {
+//            throw new CustomEntityNotFoundException("Product category is already present, name = " + req.name());
+//        }
+//        var productCategory = assignParentProductCategory(req);
+//        return createOne(productCategory);
+//    }
 
     @Valid
     @Override
@@ -92,7 +91,7 @@ public class ProductCategoryService implements BaseService<ProductCategory, Long
         var productCategory = ProductCategoryCreateRequest.dtoToModel(req);
         if (req.parentProductCategoryId() != null) {
             var parentProductCategory = findById(req.parentProductCategoryId());
-            if (isCategoryHasProducts(parentProductCategory)) {
+            if (isCategoryParent(parentProductCategory)) {
                 productCategory.addProduct(parentProductCategory.getProducts());
                 parentProductCategory.getProducts().clear();
             }
@@ -103,7 +102,7 @@ public class ProductCategoryService implements BaseService<ProductCategory, Long
         return productCategory;
     }
 
-    private boolean isCategoryHasProducts(ProductCategory category) {
+    private boolean isCategoryParent(ProductCategory category) {
         return category.getChildren().isEmpty();
     }
 

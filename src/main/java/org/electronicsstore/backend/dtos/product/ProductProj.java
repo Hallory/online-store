@@ -17,6 +17,34 @@ public interface ProductProj {
         String getProductIcon();
         LocalDateTime getCreatedAt();
         LocalDateTime getDeletedAt();
-        Set<CharValueProj> getProductCharValue();
+        Set<CharValueProjEmb> getProductCharValues();
+        CategoryProjEmb getProductCategory();
+        PromoProjEmb getPromo();
 
+        interface CharValueProjEmb {
+                Long getId();
+                String getData();
+                ProductCharEmb getProductChar();
+        }
+
+        interface CategoryProjEmb {
+                Long getId();
+                String getName();
+                String getDescription();
+        }
+
+        interface PromoProjEmb {
+                Long getId();
+                String getName();
+                String getDescription();
+                Double getDiscountRate();
+                LocalDateTime getStartDate();
+                LocalDateTime getEndDate();
+        }
+
+        interface ProductCharEmb {
+                Long getId();
+                String getName();
+                String getDataType();
+        }
 }

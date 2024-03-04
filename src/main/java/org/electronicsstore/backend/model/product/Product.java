@@ -1,5 +1,6 @@
 package org.electronicsstore.backend.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -48,13 +49,14 @@ public class Product {
     private LocalDateTime modifiedAt;
     private LocalDateTime deletedAt;
 
+    @JsonIgnore
     @ToString.Exclude
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "product_char_value_conf_m2m",
         joinColumns =
             @JoinColumn(name = "product_id", referencedColumnName = "id"),
         inverseJoinColumns =
-            @JoinColumn(name = "product_char_value_id", referencedColumnName = "id")
+            @JoinColumn(name = "product_char_value_id", referencedColumnName = "id", unique = true)
     )
     private Set<ProductCharValue> productCharValues;
 
@@ -70,10 +72,6 @@ public class Product {
 
     public Set<ProductCharValue> getProductCharValues() {
         return (productCharValues == null) ? productCharValues = new HashSet<>() : productCharValues;
-    }
-
-    public ProductCategory getProductCategory() {
-        return (productCategory == null) ? productCategory = new ProductCategory() : productCategory;
     }
 
     public void addProductCharValue(ProductCharValue o) {

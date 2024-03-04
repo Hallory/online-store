@@ -1,5 +1,6 @@
 package org.electronicsstore.backend.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,6 +37,7 @@ public class ProductCharValue {
     @JoinColumn(name = "product_char_id")
     private ProductChar productChar;
 
+    @JsonIgnore
     @ToString.Exclude
     @ManyToMany(mappedBy = "productCharValues", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Set<Product> products;

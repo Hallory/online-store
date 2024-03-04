@@ -7,4 +7,11 @@ public interface CharProj {
     String getName();
     String getDataType();
     LocalDateTime getCreatedAt();
+    CategoryProjEmb getProductCategory();
+
+    interface CategoryProjEmb {
+        Long getId();
+        String getName();
+        String getDescription();
+    }
 }
