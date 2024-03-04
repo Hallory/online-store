@@ -15,6 +15,7 @@ const Button = ({ onClick, icon: Icon, label, variant = 'primary' }) => {
             case 'icon-remove':
                 return 'text-danger-700 hover:text-primary-700 hover:shadow-sm ring-1 ring-opacity-10 ring-gray-300 hover:shadow-md ring-1 ring-opacity-9 ring-gray-300 hover:shadow-lg ring-2 ring-opacity-5 ring-indigo-500 active:shadow-sm ring-1 ring-opacity-10 ring-gray-300 active:shadow-md ring-1 ring-opacity-9 ring-gray-300 active:shadow-lg ring-2 ring-opacity-5 ring-indigo-500'; 
             case 'icon-fill':
+                
                 return 'px-4 py-2 bg-primary-500 text-black-100 hover:bg-primary-700 active:bg-primary-800';
             
             default:
