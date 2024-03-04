@@ -54,10 +54,13 @@ public class ProductCharValueService {
     }
 
     public ProductCharValue createOne(ProductCharValueCreateRequest dto) {
-        var productCharValue = ProductCharValueCreateRequest.dtoToModel(
-                dto,
-                (productCharId) -> productCharRepo.findById(productCharId).orElseThrow(() -> new CustomEntityNotFoundException("Characteristic not found, id = " + productCharId)),
-                (productIds) -> new HashSet<>(productRepo.findAllById(productIds))); // not required; added via product
+        var productChar = productCharRepo.findById(dto.productCharId()).orElseThrow(() -> new CustomEntityNotFoundException("Characteristic not found, id = " + dto.productCharId()));
+        var products = productRepo.findAllById(dto.productIds());
+//        if (productChar.getProductCategory().getId().equals(dto.))
+        var productCharValue = new ProductCharValue();
+        productCharValue.setData(dto.data());
+        productCharValue.setProductChar(productChar);
+        productCharValue.setProducts(new HashSet<>(products));
         return productCharValueRepo.save(productCharValue);
     }
 

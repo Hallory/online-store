@@ -1,8 +1,11 @@
 package org.electronicsstore.backend.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.electronicsstore.backend.dtos.ProductCategoryCreateRequest;
-import org.electronicsstore.backend.dtos.ProductCategoryPatchRequest;
+import org.electronicsstore.backend.dtos.category.CategoryTraversedDownProj;
+import org.electronicsstore.backend.dtos.category.CategoryTraversedUpProj;
+import org.electronicsstore.backend.model.product.ProductCategory;
 import org.electronicsstore.backend.repos.ProductCategoryRepo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -13,8 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @Transactional
@@ -25,6 +27,8 @@ public class ProductCategoryServiceTest {
     private ProductCategoryService productCategoryService;
     @Autowired
     private ProductCategoryRepo productCategoryRepo;
+    @Autowired
+    private ObjectMapper om;
 
     @BeforeAll
     void initBeforeAll() {
@@ -45,28 +49,20 @@ public class ProductCategoryServiceTest {
 
     @Test
     public void createCategoryTest() {
-        ProductCategoryCreateRequest req = new ProductCategoryCreateRequest(
-                "test-create",
-                "desc1",
-                null
-        );
-        productCategoryService.createOne(req);
+        ProductCategory dto = new ProductCategory();
+        dto.setName("test-create");
+        dto.setDescription("desc");
+        productCategoryService.createOne(dto);
         assertEquals("test-create", productCategoryRepo.findByName("test-create").get().getName());
     }
 
     @Test
     public void patchNameCategoryTest() {
-        ProductCategoryPatchRequest req = new ProductCategoryPatchRequest(
-                List.of("name"),
-                "new name",
-                "desc",
-                null,
-                null,
-                null,
-                null
-        );
-
-        productCategoryService.patchOne(1L, req);
+        ProductCategory dto = new ProductCategory();
+        dto.setId(1L);
+        dto.setName("new name");
+        dto.setDescription("desc");
+        productCategoryService.patchOne(1L, dto);
         assertEquals("new name", productCategoryRepo.findById(1L).get().getName());
     }
 
@@ -77,5 +73,19 @@ public class ProductCategoryServiceTest {
         assertTrue(productCategoryRepo.findById(2L).isEmpty());
         categories = productCategoryRepo.findAll();
         log.info("deleteCategoryTest -> {}", categories);
+    }
+
+    @Test
+    public void traverseDownCategoryTest() throws JsonProcessingException {
+        var tree = productCategoryService.findProjById(1L, CategoryTraversedDownProj.class);
+        assertNotNull(tree);
+        log.info("{}", om.writerWithDefaultPrettyPrinter().writeValueAsString(tree));
+    }
+
+    @Test
+    public void traverseUpCategoryTest() throws JsonProcessingException {
+        var tree = productCategoryService.findProjById(1L, CategoryTraversedUpProj.class);
+        assertNotNull(tree);
+        log.info("{}", om.writerWithDefaultPrettyPrinter().writeValueAsString(tree));
     }
 }

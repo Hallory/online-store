@@ -32,7 +32,7 @@ public class ProductCharValue {
     private LocalDateTime modifiedAt;
 
     @ToString.Exclude
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "product_char_id")
     private ProductChar productChar;
 

@@ -32,7 +32,7 @@ public class ProductChar {
     private LocalDateTime modifiedAt;
 
     @ToString.Exclude
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}) // or m2m if restricted variety of products is chosen
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}) // or m2m if restricted variety of products is chosen
     @JoinColumn(name = "product_category_id", nullable = false)
     private ProductCategory productCategory;
 

@@ -1,5 +1,6 @@
 package org.electronicsstore.backend.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,18 +34,21 @@ public class ProductCategory {
     private LocalDateTime modifiedAt;
 
     @ToString.Exclude
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "parent_id", nullable = true)
     private ProductCategory parent;
 
+    @JsonIgnore
     @ToString.Exclude
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private Set<ProductCategory> children;
 
+    @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductChar> productChars;
 
+    @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "productCategory", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Set<Product> products;
@@ -59,16 +63,6 @@ public class ProductCategory {
 
     public Set<Product> getProducts() {
         return (products == null) ? products = new HashSet<>() : products;
-    }
-
-    public void addParent(ProductCategory o) {
-        setParent(o);
-        o.getChildren().add(o);
-    }
-
-    public void removeParent() {
-        parent.removeChild(this);
-        parent = null;
     }
 
     public void addChild(ProductCategory o) {

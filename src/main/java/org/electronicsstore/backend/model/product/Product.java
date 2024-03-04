@@ -59,12 +59,12 @@ public class Product {
     private Set<ProductCharValue> productCharValues;
 
     @ToString.Exclude
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "promo_id")
     private Promo promo;
 
     @ToString.Exclude
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "product_category_id")
     private ProductCategory productCategory;
 

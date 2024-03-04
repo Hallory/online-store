@@ -5,6 +5,7 @@ import org.electronicsstore.backend.security.CustomJwtConverter;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,7 @@ public class SecurityConfig {
                         auth
                                 .requestMatchers("/api/auth/public/**", HttpMethod.POST).permitAll()
                                 .requestMatchers("/api/**", HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE).authenticated()
+                                .requestMatchers("/api/**", HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE).permitAll()
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(new CustomJwtConverter())))
                 .build();
@@ -53,5 +55,10 @@ public class SecurityConfig {
                 .clientId(client)
                 .clientSecret(secret)
                 .build();
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 }
