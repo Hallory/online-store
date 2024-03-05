@@ -52,13 +52,13 @@ public class Product {
     @JsonIgnore
     @ToString.Exclude
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "product_char_value_conf_m2m",
+    @JoinTable(name = "product_characteristic_value_conf_m2m",
         joinColumns =
             @JoinColumn(name = "product_id", referencedColumnName = "id"),
         inverseJoinColumns =
-            @JoinColumn(name = "product_char_value_id", referencedColumnName = "id", unique = true)
+            @JoinColumn(name = "characteristic_value_id", referencedColumnName = "id", unique = true)
     )
-    private Set<ProductCharValue> productCharValues;
+    private Set<CharacteristicValue> characteristicValues;
 
     @ToString.Exclude
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
@@ -67,31 +67,31 @@ public class Product {
 
     @ToString.Exclude
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "product_category_id")
-    private ProductCategory productCategory;
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    public Set<ProductCharValue> getProductCharValues() {
-        return (productCharValues == null) ? productCharValues = new HashSet<>() : productCharValues;
+    public Set<CharacteristicValue> getCharacteristicValues() {
+        return (characteristicValues == null) ? characteristicValues = new HashSet<>() : characteristicValues;
     }
 
-    public void addProductCharValue(ProductCharValue o) {
-        getProductCharValues().add(o);
+    public void addCharacteristicValue(CharacteristicValue o) {
+        getCharacteristicValues().add(o);
         o.getProducts().add(this);
     }
 
-    public void addProductCharValue(Collection<ProductCharValue> o) {
-        getProductCharValues().addAll(o);
+    public void addCharacteristicValue(Collection<CharacteristicValue> o) {
+        getCharacteristicValues().addAll(o);
         o.forEach(p -> p.getProducts().add(this));
     }
 
-    public void removeProductCharValue(ProductCharValue o) {
-        getProductCharValues().remove(o);
+    public void removeCharacteristicValue(CharacteristicValue o) {
+        getCharacteristicValues().remove(o);
         o.getProducts().remove(this);
     }
 
-    public void removeProductCharValue() {
-        getProductCharValues().forEach(c -> c.getProducts().remove(this));
-        getProductCharValues().clear();
+    public void removeCharacteristicValue() {
+        getCharacteristicValues().forEach(c -> c.getProducts().remove(this));
+        getCharacteristicValues().clear();
     }
 
     @Override

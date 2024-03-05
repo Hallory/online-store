@@ -6,11 +6,12 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import jakarta.servlet.http.HttpServletRequest;
 import org.electronicsstore.backend.exceptions.HttpPatchException;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URI;
 
 public class AbstractController {
+    @Autowired
     protected ObjectMapper objectMapper;
 
     protected <T> T mergePatch(T entity, Class<T> clz, JsonNode mergePatchDto) {
@@ -24,7 +25,7 @@ public class AbstractController {
         }
     }
 
-    protected URI buildCreatedUrl(HttpServletRequest req, String id) {
+    protected URI buildURI(HttpServletRequest req, String id) {
         return URI.create(req.getRequestURL().toString()).resolve(id);
     }
 }

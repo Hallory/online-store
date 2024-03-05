@@ -19,8 +19,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "product_category", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
-public class ProductCategory {
+@Table(name = "category", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
+public class Category {
     @Id
     @GeneratedValue
     private Long id;
@@ -36,46 +36,46 @@ public class ProductCategory {
     @ToString.Exclude
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "parent_id", nullable = true)
-    private ProductCategory parent;
+    private Category parent;
 
     @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-    private Set<ProductCategory> children;
+    private Set<Category> children;
 
     @JsonIgnore
     @ToString.Exclude
-    @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ProductChar> productChars;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private Set<Characteristic> characteristics;
 
     @JsonIgnore
     @ToString.Exclude
-    @OneToMany(mappedBy = "productCategory", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "category", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Set<Product> products;
 
-    public Set<ProductCategory> getChildren() {
+    public Set<Category> getChildren() {
         return (children == null) ? children = new HashSet<>() : children;
     }
 
-    public Set<ProductChar> getProductChars() {
-        return (productChars == null) ? productChars = new HashSet<>() : productChars;
+    public Set<Characteristic> getCharacteristics() {
+        return (characteristics == null) ? characteristics = new HashSet<>() : characteristics;
     }
 
     public Set<Product> getProducts() {
         return (products == null) ? products = new HashSet<>() : products;
     }
 
-    public void addChild(ProductCategory o) {
+    public void addChild(Category o) {
         getChildren().add(o);
         o.setParent(this);
     }
 
-    public void addChild(Collection<ProductCategory> productCategories) {
+    public void addChild(Collection<Category> productCategories) {
         getChildren().addAll(productCategories);
         productCategories.forEach(c -> c.setParent(this));
     }
 
-    public void removeChild(ProductCategory o) {
+    public void removeChild(Category o) {
         getChildren().remove(o);
         o.setParent(null);
     }
@@ -85,48 +85,48 @@ public class ProductCategory {
         getChildren().clear();
     }
 
-    public void addProductChar(ProductChar o) {
-        getProductChars().add(o);
-        o.setProductCategory(this);
+    public void addCharacteristic(Characteristic o) {
+        getCharacteristics().add(o);
+        o.setCategory(this);
     }
 
-    public void addProductChar(Collection<ProductChar> o) {
-        getProductChars().addAll(o);
-        o.forEach(c -> c.setProductCategory(this));
+    public void addCharacteristic(Collection<Characteristic> o) {
+        getCharacteristics().addAll(o);
+        o.forEach(c -> c.setCategory(this));
     }
 
-    public void removeProductChar(ProductChar o) {
-        getProductChars().remove(o);
-        o.setProductCategory(null);
+    public void removeCharacteristic(Characteristic o) {
+        getCharacteristics().remove(o);
+        o.setCategory(null);
     }
 
-    public void removeProductChar() {
-        getProductChars().forEach(c -> c.setProductCategory(null));
-        getProductChars().clear();
+    public void removeCharacteristic() {
+        getCharacteristics().forEach(c -> c.setCategory(null));
+        getCharacteristics().clear();
     }
 
     public void addProduct(Product o) {
         getProducts().add(o);
-        o.setProductCategory(this);
+        o.setCategory(this);
     }
 
     public void addProduct(Collection<Product> products) {
         this.getProducts().addAll(products);
-        products.forEach(p -> p.setProductCategory(this));
+        products.forEach(p -> p.setCategory(this));
     }
 
     public void removeProduct(Product o) {
         getProducts().remove(o);
-        o.setProductCategory(null);
+        o.setCategory(null);
     }
 
     public void removeProduct(Collection<Product> o) {
         getProducts().removeAll(o);
-        o.forEach(c -> c.setProductCategory(null));
+        o.forEach(c -> c.setCategory(null));
     }
 
     public void removeProduct() {
-        getProducts().forEach(c -> c.setProductCategory(null));
+        getProducts().forEach(c -> c.setCategory(null));
         getProducts().clear();
     }
 
@@ -134,7 +134,7 @@ public class ProductCategory {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductCategory that = (ProductCategory) o;
+        Category that = (Category) o;
         return Objects.equals(name, that.name);
     }
 

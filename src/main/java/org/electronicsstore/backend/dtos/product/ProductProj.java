@@ -17,14 +17,14 @@ public interface ProductProj {
         String getProductIcon();
         LocalDateTime getCreatedAt();
         LocalDateTime getDeletedAt();
-        Set<CharValueProjEmb> getProductCharValues();
-        CategoryProjEmb getProductCategory();
+        Set<CharacteristicValueProjEmb> getCharacteristicValues();
+        CategoryProjEmb getCategory();
         PromoProjEmb getPromo();
 
-        interface CharValueProjEmb {
+        interface CharacteristicValueProjEmb {
                 Long getId();
                 String getData();
-                ProductCharEmb getProductChar();
+                CharacteristicProjEmb getCharacteristic();
         }
 
         interface CategoryProjEmb {
@@ -42,7 +42,7 @@ public interface ProductProj {
                 LocalDateTime getEndDate();
         }
 
-        interface ProductCharEmb {
+        interface CharacteristicProjEmb {
                 Long getId();
                 String getName();
                 String getDataType();

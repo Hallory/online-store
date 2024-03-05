@@ -1,6 +1,9 @@
 server:
   port: 8081
 
+custom:
+  secured_api: ${SECURE_API:true}
+
 logging:
   level.org.springframework.security: TRACE
   file.name: ${logging.file.path}/backend.log

@@ -1,6 +1,8 @@
 package org.electronicsstore.backend.configs;
 
+import jakarta.servlet.DispatcherType;
 import jakarta.ws.rs.HttpMethod;
+import org.electronicsstore.backend.exceptions.CustomEntityExistsException;
 import org.electronicsstore.backend.security.CustomJwtConverter;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
@@ -17,21 +19,36 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.rmi.RemoteException;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+    @Value("${custom.secured_api}")
+    private boolean isSecured;
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth ->
+                .authorizeHttpRequests(auth -> {
+                    if (isSecured) {
                         auth
                                 .requestMatchers("/api/auth/public/**", HttpMethod.POST).permitAll()
                                 .requestMatchers("/api/**", HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE).authenticated()
-                                .anyRequest().authenticated())
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(new CustomJwtConverter())))
+                                .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                                .anyRequest().authenticated();
+                    } else {
+                        auth
+                                .requestMatchers("/api/auth/public/**", HttpMethod.POST).permitAll()
+                                .requestMatchers("/api/**", HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE).permitAll()
+                                .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.ASYNC, DispatcherType.FORWARD, DispatcherType.INCLUDE, DispatcherType.REQUEST).permitAll()
+                                .anyRequest().permitAll();
+                    }
+                })
+                .oauth2ResourceServer(oauth2 ->
+                        oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(new CustomJwtConverter())))
                 .build();
     }
 

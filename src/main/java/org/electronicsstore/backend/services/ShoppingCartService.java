@@ -1,7 +1,6 @@
 package org.electronicsstore.backend.services;
 
 import lombok.AllArgsConstructor;
-import org.electronicsstore.backend.dtos.ShoppingCartDto;
 import org.electronicsstore.backend.model.customer.ShoppingCart;
 import org.electronicsstore.backend.repos.ShoppingCartRepo;
 import org.springframework.stereotype.Service;

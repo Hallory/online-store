@@ -1,20 +1,10 @@
 package org.electronicsstore.backend.dtos.product;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.electronicsstore.backend.model.product.ProductCategory;
-import org.electronicsstore.backend.model.product.ProductCharValue;
-import org.electronicsstore.backend.model.product.Promo;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 

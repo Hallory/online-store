@@ -19,8 +19,8 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"data", "product_char_id"})})
-public class ProductCharValue {
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"data", "characteristic_id"})})
+public class CharacteristicValue {
     @Id
     @GeneratedValue
     private Long id;
@@ -34,12 +34,12 @@ public class ProductCharValue {
 
     @ToString.Exclude
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinColumn(name = "product_char_id")
-    private ProductChar productChar;
+    @JoinColumn(name = "characteristic_id")
+    private Characteristic characteristic;
 
     @JsonIgnore
     @ToString.Exclude
-    @ManyToMany(mappedBy = "productCharValues", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany(mappedBy = "characteristicValues", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Set<Product> products;
 
     public Set<Product> getProducts() {
@@ -48,21 +48,21 @@ public class ProductCharValue {
 
     public void addProducts(Product product) {
         getProducts().add(product);
-        product.getProductCharValues().add(this);
+        product.getCharacteristicValues().add(this);
     }
 
     public void addProducts(Collection<Product> products) {
         getProducts().addAll(products);
-        products.forEach(p -> p.getProductCharValues().add(this));
+        products.forEach(p -> p.getCharacteristicValues().add(this));
     }
 
     public void removeProducts(Product product) {
         getProducts().remove(product);
-        product.getProductCharValues().remove(this);
+        product.getCharacteristicValues().remove(this);
     }
 
     public void removeProducts() {
-        getProducts().forEach(p -> p.getProductCharValues().remove(this));
+        getProducts().forEach(p -> p.getCharacteristicValues().remove(this));
         getProducts().clear();
     }
 
@@ -70,12 +70,12 @@ public class ProductCharValue {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductCharValue that = (ProductCharValue) o;
-        return Objects.equals(data, that.data) && Objects.equals(productChar, that.productChar);
+        CharacteristicValue that = (CharacteristicValue) o;
+        return Objects.equals(data, that.data) && Objects.equals(createdAt, that.createdAt) && Objects.equals(characteristic, that.characteristic);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(data, productChar);
+        return Objects.hash(data, createdAt, characteristic);
     }
 }

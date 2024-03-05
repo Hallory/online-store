@@ -3,20 +3,24 @@ package org.electronicsstore.backend.dtos.product;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public interface CategoryProj {
+public interface CharacteristicValueProj {
     Long getId();
-    String getName();
-    String getDescription();
-    LocalDateTime getCreatedAt();
-    CategoryProjEmb getParent();
-    Set<CategoryProjEmb> getChildren();
+    String getData();
+    LocalDateTime getCreatedA();
+    CharacteristicProjEmb getCharacteristic();
     Set<ProductProjEmb> getProducts();
-    Set<CharacteristicProjEmb> getCharacteristics();
+
+    interface CharacteristicProjEmb {
+        Long getId();
+        String getName();
+        String getDataType();
+        LocalDateTime getCreatedAt();
+        CategoryProjEmb getCategory();
+    }
 
     interface CategoryProjEmb {
         Long getId();
         String getName();
-        String getDescription();
     }
 
     interface ProductProjEmb {
@@ -27,17 +31,7 @@ public interface CategoryProj {
         String getSKU();
         String getBrand();
         Double getPrice();
-        String getDescription();
-        Integer getQtyInStock();
-        Set<String> getProductImages();
-        String getProductIcon();
         LocalDateTime getCreatedAt();
         LocalDateTime getDeletedAt();
-    }
-
-    interface CharacteristicProjEmb {
-        Long getId();
-        String getName();
-        String getDataType();
     }
 }

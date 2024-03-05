@@ -4,9 +4,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.electronicsstore.backend.dtos.product.*;
-import org.electronicsstore.backend.model.product.ProductCategory;
-import org.electronicsstore.backend.services.ProductCategoryService;
+import org.electronicsstore.backend.dtos.product.CategoryDto;
+import org.electronicsstore.backend.dtos.product.CategoryProj;
+import org.electronicsstore.backend.dtos.product.CategoryTraversedDownProj;
+import org.electronicsstore.backend.dtos.product.CategoryTraversedUpProj;
+import org.electronicsstore.backend.model.product.Category;
+import org.electronicsstore.backend.services.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,14 +27,14 @@ import java.util.List;
         allowedHeaders = "*",
         methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH }
 )
-public class ProductCategoryController extends AbstractController {
-    private final ProductCategoryService productCategoryService;
+public class CategoryController extends AbstractController {
+    private final CategoryService categoryService;
     private final ModelMapper modelMapper;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<CategoryProj> categories() {
-        return productCategoryService.findAllBy(CategoryProj.class);
+        return categoryService.findAllBy(CategoryProj.class);
     }
 
     @GetMapping({"{categoryId}"})
@@ -39,7 +42,7 @@ public class ProductCategoryController extends AbstractController {
     public ResponseEntity<CategoryTraversedDownProj> categoryById(
             @PathVariable(name = "categoryId", required = true) Long categoryId
     ) {
-        return ResponseEntity.ok(productCategoryService.findProjById(categoryId, CategoryTraversedDownProj.class));
+        return ResponseEntity.ok(categoryService.findProjById(categoryId, CategoryTraversedDownProj.class));
     }
 
     @GetMapping({"{categoryId}/tree"})
@@ -49,8 +52,8 @@ public class ProductCategoryController extends AbstractController {
             @RequestParam(value = "direction", required = true) String direction
     ) {
         var tree = switch (direction) {
-            case "UP" -> productCategoryService.findProjById(categoryId, CategoryTraversedUpProj.class);
-            case "DOWN" -> productCategoryService.findProjById(categoryId, CategoryTraversedDownProj.class);
+            case "UP" -> categoryService.findProjById(categoryId, CategoryTraversedUpProj.class);
+            case "DOWN" -> categoryService.findProjById(categoryId, CategoryTraversedDownProj.class);
             default -> throw new IllegalStateException("Unexpected value: " + direction);
         };
         return ResponseEntity.ok(tree);
@@ -62,8 +65,8 @@ public class ProductCategoryController extends AbstractController {
             HttpServletRequest req,
             @RequestBody CategoryDto dto
     ) {
-        var category = productCategoryService.createOne(modelMapper.map(dto, ProductCategory.class));
-        return ResponseEntity.created(buildCreatedUrl(req, category.getId().toString())).build();
+        var category = categoryService.createOne(modelMapper.map(dto, Category.class));
+        return ResponseEntity.created(buildURI(req, category.getId().toString())).build();
     }
 
     @PutMapping({"{categoryId}"})
@@ -71,24 +74,24 @@ public class ProductCategoryController extends AbstractController {
     public ResponseEntity<CategoryDto> updateCategory(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
             @RequestBody CategoryDto dto) {
-        var category = productCategoryService.updateOne(categoryId, modelMapper.map(dto, ProductCategory.class));
+        var category = categoryService.updateOne(categoryId, modelMapper.map(dto, Category.class));
         return ResponseEntity.ok(modelMapper.map(category, CategoryDto.class));
     }
 
     @PatchMapping(value = {"{categoryId}"}, consumes = "application/merge-patch+json")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<CategoryDto> patchCategory(
+    public ResponseEntity<CategoryProj> patchCategory(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
-            @RequestBody JsonNode mergePatchDto
+            @RequestBody JsonNode dto
     ) {
-        var fetchedCategory = productCategoryService.findById(categoryId);
-        fetchedCategory = productCategoryService.patchOne(categoryId, mergePatch(fetchedCategory, ProductCategory.class, mergePatchDto));
-        return ResponseEntity.ok(modelMapper.map(fetchedCategory, CategoryDto.class));
+        var fetched = categoryService.findById(categoryId);
+        fetched = categoryService.patchOne(categoryId, mergePatch(fetched, Category.class, dto));
+        return ResponseEntity.ok(categoryService.findProjById(fetched.getId(), CategoryProj.class));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping({"{categoryId}"})
     public void deleteCategory(@PathVariable(name = "categoryId", required = true) Long categoryId) {
-        productCategoryService.deleteOne(categoryId);
+        categoryService.deleteOne(categoryId);
     }
 }

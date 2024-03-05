@@ -18,13 +18,13 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name", "product_category_id"}))
-public class ProductChar {
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name", "category_id"}))
+public class Characteristic {
     @Id
     @GeneratedValue
     private Long id;
     @Column(nullable = false)
-    private String name; // colour, size
+    private String name;
     private String dataType;
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
@@ -34,38 +34,38 @@ public class ProductChar {
 
     @ToString.Exclude
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}) // or m2m if restricted variety of products is chosen
-    @JoinColumn(name = "product_category_id", nullable = false)
-    private ProductCategory productCategory;
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @JsonIgnore
     @ToString.Exclude
-    @OneToMany(mappedBy = "productChar", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ProductCharValue> productCharValues;
+    @OneToMany(mappedBy = "characteristic", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CharacteristicValue> characteristicValues;
 
-    public Set<ProductCharValue> getProductCharValues() {
-        return (productCharValues == null) ? productCharValues = new HashSet<>() : productCharValues;
+    public Set<CharacteristicValue> getCharacteristicValues() {
+        return (characteristicValues == null) ? characteristicValues = new HashSet<>() : characteristicValues;
     }
 
-    public void addProductCharValue(ProductCharValue o) {
-        getProductCharValues().add(o);
-        o.setProductChar(this);
+    public void addCharacteristicValue(CharacteristicValue o) {
+        getCharacteristicValues().add(o);
+        o.setCharacteristic(this);
     }
 
-    public void removeProductCharValue(ProductCharValue o) {
-        getProductCharValues().remove(o);
-        o.setProductChar(null);
+    public void removeCharacteristicValue(CharacteristicValue o) {
+        getCharacteristicValues().remove(o);
+        o.setCharacteristic(null);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductChar that = (ProductChar) o;
-        return Objects.equals(name, that.name) && Objects.equals(productCategory, that.productCategory);
+        Characteristic that = (Characteristic) o;
+        return Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, productCategory);
+        return Objects.hash(name);
     }
 }

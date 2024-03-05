@@ -10,7 +10,7 @@ public interface CategoryTraversedDownProj {
         LocalDateTime getCreatedAt();
         Set<CategoryTraversedDownProj> getChildren();
         Set<ProductProjEmb> getProducts();
-        Set<CharProjEmb> getProductChars();
+        Set<CharacteristicProjEmb> getCharacteristics();
 
         interface ProductProjEmb {
                 String getId();
@@ -28,7 +28,7 @@ public interface CategoryTraversedDownProj {
                 LocalDateTime getDeletedAt();
         }
 
-        interface CharProjEmb {
+        interface CharacteristicProjEmb {
                 Long getId();
                 String getName();
                 String getDataType();

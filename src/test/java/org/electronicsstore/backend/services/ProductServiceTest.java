@@ -2,7 +2,7 @@ package org.electronicsstore.backend.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.electronicsstore.backend.model.product.Product;
-import org.electronicsstore.backend.repos.ProductCategoryRepo;
+import org.electronicsstore.backend.repos.CategoryRepo;
 import org.electronicsstore.backend.repos.ProductRepo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -25,9 +25,9 @@ public class ProductServiceTest {
     @Autowired
     private ProductRepo productRepo;
     @Autowired
-    private ProductCategoryService categoryService;
+    private CategoryService categoryService;
     @Autowired
-    private ProductCategoryRepo categoryRepo;
+    private CategoryRepo categoryRepo;
 
     @BeforeAll
     void initBeforeAll() {
@@ -45,7 +45,7 @@ public class ProductServiceTest {
                 product.setSKU(testText);
                 product.setQtyInStock(5);
                 product.setPrice(1.);
-                product.setProductCategory(category);
+                product.setCategory(category);
         productService.createOne(product);
         assertTrue(productRepo.findAll().stream().anyMatch(p -> p.getName().equals(testText)));
     }

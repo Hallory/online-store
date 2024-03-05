@@ -6,6 +6,7 @@ import org.electronicsstore.backend.exceptions.CustomEntityExistsException;
 import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
 import org.electronicsstore.backend.model.product.Product;
 import org.electronicsstore.backend.repos.BaseService;
+import org.electronicsstore.backend.repos.CategoryRepo;
 import org.electronicsstore.backend.repos.ProductRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @Service
 public class ProductService implements BaseService<Product, String> {
     private final ProductRepo productRepo;
+    private final CategoryRepo categoryRepo;
 
     @Override
     public List<Product> findAll() {
@@ -56,6 +58,12 @@ public class ProductService implements BaseService<Product, String> {
             throw new CustomEntityExistsException("Product is already present, article = " + entity.getArticle());
         }
         return productRepo.save(entity);
+    }
+
+    public Product createOne(Long categoryId, Product entity) {
+        var category = categoryRepo.findById(categoryId).orElseThrow(CustomEntityNotFoundException::new);
+        entity.setCategory(category);
+        return createOne(entity);
     }
 
     @Override

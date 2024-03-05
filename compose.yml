@@ -18,6 +18,7 @@ services:
       - KEYCLOAK_BACKEND_CLIENT_REALM=quickstart
       - KEYCLOAK_BACKEND_CLIENT_ID=admin-rest-backend
       - KEYCLOAK_BACKEND_CLIENT_SECRET=yWzrTIs2DWRX28mYhPPWgNrVewBYmU8a
+      - SECURE_API=true
     networks:
       - es-backend-sample
 
