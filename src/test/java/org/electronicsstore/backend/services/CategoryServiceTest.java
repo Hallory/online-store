@@ -32,6 +32,8 @@ public class CategoryServiceTest {
 
     @BeforeAll
     void initBeforeAll() {
+        var root = new Category();
+        root.setId(1L);
         var category1 = categoryService.createRandomCategory();
         var category2 = categoryService.createRandomCategory();
         var category3 = categoryService.createRandomCategory();
@@ -39,6 +41,7 @@ public class CategoryServiceTest {
         var category5 = categoryService.createRandomCategory();
         category1.addChild(List.of(category2, category3));
         category2.addChild(List.of(category4, category5));
+        category1.setParent(root);
         categoryRepo.save(category1);
         log.info("{}", List.of(category1, category2, category3, category4, category5));
     }
@@ -49,9 +52,13 @@ public class CategoryServiceTest {
 
     @Test
     public void createCategoryTest() {
+        var cats = categoryService.findAll();
+        var root = new Category();
+        root.setId(1L);
         Category dto = new Category();
         dto.setName("test-create");
         dto.setDescription("desc");
+        dto.setParent(root);
         categoryService.createOne(dto);
         assertEquals("test-create", categoryRepo.findByName("test-create").get().getName());
     }

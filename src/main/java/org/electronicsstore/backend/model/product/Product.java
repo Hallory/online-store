@@ -2,6 +2,7 @@ package org.electronicsstore.backend.model.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -31,7 +32,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     @NotBlank
-    @Size(min = 5, max = 10)
+    @Size(min = 5, max = 255)
     @Column(nullable = false, unique = true)
     private String article;
     @NotBlank
@@ -44,12 +45,12 @@ public class Product {
     private String name;
     private String barcode;
     @NotNull
-    @Size(min = 5)
+    @Min(0)
     @Column(columnDefinition = "integer not null check(price >= 0)")
     private Integer qtyInStock;
     private Set<String> productImages;
     @NotNull
-    @Size(min = 5)
+    @Min(0)
     @Column(columnDefinition = "float(53) not null check(price >= 0.0)")
     private Double price;
     private String brand; // should be extended to hierarchy

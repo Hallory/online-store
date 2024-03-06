@@ -71,7 +71,7 @@ public class CategoryService implements BaseService<Category, Long> {
         if (!categoryRepo.existsById(parent.getId())) {
             throw new EntityBadRequestException("Parent category is not existed");
         }
-        if (!categoryRepo.existsByName(entity.getName())) {
+        if (categoryRepo.existsByName(entity.getName())) {
             throw new CustomEntityNotFoundException("Product category is already present, name = " + entity.getName());
         }
         return categoryRepo.save(entity);
