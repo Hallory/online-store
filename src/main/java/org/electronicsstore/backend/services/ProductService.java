@@ -37,6 +37,10 @@ public class ProductService implements BaseService<Product, String> {
         return productRepo.findAllById(ids);
     }
 
+    public <P> List<P> findAllProjByCategoryId(Long categoryId, Class<P> clz) {
+        return productRepo.findAllProjByCategoryId(categoryId, clz);
+    }
+
     @Override
     public <P> List<P> findAllProjByIds(List<String> ids, Class<P> clz) {
         return productRepo.findAllByIdIn(ids, clz);
@@ -87,7 +91,7 @@ public class ProductService implements BaseService<Product, String> {
         var product = new Product();
         product.setArticle(randomText);
         product.setName(randomText);
-        product.setSKU(randomText);
+        product.setSku(randomText);
         product.setQtyInStock(1);
         product.setPrice(1.);
         return product;

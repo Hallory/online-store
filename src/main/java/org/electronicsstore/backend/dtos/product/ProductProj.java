@@ -8,7 +8,7 @@ public interface ProductProj {
         String getArticle();
         String getBarcode();
         String getName();
-        String getSKU();
+        String getSku();
         String getBrand();
         Double getPrice();
         String getDescription();

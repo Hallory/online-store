@@ -4,9 +4,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
+import org.electronicsstore.backend.exceptions.EntityBadRequestException;
 import org.electronicsstore.backend.model.product.Category;
+import org.electronicsstore.backend.model.product.Product;
 import org.electronicsstore.backend.repos.BaseService;
 import org.electronicsstore.backend.repos.CategoryRepo;
+import org.electronicsstore.backend.repos.ProductRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +22,7 @@ import java.util.UUID;
 @Service
 public class CategoryService implements BaseService<Category, Long> {
     private final CategoryRepo categoryRepo;
+    private final ProductRepo productRepo;
 
     @Override
     public List<Category> findAll() {
@@ -53,7 +57,21 @@ public class CategoryService implements BaseService<Category, Long> {
     @Valid
     @Override
     public Category createOne(Category entity) {
-        if (categoryRepo.existsByName(entity.getName())) {
+        var parent = entity.getParent();
+        if (parent == null) {
+            throw new EntityBadRequestException("Parent category is not defined");
+        }
+        if (parent.getId() == null) {
+            throw new EntityBadRequestException("Parent category id is not defined");
+        }
+        if (parent.isLeaf()) {
+            var products = productRepo.findAllProjByCategoryId(parent.getId(), Product.class);
+            entity.addProduct(products);
+        }
+        if (!categoryRepo.existsById(parent.getId())) {
+            throw new EntityBadRequestException("Parent category is not existed");
+        }
+        if (!categoryRepo.existsByName(entity.getName())) {
             throw new CustomEntityNotFoundException("Product category is already present, name = " + entity.getName());
         }
         return categoryRepo.save(entity);
@@ -74,7 +92,20 @@ public class CategoryService implements BaseService<Category, Long> {
     @Override
     public void deleteOne(Long id) {
         var category = findById(id);
+        boolean isRootDelete = category.getParent() == null;
         categoryRepo.delete(category);
+    }
+
+    public boolean existsByParentId(Long parentId) {
+        return categoryRepo.existsByParentId(parentId);
+    }
+
+    public <P> P findByParentIsNull(Class<P> clz) {
+        return categoryRepo.findByParentIsNull(clz).orElseThrow(CustomEntityNotFoundException::new);
+    }
+
+    public boolean existsByParentIsNull() {
+        return categoryRepo.existsByParentIsNull();
     }
 
     private boolean isCategoryParent(Category category) {
@@ -87,5 +118,12 @@ public class CategoryService implements BaseService<Category, Long> {
         category.setName(name);
         category.setDescription("name");
         return category;
+    }
+
+    public Category createRootCategory() {
+        var rootCategory = new Category();
+        rootCategory.setName("Root Category");
+        rootCategory.setDescription("Mandatory root category");
+        return categoryRepo.save(rootCategory);
     }
 }

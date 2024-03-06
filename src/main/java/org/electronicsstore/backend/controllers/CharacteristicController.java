@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.electronicsstore.backend.dtos.product.CategoryProj;
 import org.electronicsstore.backend.dtos.product.CharacteristicProj;
 import org.electronicsstore.backend.dtos.product.CharacteristicNoRefProj;
 import org.electronicsstore.backend.dtos.product.CharacteristicDto;
@@ -31,7 +32,7 @@ public class CharacteristicController extends AbstractController {
     private final CharacteristicService characteristicService;
     private final ModelMapper modelMapper;
 
-    @GetMapping(value = "chars")
+    @GetMapping(value = "categories/chars")
     @ResponseStatus(HttpStatus.OK)
     public List<CharacteristicProj> chars() {
         return characteristicService.findAllBy(CharacteristicProj.class);
@@ -43,6 +44,14 @@ public class CharacteristicController extends AbstractController {
             @PathVariable(name = "categoryId", required = true) Long categoryId
     ) {
         return characteristicService.findAllProjByCategoryId(categoryId, CharacteristicProj.class);
+    }
+
+    @GetMapping(value = {"categories/{categoryId}/chars/inherited"})
+    @ResponseStatus(HttpStatus.OK)
+    public List<CategoryProj.CharacteristicProjEmb> charsByCategoryInherited(
+            @PathVariable(name = "categoryId", required = true) Long categoryId
+    ) {
+        return characteristicService.findAllProjByCategoryIdInherited(categoryId, CategoryProj.class); // todo hardcoded
     }
 
     @GetMapping(value = {"categories/{categoryId}/chars/{charId}"}, produces = MediaType.APPLICATION_JSON_VALUE)

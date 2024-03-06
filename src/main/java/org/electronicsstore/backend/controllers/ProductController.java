@@ -5,7 +5,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.electronicsstore.backend.dtos.product.ProductDto;
 import org.electronicsstore.backend.dtos.product.ProductProj;
+import org.electronicsstore.backend.exceptions.EntityBadRequestException;
 import org.electronicsstore.backend.model.product.Product;
+import org.electronicsstore.backend.services.CategoryService;
 import org.electronicsstore.backend.services.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ import java.util.List;
 public class ProductController extends AbstractController {
     private final ProductService productService;
     private final ModelMapper modelMapper;
+    private final CategoryService categoryService;
 
     @GetMapping(value = "products")
     @ResponseStatus(HttpStatus.OK)
@@ -34,9 +37,23 @@ public class ProductController extends AbstractController {
         return productService.findAllBy(ProductProj.class);
     }
 
+    @GetMapping(value = "categories/{categoryId}/products")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProductProj> productsByCategory(
+            @PathVariable(name = "categoryId", required = true) Long categoryId
+    ) {
+        if (!categoryService.existsByParentId(categoryId)) {
+            return productService.findAllProjByCategoryId(categoryId, ProductProj.class);
+        }
+        throw new EntityBadRequestException("Category cannot have assigned products");
+    }
+
     @GetMapping(value = {"categories/{categoryId}/products/{productId}"}, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ProductProj> productById(@PathVariable(name = "productId", required = true) String productId) {
+    public ResponseEntity<ProductProj> productById(
+            @PathVariable(name = "categoryId", required = true) Long categoryId,
+            @PathVariable(name = "productId", required = true) String productId
+    ) {
         return ResponseEntity.ok(productService.findProjById(productId, ProductProj.class));
     }
 

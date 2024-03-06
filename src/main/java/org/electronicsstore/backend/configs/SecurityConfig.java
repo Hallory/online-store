@@ -41,9 +41,6 @@ public class SecurityConfig {
                                 .anyRequest().authenticated();
                     } else {
                         auth
-                                .requestMatchers("/api/auth/public/**", HttpMethod.POST).permitAll()
-                                .requestMatchers("/api/**", HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE).permitAll()
-                                .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.ASYNC, DispatcherType.FORWARD, DispatcherType.INCLUDE, DispatcherType.REQUEST).permitAll()
                                 .anyRequest().permitAll();
                     }
                 })

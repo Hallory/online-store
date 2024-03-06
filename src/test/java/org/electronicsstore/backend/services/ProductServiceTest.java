@@ -42,7 +42,7 @@ public class ProductServiceTest {
         var product = new Product();
                 product.setName(testText);
                 product.setArticle(testText);
-                product.setSKU(testText);
+                product.setSku(testText);
                 product.setQtyInStock(5);
                 product.setPrice(1.);
                 product.setCategory(category);

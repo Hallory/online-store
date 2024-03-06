@@ -37,6 +37,12 @@ public class CategoryController extends AbstractController {
         return categoryService.findAllBy(CategoryProj.class);
     }
 
+    @GetMapping(value = {"tree"})
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<CategoryTraversedDownProj> categoryTree() {
+        return ResponseEntity.ok(categoryService.findByParentIsNull(CategoryTraversedDownProj.class));
+    }
+
     @GetMapping({"{categoryId}"})
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<CategoryTraversedDownProj> categoryById(
@@ -93,5 +99,6 @@ public class CategoryController extends AbstractController {
     @DeleteMapping({"{categoryId}"})
     public void deleteCategory(@PathVariable(name = "categoryId", required = true) Long categoryId) {
         categoryService.deleteOne(categoryId);
+        categoryService.createRootCategory();
     }
 }

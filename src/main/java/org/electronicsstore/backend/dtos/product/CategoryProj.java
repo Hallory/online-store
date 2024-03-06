@@ -17,6 +17,9 @@ public interface CategoryProj {
         Long getId();
         String getName();
         String getDescription();
+        CategoryProjEmb getParent();
+        Set<CharacteristicProjEmb> getCharacteristics();
+
     }
 
     interface ProductProjEmb {
@@ -24,7 +27,7 @@ public interface CategoryProj {
         String getArticle();
         String getBarcode();
         String getName();
-        String getSKU();
+        String getSku();
         String getBrand();
         Double getPrice();
         String getDescription();

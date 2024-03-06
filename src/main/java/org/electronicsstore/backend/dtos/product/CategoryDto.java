@@ -13,6 +13,7 @@ public class CategoryDto {
     private Long id;
     private String name;
     private String description;
+    private CategoryDto parent;
 
     @Override
     public boolean equals(Object o) {

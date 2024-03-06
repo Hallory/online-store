@@ -12,4 +12,7 @@ public interface CategoryRepo extends ListCrudRepository<Category, Long> {
     <P> Optional<P> findProjById(Long aLong, Class<P> type);
     Optional<Category> findByName(String name);
     boolean existsByName(String name);
+    boolean existsByParentId(Long parentId);
+    <P> Optional<P> findByParentIsNull(Class<P> clz);
+    boolean existsByParentIsNull();
 }

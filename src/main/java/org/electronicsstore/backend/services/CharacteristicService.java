@@ -2,6 +2,7 @@ package org.electronicsstore.backend.services;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.electronicsstore.backend.dtos.product.CategoryProj;
 import org.electronicsstore.backend.exceptions.CustomEntityExistsException;
 import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
 import org.electronicsstore.backend.model.product.Category;
@@ -12,8 +13,8 @@ import org.electronicsstore.backend.repos.CharacteristicRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Stream;
 
 @Transactional
 @Slf4j
@@ -40,6 +41,19 @@ public class CharacteristicService implements BaseService<Characteristic, Long> 
 
     public <P> List<P> findAllProjByCategoryId(Long id, Class<P> clz) {
         return characteristicRepo.findAllProjByCategoryId(id, clz);
+    }
+
+    public List<CategoryProj.CharacteristicProjEmb> findAllProjByCategoryIdInherited(Long id, Class<CategoryProj> clz) {
+        // todo CTE query
+        final var category = categoryRepo.findProjById(id, clz).orElseThrow(CustomEntityNotFoundException::new);
+        List<CategoryProj.CharacteristicProjEmb> inherited =
+                new ArrayList<>(category.getCharacteristics());
+        CategoryProj.CategoryProjEmb tmp = category.getParent();
+        while (tmp != null) {
+            inherited.addAll(tmp.getCharacteristics());
+            tmp = tmp.getParent();
+        }
+        return inherited.stream().filter(Objects::nonNull).toList();
     }
 
     @Override

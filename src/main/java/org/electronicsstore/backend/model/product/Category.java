@@ -53,6 +53,10 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Set<Product> products;
 
+    public boolean isLeaf() {
+        return this.getChildren().isEmpty();
+    }
+
     public Set<Category> getChildren() {
         return (children == null) ? children = new HashSet<>() : children;
     }

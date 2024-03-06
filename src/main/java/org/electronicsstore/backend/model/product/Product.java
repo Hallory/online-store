@@ -2,6 +2,9 @@ package org.electronicsstore.backend.model.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,19 +30,29 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+    @NotBlank
+    @Size(min = 5, max = 10)
     @Column(nullable = false, unique = true)
-    private String article; // ?should it be unique
-    @Column(nullable = false, unique = true)
-    private String SKU; // probably unique
+    private String article;
+    @NotBlank
+    @Size(min = 5, max = 50)
+    @Column(nullable = false)
+    private String sku;
+    @NotBlank
+    @Size(min = 5, max = 50)
+    @Column(nullable = false)
+    private String name;
     private String barcode;
+    @NotNull
+    @Size(min = 5)
     @Column(columnDefinition = "integer not null check(price >= 0)")
     private Integer qtyInStock;
     private Set<String> productImages;
+    @NotNull
+    @Size(min = 5)
     @Column(columnDefinition = "float(53) not null check(price >= 0.0)")
     private Double price;
     private String brand; // should be extended to hierarchy
-    @Column(nullable = false) // ?should be unique
-    private String name;
     private String description;
     private String productIcon; // general image in the product list
     @Column(nullable = false, updatable = false)
@@ -99,11 +112,11 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Objects.equals(article, product.article) && Objects.equals(SKU, product.SKU) && Objects.equals(name, product.name);
+        return Objects.equals(article, product.article) && Objects.equals(sku, product.sku) && Objects.equals(name, product.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(article, SKU, name);
+        return Objects.hash(article, sku, name);
     }
 }

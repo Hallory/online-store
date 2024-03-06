@@ -28,7 +28,7 @@ public interface CharacteristicValueProj {
         String getArticle();
         String getBarcode();
         String getName();
-        String getSKU();
+        String getSku();
         String getBrand();
         Double getPrice();
         LocalDateTime getCreatedAt();

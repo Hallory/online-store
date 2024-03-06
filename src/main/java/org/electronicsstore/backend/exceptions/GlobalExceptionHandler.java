@@ -23,7 +23,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({
             CustomEntityExistsException.class,
             AuthUserNotCreatedException.class,
-            HttpPatchException.class
+            HttpPatchException.class,
+            EntityBadRequestException.class
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorMessage resourceNotRequiredException(RuntimeException ex, WebRequest req) {
