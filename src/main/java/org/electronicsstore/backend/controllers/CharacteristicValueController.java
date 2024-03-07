@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.electronicsstore.backend.dtos.product.CharacteristicValueProj;
 import org.electronicsstore.backend.dtos.product.CharacteristicValueDto;
+import org.electronicsstore.backend.dtos.product.CharacteristicValueSingleProductProj;
 import org.electronicsstore.backend.model.product.CharacteristicValue;
 import org.electronicsstore.backend.services.CharacteristicValueService;
 import org.modelmapper.ModelMapper;
@@ -52,15 +53,14 @@ public class CharacteristicValueController extends AbstractController {
     ) {
         return characteristicValueService.findAllProjByCharacteristicId(charId, CharacteristicValueProj.class);
     }
-
-    @GetMapping(value = {"categories/{categoryId}/products/{productId}/chars/{charId}/values"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = {"categories/{categoryId}/products/{productId}/chars/values"}, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<CharacteristicValueProj> charValues(
+    public List<CharacteristicValueSingleProductProj> charValuesByProduct(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
             @PathVariable(name = "productId", required = true) String productId,
             @PathVariable(name = "charId", required = true) Long charId
     ) {
-        return characteristicValueService.findAllProjByProductsId(productId, CharacteristicValueProj.class);
+        return characteristicValueService.findAllProjByProductsId(productId, CharacteristicValueSingleProductProj.class);
     }
 
     @GetMapping(
