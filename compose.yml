@@ -1,8 +1,7 @@
 services:
   backend:
     container_name: backend
-    build: .
-    image: es-backend
+    image: edelwei55/es-pub:latest
     depends_on:
       - db-sample
     ports:
