@@ -8,13 +8,15 @@ http://localhost:8081/v3/api-docs
 http://localhost:8081/swagger-ui/index.html
 
 ### Run<br />
-- pull all images and run
-docker compose up -d 
+1) for dev purposes required auth-server realm config in ./keycloak/realm-quickstart.json 
+2) pull all images and run<br />
+docker compose up -d
 
-- pull latest dependent images
+### Refresh dependencies
+- pull latest dependent images<br />
 docker compose pull 
 
-- pull backend only latest image
+- pull backend only latest image<br />
 docker compose pull backend
 
 ### Delete containers<br />
@@ -24,7 +26,7 @@ docker compose down
 docker compose down --volumes
 
 
-## other
+## other<br />
 docker compose -f compose-standalone.yml up -d
 
 docker compose -f compose-standalone.yml down --volumes
