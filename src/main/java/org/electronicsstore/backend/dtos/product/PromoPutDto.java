@@ -1,29 +1,34 @@
 package org.electronicsstore.backend.dtos.product;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDto {
+@NoArgsConstructor
+public class PromoPutDto {
     private Long id;
-    @NotBlank
-    @Size(min = 3, max = 30)
     private String name;
     private String description;
-    private CategoryDto parent;
+    private Double discountRate;
+    private List<String> productIds;
+
+    public List<String> getProductIds() {
+        return (productIds == null) ? productIds = new ArrayList<>() : productIds;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CategoryDto that = (CategoryDto) o;
+        PromoPutDto that = (PromoPutDto) o;
         return Objects.equals(name, that.name);
     }
 

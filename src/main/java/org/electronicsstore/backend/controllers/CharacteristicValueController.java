@@ -89,7 +89,7 @@ public class CharacteristicValueController extends AbstractController {
             @RequestBody CharacteristicValueDto dto
     ) {
         var characteristicValue = characteristicValueService.createOne(categoryId, productId, charId, modelMapper.map(dto, CharacteristicValue.class));
-        return ResponseEntity.ok(buildURI(req, characteristicValue.getId().toString()));
+        return ResponseEntity.created(buildURI(req, characteristicValue.getId().toString())).build();
     }
 
     @PutMapping(
@@ -97,17 +97,20 @@ public class CharacteristicValueController extends AbstractController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<CharacteristicValueDto> updateCharValueById(
+    public ResponseEntity<?> updateCharValueById(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
             @PathVariable(name = "productId", required = true) String productId,
             @PathVariable(name = "charId", required = true) Long charId,
             @PathVariable(name = "charValueId", required = true) Long charValueId,
             @RequestBody CharacteristicValueDto dto) {
         var characteristicValue = characteristicValueService.updateOne(categoryId, productId, charId, modelMapper.map(dto, CharacteristicValue.class));
-        return ResponseEntity.ok(modelMapper.map(characteristicValue, CharacteristicValueDto.class));
+        return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping({"categories/{categoryId}/products/{productId}/chars/{charId}/values/{charValueId}"})
+    @PatchMapping(
+            value = {"categories/{categoryId}/products/{productId}/chars/{charId}/values/{charValueId}"},
+            consumes = "application/merge-patch+json",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<CharacteristicValueProj> patchCharValueById(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
@@ -118,17 +121,18 @@ public class CharacteristicValueController extends AbstractController {
     ) {
         var fetched = characteristicValueService.findById(charValueId);
         fetched = characteristicValueService.patchOne(charId, mergePatch(fetched, CharacteristicValue.class, dto));
-        return ResponseEntity.ok(characteristicValueService.findProjById(fetched.getId(), CharacteristicValueProj.class));
+        return ResponseEntity.noContent().build();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping({"categories/{categoryId}/products/{productId}/chars/{charId}/values/{charValueId}"})
-    public void deleteCharValueById(
+    public ResponseEntity<?> deleteCharValueById(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
             @PathVariable(name = "productId", required = true) String productId,
             @PathVariable(name = "charId", required = true) Long charId,
             @PathVariable(name = "charValueId", required = true) Long charValueId
     ) {
         characteristicValueService.deleteOne(charValueId);
+        return ResponseEntity.noContent().build();
     }
 }

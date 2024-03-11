@@ -70,16 +70,19 @@ public class ProductController extends AbstractController {
 
     @PutMapping(value = {"categories/{categoryId}/products/{productId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<ProductDto> updateById(
+    public ResponseEntity<?> updateById(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
             @PathVariable(name = "productId", required = true) String productId,
             @RequestBody ProductDto dto) {
         var product = modelMapper.map(dto, Product.class);
         productService.updateOne(productId, product);
-        return ResponseEntity.ok(modelMapper.map(product, ProductDto.class));
+        return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping(value = {"categories/{categoryId}/products/{productId}"})
+    @PatchMapping(
+            value = {"categories/{categoryId}/products/{productId}"},
+            consumes = "application/merge-patch+json",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<ProductProj> patchById(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
@@ -88,15 +91,16 @@ public class ProductController extends AbstractController {
     ) {
         var fetched = productService.findById(productId);
         fetched = productService.patchOne(productId, mergePatch(fetched, Product.class, dto));
-        return ResponseEntity.ok(productService.findProjById(fetched.getId(), ProductProj.class));
+        return ResponseEntity.noContent().build();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = {"categories/{categoryId}/products/{productId}"})
-    public void deleteById(
+    public ResponseEntity<?> deleteById(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
             @PathVariable(name = "productId", required = true) String productId
     ) {
         productService.deleteOne(productId);
+        return ResponseEntity.noContent().build();
     }
 }

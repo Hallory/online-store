@@ -71,21 +71,24 @@ public class CharacteristicController extends AbstractController {
             @RequestBody CharacteristicDto dto
     ) {
         var characteristic = characteristicService.createOne(categoryId, modelMapper.map(dto, Characteristic.class));
-        return ResponseEntity.ok(buildURI(req, characteristic.getId().toString()));
+        return ResponseEntity.created(buildURI(req, characteristic.getId().toString())).build();
     }
 
     @PutMapping(value = {"categories/{categoryId}/chars/{charId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<CharacteristicDto> updateCharById(
+    public ResponseEntity<?> updateCharById(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
             @PathVariable(name = "charId", required = true) Long charId,
             @RequestBody CharacteristicDto dto
     ) {
         var characteristic = characteristicService.updateOne(charId, modelMapper.map(dto, Characteristic.class));
-        return ResponseEntity.ok(modelMapper.map(characteristic, CharacteristicDto.class));
+        return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping(value = {"categories/{categoryId}/chars/{charId}"})
+    @PatchMapping(
+            value = {"categories/{categoryId}/chars/{charId}"},
+            consumes = "application/merge-patch+json",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<CharacteristicProj> patchCharById(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
@@ -94,15 +97,16 @@ public class CharacteristicController extends AbstractController {
     ) {
         var fetched = characteristicService.findById(charId);
         fetched = characteristicService.patchOne(charId, mergePatch(fetched, Characteristic.class, dto));
-        return ResponseEntity.ok(characteristicService.findProjById(fetched.getId(), CharacteristicProj.class));
+        return ResponseEntity.noContent().build();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping({"categories/{categoryId}/chars/{charId}"})
-    public void deleteCharById(
+    public ResponseEntity<?> deleteCharById(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
             @PathVariable(name = "charId", required = true) Long charId
     ) {
         characteristicService.deleteOne(charId);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -2,6 +2,7 @@ package org.electronicsstore.backend.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.electronicsstore.backend.dtos.product.CategoryDto;
@@ -12,6 +13,7 @@ import org.electronicsstore.backend.model.product.Category;
 import org.electronicsstore.backend.services.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,14 +79,17 @@ public class CategoryController extends AbstractController {
 
     @PutMapping({"{categoryId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<CategoryDto> updateCategory(
+    public ResponseEntity<?> updateCategory(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
             @RequestBody CategoryDto dto) {
         var category = categoryService.updateOne(categoryId, modelMapper.map(dto, Category.class));
-        return ResponseEntity.ok(modelMapper.map(category, CategoryDto.class));
+        return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping(value = {"{categoryId}"}, consumes = "application/merge-patch+json")
+    @PatchMapping(
+            value = {"{categoryId}"},
+            consumes = "application/merge-patch+json",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<CategoryProj> patchCategory(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
@@ -92,13 +97,14 @@ public class CategoryController extends AbstractController {
     ) {
         var fetched = categoryService.findById(categoryId);
         fetched = categoryService.patchOne(categoryId, mergePatch(fetched, Category.class, dto));
-        return ResponseEntity.ok(categoryService.findProjById(fetched.getId(), CategoryProj.class));
+        return ResponseEntity.noContent().build();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping({"{categoryId}"})
-    public void deleteCategory(@PathVariable(name = "categoryId", required = true) Long categoryId) {
+    public ResponseEntity<?> deleteCategory(@PathVariable(name = "categoryId", required = true) Long categoryId) {
         categoryService.deleteOne(categoryId);
         categoryService.createRootCategory();
+        return ResponseEntity.noContent().build();
     }
 }

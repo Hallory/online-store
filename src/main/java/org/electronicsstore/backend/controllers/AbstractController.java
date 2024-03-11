@@ -28,4 +28,12 @@ public class AbstractController {
     protected URI buildURI(HttpServletRequest req, String id) {
         return URI.create(req.getRequestURL().toString()).resolve(id);
     }
+
+    protected URI buildURI(HttpServletRequest req, String... elements) {
+        var uri = URI.create(req.getRequestURL().toString());
+        for (String el : elements) {
+            uri = uri.resolve(el);
+        }
+        return uri;
+    }
 }

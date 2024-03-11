@@ -10,9 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -47,6 +45,17 @@ public class Promo {
         product.setPromo(this);
     }
 
+    public void addProduct(Collection<Product> products) {
+        getProducts().addAll(products);
+        products.forEach(p -> p.setPromo(this));
+    }
+
+    public void replaceProduct(Collection<Product> products) {
+        getProducts().forEach(p -> p.setPromo(null));
+        getProducts().addAll(products);
+        products.forEach(p -> p.setPromo(this));
+    }
+
     public void removeProduct(Product product) {
         getProducts().remove(product);
         product.setPromo(null);
@@ -62,11 +71,11 @@ public class Promo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Promo promo = (Promo) o;
-        return Objects.equals(name, promo.name) && Objects.equals(createdAt, promo.createdAt);
+        return Objects.equals(name, promo.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, createdAt);
+        return Objects.hash(name);
     }
 }

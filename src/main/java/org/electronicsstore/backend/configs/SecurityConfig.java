@@ -2,12 +2,10 @@ package org.electronicsstore.backend.configs;
 
 import jakarta.servlet.DispatcherType;
 import jakarta.ws.rs.HttpMethod;
-import org.electronicsstore.backend.exceptions.CustomEntityExistsException;
 import org.electronicsstore.backend.security.CustomJwtConverter;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +16,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-
-import java.rmi.RemoteException;
 
 @Configuration
 @EnableWebSecurity
@@ -68,10 +64,5 @@ public class SecurityConfig {
                 .clientId(client)
                 .clientSecret(secret)
                 .build();
-    }
-
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
     }
 }

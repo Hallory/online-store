@@ -95,4 +95,18 @@ public class CategoryServiceTest {
         assertNotNull(tree);
         log.info("{}", om.writerWithDefaultPrettyPrinter().writeValueAsString(tree));
     }
+
+    @Test
+    public void treeDownCategoryTest() throws JsonProcessingException {
+        var tree = categoryService.findCategoryTreeDown(1L);
+        assertNotNull(tree);
+        log.info("{}", om.writerWithDefaultPrettyPrinter().writeValueAsString(tree));
+    }
+
+    @Test
+    public void treeUpCategoryTest() throws JsonProcessingException {
+        var tree = categoryService.findCategoryTreeUp(5L);
+        assertNotNull(tree);
+        log.info("{}", om.writerWithDefaultPrettyPrinter().writeValueAsString(tree));
+    }
 }

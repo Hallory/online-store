@@ -108,6 +108,14 @@ public class CategoryService implements BaseService<Category, Long> {
         return categoryRepo.existsByParentIsNull();
     }
 
+    public List<Category> findCategoryTreeDown(Long id) {
+        return categoryRepo.findCategoryTreeDown(id);
+    }
+
+    public List<Category> findCategoryTreeUp(Long id) {
+        return categoryRepo.findCategoryTreeUp(id);
+    }
+
     private boolean isCategoryParent(Category category) {
         return category.getChildren().isEmpty();
     }
