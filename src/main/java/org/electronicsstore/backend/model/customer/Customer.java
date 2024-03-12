@@ -57,7 +57,7 @@ public class Customer {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "customer", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
-    private Set<CustomerReview> customerReviews;
+    private Set<Review> reviews;
 
     public Set<Address> getAddresses() {
         return (addresses == null) ? addresses = new HashSet<>() : addresses;
@@ -67,7 +67,7 @@ public class Customer {
         return (shopOrders == null) ? shopOrders = new HashSet<>() : shopOrders;
     }
 
-    public Set<CustomerReview> getCustomerReviews() { return (customerReviews == null) ? customerReviews = new HashSet<>() : customerReviews; }
+    public Set<Review> getReviews() { return (reviews == null) ? reviews = new HashSet<>() : reviews; }
 
     public void addAddress(Address o) {
         getAddresses().add(o);
@@ -89,13 +89,13 @@ public class Customer {
         o.setCustomer(null);
     }
 
-    public void addCustomerReview(CustomerReview o) {
-        getCustomerReviews().add(o);
+    public void addCustomerReview(Review o) {
+        getReviews().add(o);
         o.setCustomer(this);
     }
 
-    public void removeShoppingCartItem(CustomerReview o) {
-        getCustomerReviews().remove(o);
+    public void removeShoppingCartItem(Review o) {
+        getReviews().remove(o);
         o.setCustomer(null);
     }
 

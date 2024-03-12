@@ -16,7 +16,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class CustomerReview {
+public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -30,12 +30,12 @@ public class CustomerReview {
     private LocalDateTime deletedAt;
 
     @ToString.Exclude
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @ToString.Exclude
-    @ManyToOne(cascade = {})
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "product_id")
     private Product product;
 
@@ -43,7 +43,7 @@ public class CustomerReview {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CustomerReview that = (CustomerReview) o;
+        Review that = (Review) o;
         return Objects.equals(text, that.text) && Objects.equals(createdAt, that.createdAt) && Objects.equals(customer, that.customer);
     }
 

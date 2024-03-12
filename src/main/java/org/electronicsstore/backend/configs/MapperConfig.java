@@ -2,12 +2,14 @@ package org.electronicsstore.backend.configs;
 
 import lombok.RequiredArgsConstructor;
 import org.electronicsstore.backend.dtos.customer.CustomerRefDto;
+import org.electronicsstore.backend.dtos.customer.ReviewDto;
 import org.electronicsstore.backend.dtos.customer.ShoppingCartItemDto;
 import org.electronicsstore.backend.dtos.customer.ShoppingCartPutDto;
 import org.electronicsstore.backend.dtos.product.ProductRefDto;
 import org.electronicsstore.backend.dtos.product.PromoDto;
 import org.electronicsstore.backend.dtos.product.PromoPutDto;
 import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
+import org.electronicsstore.backend.model.customer.Review;
 import org.electronicsstore.backend.model.customer.ShoppingCart;
 import org.electronicsstore.backend.model.customer.ShoppingCartItem;
 import org.electronicsstore.backend.model.product.Product;
@@ -71,6 +73,15 @@ public class MapperConfig {
                     .using(c -> new ProductRefDto(((Product) c.getSource()).getId()))
                     .map(ShoppingCartItem::getProduct, ShoppingCartItemDto::setProduct);
             });
+
+        modelMapper.typeMap(ReviewDto.class, Review.class).addMappings(mapper -> {
+            mapper
+                    .using(c -> customerRepo.findById(((CustomerRefDto) c.getSource()).getId()).orElseThrow(CustomEntityNotFoundException::new))
+                    .map(ReviewDto::getCustomerId, Review::setCustomer);
+            mapper
+                    .using(c -> productRepo.findById(((ProductRefDto) c.getSource()).getId()).orElseThrow(CustomEntityNotFoundException::new))
+                    .map(ReviewDto::getProductId, Review::setProduct);
+        });
         return modelMapper;
     }
 }
