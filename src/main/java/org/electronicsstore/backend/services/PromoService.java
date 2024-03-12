@@ -2,7 +2,6 @@ package org.electronicsstore.backend.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.electronicsstore.backend.dtos.product.ProductRefDto;
 import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
 import org.electronicsstore.backend.model.product.Promo;
 import org.electronicsstore.backend.repos.BaseService;
@@ -72,16 +71,16 @@ public class PromoService implements BaseService<Promo, Long> {
         promoRepo.delete(promo);
     }
 
-    public Promo addProducts(Long promoId, ProductRefDto dto) {
+    public Promo addProducts(Long promoId, List<String> productIds) {
         var promo = findById(promoId);
-        var products = productRepo.findAllById(dto.productIds());
+        var products = productRepo.findAllById(productIds);
         promo.addProduct(products);
         return promoRepo.save(promo);
     }
 
-    public Promo replaceProducts(Long promoId, ProductRefDto dto) {
+    public Promo replaceProducts(Long promoId, List<String> productIds) {
         var promo = findById(promoId);
-        var products = productRepo.findAllById(dto.productIds());
+        var products = productRepo.findAllById(productIds);
         promo.replaceProduct(products);
         return promoRepo.save(promo);
     }

@@ -18,9 +18,9 @@ public class PromoPutDto {
     private String name;
     private String description;
     private Double discountRate;
-    private List<String> productIds;
+    private List<ProductRefDto> productIds;
 
-    public List<String> getProductIds() {
+    public List<ProductRefDto> getProductIds() {
         return (productIds == null) ? productIds = new ArrayList<>() : productIds;
     }
 

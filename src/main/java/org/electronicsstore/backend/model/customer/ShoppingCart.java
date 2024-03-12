@@ -39,7 +39,7 @@ public class ShoppingCart {
 
     @ToString.Exclude
     @NotNull
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "customer_id", unique = true) // nullable = false
     private Customer customer;
 

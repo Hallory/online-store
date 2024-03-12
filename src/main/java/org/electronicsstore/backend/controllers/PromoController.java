@@ -101,9 +101,9 @@ public class PromoController extends AbstractController {
     public ResponseEntity<URI> addProducts(
             HttpServletRequest req,
             @PathVariable(name = "promoId", required = true) Long promoId,
-            @RequestBody ProductRefDto dto
+            @RequestBody List<ProductRefDto> dtos
     ) {
-        var promo = promoService.addProducts(promoId, dto);
+        var promo = promoService.addProducts(promoId, dtos.stream().map(ProductRefDto::getId).toList());
         return ResponseEntity.created(buildURI(req)).build();
     }
 
@@ -114,8 +114,9 @@ public class PromoController extends AbstractController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> putPromo(
             @PathVariable(name = "promoId", required = true) Long promoId,
-            @RequestBody ProductRefDto dto) {
-        var promo = promoService.addProducts(promoId, dto);
+            @RequestBody List<ProductRefDto> dtos
+    ) {
+        var promo = promoService.addProducts(promoId, dtos.stream().map(ProductRefDto::getId).toList());
         return ResponseEntity.noContent().build();
     }
 
