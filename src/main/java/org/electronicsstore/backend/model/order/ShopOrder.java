@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -19,6 +20,10 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 public class ShopOrder {
+    public enum ORDER_STATUS {
+        PENDING, DECLINED, CANCELED, SHIPPED
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -33,16 +38,16 @@ public class ShopOrder {
     private LocalDateTime approvedAt;
 
     @ToString.Exclude
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "shopOrder", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.PERSIST}, orphanRemoval = false)
+    @OneToMany(mappedBy = "shopOrder", cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.PERSIST}, orphanRemoval = false)
     private Set<Payment> payments;
 
     @ToString.Exclude
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "shipping_method_id")
     private ShippingMethod shippingMethod;
 
@@ -71,6 +76,11 @@ public class ShopOrder {
     public void addOrderItem(OrderItem o) {
         getOrderItems().add(o);
         o.setShopOrder(this);
+    }
+
+    public void addOrderItem(Collection<OrderItem> o) {
+        getOrderItems().addAll(o);
+        o.forEach(e -> e.setShopOrder(this));
     }
 
     public void removeOrderItem(OrderItem o) {

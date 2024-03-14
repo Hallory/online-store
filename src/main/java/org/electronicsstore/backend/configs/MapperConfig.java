@@ -5,6 +5,10 @@ import org.electronicsstore.backend.dtos.customer.CustomerRefDto;
 import org.electronicsstore.backend.dtos.customer.ReviewDto;
 import org.electronicsstore.backend.dtos.customer.ShoppingCartItemDto;
 import org.electronicsstore.backend.dtos.customer.ShoppingCartPutDto;
+import org.electronicsstore.backend.dtos.order.OrderItemDto;
+import org.electronicsstore.backend.dtos.order.ShippingMethodRefDto;
+import org.electronicsstore.backend.dtos.order.ShopOrderDto;
+import org.electronicsstore.backend.dtos.order.ShopOrderProcessDto;
 import org.electronicsstore.backend.dtos.product.ProductRefDto;
 import org.electronicsstore.backend.dtos.product.PromoDto;
 import org.electronicsstore.backend.dtos.product.PromoPutDto;
@@ -12,12 +16,12 @@ import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
 import org.electronicsstore.backend.model.customer.Review;
 import org.electronicsstore.backend.model.customer.ShoppingCart;
 import org.electronicsstore.backend.model.customer.ShoppingCartItem;
+import org.electronicsstore.backend.model.order.OrderItem;
+import org.electronicsstore.backend.model.order.Payment;
+import org.electronicsstore.backend.model.order.ShopOrder;
 import org.electronicsstore.backend.model.product.Product;
 import org.electronicsstore.backend.model.product.Promo;
-import org.electronicsstore.backend.repos.CustomerRepo;
-import org.electronicsstore.backend.repos.ProductRepo;
-import org.electronicsstore.backend.repos.PromoRepo;
-import org.electronicsstore.backend.repos.ShoppingCartItemRepo;
+import org.electronicsstore.backend.repos.*;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -27,6 +31,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Configuration
@@ -35,6 +40,7 @@ public class MapperConfig {
     private final ProductRepo productRepo;
     private final ShoppingCartItemRepo shoppingCartItemRepo;
     private final CustomerRepo customerRepo;
+    private final ShippingMethodRepo shippingMethodRepo;
 
     @Bean
     public ModelMapper modelMapper() {
@@ -81,6 +87,24 @@ public class MapperConfig {
             mapper
                     .using(c -> productRepo.findById(((ProductRefDto) c.getSource()).getId()).orElseThrow(CustomEntityNotFoundException::new))
                     .map(ReviewDto::getProductId, Review::setProduct);
+        });
+
+        modelMapper.typeMap(OrderItemDto.class, OrderItem.class).addMappings(mapper -> {
+            mapper
+                    .using(c -> productRepo.findById(((ProductRefDto) c.getSource()).getId()).orElseThrow(CustomEntityNotFoundException::new))
+                    .map(OrderItemDto::getProductId, OrderItem::setProduct);
+        });
+
+        modelMapper.typeMap(ShopOrderDto.class, ShopOrder.class).addMappings(mapper -> {
+            mapper
+                    .using(c -> customerRepo.findById(((CustomerRefDto) c.getSource()).getId()).orElseThrow(CustomEntityNotFoundException::new))
+                    .map(ShopOrderDto::getCustomerId, ShopOrder::setCustomer);
+            mapper
+                    .using(c -> shippingMethodRepo.findById(((ShippingMethodRefDto) c.getSource()).getId()).orElseThrow(CustomEntityNotFoundException::new))
+                    .map(ShopOrderDto::getShippingMethodId, ShopOrder::setShippingMethod);
+            mapper
+                    .using(c -> ((List<OrderItemDto>) c.getSource()).stream().map(dto -> modelMapper.map(dto, OrderItem.class)).collect(Collectors.toSet()))
+                    .map(ShopOrderDto::getOrderItems, ShopOrder::setOrderItems);
         });
         return modelMapper;
     }

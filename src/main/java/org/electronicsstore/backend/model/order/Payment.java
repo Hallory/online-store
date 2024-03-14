@@ -25,7 +25,7 @@ public class Payment {
     private LocalDateTime createdAt;
 
     @ToString.Exclude
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "shop_order_id")
     private ShopOrder shopOrder;
 

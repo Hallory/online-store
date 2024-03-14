@@ -54,4 +54,8 @@ public class Address {
     public int hashCode() {
         return Objects.hash(unitNum, streetNum, addressLine1, city, region, postalCode);
     }
+
+    public String prepareShippingAddress() {
+        return String.format("%s, %s, %s, %s", country.getCountryName(), postalCode, city, addressLine1);
+    }
 }

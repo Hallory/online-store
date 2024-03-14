@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.electronicsstore.backend.model.customer.ShoppingCartItem;
 import org.electronicsstore.backend.model.product.Product;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -17,6 +19,25 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 public class OrderItem {
+    public static OrderItem prepareOrderItemFromShoppingCartItem(ShoppingCartItem cartItem) {
+        var orderItem = new OrderItem(
+                null,
+                cartItem.getProduct().getSku(),
+                cartItem.getProduct().getPrice(),
+                null,
+                cartItem.getQty(),
+                null,
+                null,
+                cartItem.getProduct(),
+                null);
+        orderItem.setTotalAmount(orderItem.calcTotal().doubleValue());
+        return orderItem;
+    }
+
+    public BigDecimal calcTotal() {
+        return BigDecimal.valueOf(product.getPrice()).multiply(BigDecimal.valueOf(qty));
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -31,12 +52,12 @@ public class OrderItem {
     private LocalDateTime modifiedAt;
 
     @ToString.Exclude
-    @ManyToOne(cascade = {})
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "product_id", updatable = false)
     private Product product;
 
     @ToString.Exclude
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "shop_order_id")
     private ShopOrder shopOrder;
 

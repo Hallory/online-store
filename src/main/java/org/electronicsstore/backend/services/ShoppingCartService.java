@@ -49,7 +49,7 @@ public class ShoppingCartService implements BaseService<ShoppingCart, String> {
 
     @Override
     public <P> List<P> findAllProjByIds(List<String> ids, Class<P> clz) {
-        throw new NotImplementedException();
+        return shoppingCartRepo.findAllByIdIn(ids, clz);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class ShoppingCartService implements BaseService<ShoppingCart, String> {
 
     @Override
     public ShoppingCart patchOne(String id, ShoppingCart entity) {
-        throw new NotImplementedException();
+        return shoppingCartRepo.save(entity);
     }
 
     @Override
