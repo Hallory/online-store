@@ -33,12 +33,12 @@ public class Address {
     private LocalDateTime modifiedAt;
 
     @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
     @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "country_id")
     private Country country;
 

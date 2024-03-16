@@ -14,21 +14,5 @@ public interface AddressProj {
     Boolean getIsDefault();
     LocalDateTime getCreatedAt();
     LocalDateTime getModifiedAt();
-    CustomerProjEmb getCustomer();
     CountryProj getCountry();
-
-    interface CustomerProjEmb {
-        String getId();
-        String getAccountId();
-        String getUsername();
-        String getFirstName();
-        String getLastName();
-        String getMiddleName();
-        String getEmail();
-        String getPhoneNum();
-        LocalDateTime getCreatedAt();
-        LocalDateTime getModifiedAt();
-        LocalDateTime getDeletedAt();
-        Boolean getIsDeleted();
-    }
 }

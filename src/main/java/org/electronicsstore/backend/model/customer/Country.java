@@ -7,10 +7,7 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Data
@@ -23,10 +20,7 @@ public class Country {
     private Long id;
     @Column(unique = true)
     private String countryName;
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-    @UpdateTimestamp
-    private LocalDateTime modifiedAt;
+    private String region;
 
     @Override
     public boolean equals(Object o) {

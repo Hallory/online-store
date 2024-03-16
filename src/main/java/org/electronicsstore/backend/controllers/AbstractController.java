@@ -14,6 +14,11 @@ public class AbstractController {
     @Autowired
     protected ObjectMapper objectMapper;
 
+    protected <T, I> T mergePatch(T entity, Class<T> clz, I mergePatchDto) {
+        JsonNode mergePatchJson = objectMapper.valueToTree(mergePatchDto);
+        return mergePatch(entity, clz, mergePatchJson);
+    }
+
     protected <T> T mergePatch(T entity, Class<T> clz, JsonNode mergePatchDto) {
         JsonNode original = objectMapper.valueToTree(entity);
         try {

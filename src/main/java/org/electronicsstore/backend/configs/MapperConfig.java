@@ -1,23 +1,19 @@
 package org.electronicsstore.backend.configs;
 
 import lombok.RequiredArgsConstructor;
-import org.electronicsstore.backend.dtos.customer.CustomerRefDto;
-import org.electronicsstore.backend.dtos.customer.ReviewDto;
-import org.electronicsstore.backend.dtos.customer.ShoppingCartItemDto;
-import org.electronicsstore.backend.dtos.customer.ShoppingCartPutDto;
+import org.electronicsstore.backend.dtos.customer.*;
 import org.electronicsstore.backend.dtos.order.OrderItemDto;
 import org.electronicsstore.backend.dtos.order.ShippingMethodRefDto;
 import org.electronicsstore.backend.dtos.order.ShopOrderDto;
-import org.electronicsstore.backend.dtos.order.ShopOrderProcessDto;
 import org.electronicsstore.backend.dtos.product.ProductRefDto;
 import org.electronicsstore.backend.dtos.product.PromoDto;
 import org.electronicsstore.backend.dtos.product.PromoPutDto;
 import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
+import org.electronicsstore.backend.model.customer.Address;
 import org.electronicsstore.backend.model.customer.Review;
 import org.electronicsstore.backend.model.customer.ShoppingCart;
 import org.electronicsstore.backend.model.customer.ShoppingCartItem;
 import org.electronicsstore.backend.model.order.OrderItem;
-import org.electronicsstore.backend.model.order.Payment;
 import org.electronicsstore.backend.model.order.ShopOrder;
 import org.electronicsstore.backend.model.product.Product;
 import org.electronicsstore.backend.model.product.Promo;
@@ -41,6 +37,7 @@ public class MapperConfig {
     private final ShoppingCartItemRepo shoppingCartItemRepo;
     private final CustomerRepo customerRepo;
     private final ShippingMethodRepo shippingMethodRepo;
+    private final CountryRepo countryRepo;
 
     @Bean
     public ModelMapper modelMapper() {
@@ -105,6 +102,12 @@ public class MapperConfig {
             mapper
                     .using(c -> ((List<OrderItemDto>) c.getSource()).stream().map(dto -> modelMapper.map(dto, OrderItem.class)).collect(Collectors.toSet()))
                     .map(ShopOrderDto::getOrderItems, ShopOrder::setOrderItems);
+        });
+
+        modelMapper.typeMap(AddressDto.class, Address.class).addMappings(mapper -> {
+            mapper
+                    .using(c -> countryRepo.findById(((AddressDto.CountryEmbDto) c.getSource()).getId()).orElseThrow(CustomEntityNotFoundException::new))
+                    .map(AddressDto::getCountryId, Address::setCountry);
         });
         return modelMapper;
     }
