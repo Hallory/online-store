@@ -1,14 +1,9 @@
 package org.electronicsstore.backend.controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.electronicsstore.backend.dtos.product.CategoryDto;
-import org.electronicsstore.backend.dtos.product.CategoryProj;
-import org.electronicsstore.backend.dtos.product.CategoryTraversedDownProj;
-import org.electronicsstore.backend.dtos.product.CategoryTraversedUpProj;
+import org.electronicsstore.backend.dtos.product.*;
 import org.electronicsstore.backend.model.product.Category;
 import org.electronicsstore.backend.services.CategoryService;
 import org.modelmapper.ModelMapper;
@@ -23,7 +18,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(
         origins = {"http://frontend:4200", "http://localhost:4200"},
         allowedHeaders = "*",
@@ -33,19 +28,19 @@ public class CategoryController extends AbstractController {
     private final CategoryService categoryService;
     private final ModelMapper modelMapper;
 
-    @GetMapping
+    @GetMapping(value = {"categories", "categories/"})
     @ResponseStatus(HttpStatus.OK)
     public List<CategoryProj> categories() {
         return categoryService.findAllBy(CategoryProj.class);
     }
 
-    @GetMapping(value = {"tree"})
+    @GetMapping(value = {"categories/tree", "categories/tree/"})
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<CategoryTraversedDownProj> categoryTree() {
         return ResponseEntity.ok(categoryService.findByParentIsNull(CategoryTraversedDownProj.class));
     }
 
-    @GetMapping({"{categoryId}"})
+    @GetMapping(value = {"categories/{categoryId}", "categories/{categoryId}/"})
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<CategoryTraversedDownProj> categoryById(
             @PathVariable(name = "categoryId", required = true) Long categoryId
@@ -53,47 +48,64 @@ public class CategoryController extends AbstractController {
         return ResponseEntity.ok(categoryService.findProjById(categoryId, CategoryTraversedDownProj.class));
     }
 
-    @GetMapping({"{categoryId}/tree"})
+    @GetMapping(value = {"categories/{categoryId}/tree-down", "categories/{categoryId}/tree-down/"})
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> treeById(
-            @PathVariable(name = "categoryId", required = true) Long categoryId,
-            @RequestParam(value = "direction", required = true) String direction
+    public ResponseEntity<Object> treeDownById(
+            @PathVariable(name = "categoryId", required = true) Long categoryId
     ) {
-        var tree = switch (direction) {
-            case "UP" -> categoryService.findProjById(categoryId, CategoryTraversedUpProj.class);
-            case "DOWN" -> categoryService.findProjById(categoryId, CategoryTraversedDownProj.class);
-            default -> throw new IllegalStateException("Unexpected value: " + direction);
-        };
+        var tree = categoryService.findProjById(categoryId, CategoryTraversedDownProj.class);
         return ResponseEntity.ok(tree);
     }
 
-    @PostMapping
+    @GetMapping(value = {"categories/{categoryId}/tree-up", "categories/{categoryId}/tree-up/"})
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> treeUpById(
+            @PathVariable(name = "categoryId", required = true) Long categoryId
+    ) {
+        var tree = categoryService.findProjById(categoryId, CategoryTraversedUpProj.class);
+        return ResponseEntity.ok(tree);
+    }
+
+    @PostMapping(
+            value = {"categories", "categories/"},
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<URI> createCategory(
             HttpServletRequest req,
-            @RequestBody CategoryDto dto
+            @RequestBody CategoryPostDto dto
     ) {
         var category = categoryService.createOne(modelMapper.map(dto, Category.class));
         return ResponseEntity.created(buildURI(req, category.getId().toString())).build();
     }
 
-    @PutMapping({"{categoryId}"})
+    @PostMapping(value = {"categories/create-root", "categories/create-root/"})
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<URI> createRootCategory(
+            HttpServletRequest req
+    ) {
+        var category = categoryService.createRootCategory();
+        return ResponseEntity.created(buildURI(req, category.getId().toString())).build();
+    }
+
+    @PutMapping(
+            value = {"categories/{categoryId}", "categories/{categoryId}/"},
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> updateCategory(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
-            @RequestBody CategoryDto dto) {
+            @RequestBody CategoryPutDto dto) {
         var category = categoryService.updateOne(categoryId, modelMapper.map(dto, Category.class));
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping(
-            value = {"{categoryId}"},
+            value = {"categories/{categoryId}", "categories/{categoryId}/"},
             consumes = "application/merge-patch+json",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<CategoryProj> patchCategory(
             @PathVariable(name = "categoryId", required = true) Long categoryId,
-            @RequestBody JsonNode dto
+            @RequestBody CategoryPatchDto dto
     ) {
         var fetched = categoryService.findById(categoryId);
         fetched = categoryService.patchOne(categoryId, mergePatch(fetched, Category.class, dto));
@@ -101,10 +113,9 @@ public class CategoryController extends AbstractController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping({"{categoryId}"})
+    @DeleteMapping(value = {"categories/{categoryId}", "categories/{categoryId}/"})
     public ResponseEntity<?> deleteCategory(@PathVariable(name = "categoryId", required = true) Long categoryId) {
         categoryService.deleteOne(categoryId);
-        categoryService.createRootCategory();
         return ResponseEntity.noContent().build();
     }
 }

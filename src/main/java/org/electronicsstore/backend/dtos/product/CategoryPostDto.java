@@ -1,5 +1,6 @@
 package org.electronicsstore.backend.dtos.product;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -11,19 +12,20 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDto {
+public class CategoryPostDto {
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
     @NotBlank
     @Size(min = 3, max = 30)
     private String name;
     private String description;
-    private CategoryDto parent;
+    private CategoryRefDto parent;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CategoryDto that = (CategoryDto) o;
+        CategoryPostDto that = (CategoryPostDto) o;
         return Objects.equals(name, that.name);
     }
 

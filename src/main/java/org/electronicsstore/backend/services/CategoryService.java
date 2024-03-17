@@ -3,6 +3,7 @@ package org.electronicsstore.backend.services;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.electronicsstore.backend.exceptions.CustomEntityExistsException;
 import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
 import org.electronicsstore.backend.exceptions.EntityBadRequestException;
 import org.electronicsstore.backend.model.product.Category;
@@ -80,13 +81,17 @@ public class CategoryService implements BaseService<Category, Long> {
     @Valid
     @Override
     public Category updateOne(Long id, Category entity) {
+        // todo deep update validation
+        entity.setId(id);
         return categoryRepo.save(entity);
     }
 
     @Valid
     @Override
-    public Category patchOne(Long id, Category category) {
-        return categoryRepo.save(category);
+    public Category patchOne(Long id, Category entity) {
+        // todo deep validation
+        entity.setId(id);
+        return categoryRepo.save(entity);
     }
 
     @Override
@@ -129,6 +134,9 @@ public class CategoryService implements BaseService<Category, Long> {
     }
 
     public Category createRootCategory() {
+        if (existsByParentIsNull()) {
+            throw new CustomEntityExistsException("Root category already exists");
+        }
         var rootCategory = new Category();
         rootCategory.setName("Root Category");
         rootCategory.setDescription("Mandatory root category");
