@@ -3,6 +3,7 @@ import ImageCarousel from '../../../components/image-carousel/ImageCarousel';
 import { LuScale } from 'react-icons/lu';
 import { CiHeart, CiCircleCheck } from 'react-icons/ci';
 import MainProductsDescriptions from './main-product-descriptions/MainProductsDescriptions';
+import DeliveryVariants from './delivery-variants/DeliveryVariants';
 
 const MainContent = ({ product }) => {
     return (
@@ -17,13 +18,13 @@ const MainContent = ({ product }) => {
                             <span className="text-gray-500 line-through">
                                 {product.price + 150}
                             </span>
-                            <span className="bg-danger-600 px-3 rounded-md">
-                                -150
-                            </span>
                         </div>
-                        <span className="text-4xl text-danger-600 font-bold">
+                        <span className="text-4xl text-danger-600 font-bold border-b-[0.025rem] border-black-300">
                             {product.price}$
                         </span>
+                            <span className="text-gray-500 rounded-md">
+                               sparren: -150
+                            </span>
                         <span
                             className={`${
                                 !!product.countInStock === 0
@@ -55,6 +56,9 @@ const MainContent = ({ product }) => {
 
                 <div className="w-full mt-10">
                     <MainProductsDescriptions product={product} />
+                </div>
+                <div>
+                    <DeliveryVariants/>
                 </div>
             </div>
         </div>
