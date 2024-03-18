@@ -6,7 +6,7 @@ import java.util.Set;
 public interface CharacteristicValueProj {
     Long getId();
     String getData();
-    LocalDateTime getCreatedA();
+    LocalDateTime getCreatedAt();
     CharacteristicProjEmb getCharacteristic();
     Set<ProductProjEmb> getProducts();
 

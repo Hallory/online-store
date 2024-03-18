@@ -1,5 +1,6 @@
 package org.electronicsstore.backend.dtos.product;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +12,10 @@ import java.util.Objects;
 @AllArgsConstructor
 @Data
 public class CharacteristicValueDto {
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
     private String data;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private LocalDateTime createdAt;
 
     @Override

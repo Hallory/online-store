@@ -12,25 +12,22 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PromoDto {
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+public class PromoPostDto {
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
     private String name;
     private String description;
     private Double discountRate;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime startDate;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime endDate;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Set<ProductDto> products;
+    private Set<ProductRefDto> products;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PromoDto promoDto = (PromoDto) o;
-        return Objects.equals(name, promoDto.name);
+        PromoPostDto promoPostDto = (PromoPostDto) o;
+        return Objects.equals(name, promoPostDto.name);
     }
 
     @Override

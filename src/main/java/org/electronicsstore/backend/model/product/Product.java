@@ -53,9 +53,9 @@ public class Product {
     @Min(0)
     @Column(columnDefinition = "float(53) not null check(price >= 0.0)")
     private Double price;
-    private String brand; // should be extended to hierarchy
+    private String brand;
     private String description;
-    private String productIcon; // general image in the product list
+    private String productIcon;
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;

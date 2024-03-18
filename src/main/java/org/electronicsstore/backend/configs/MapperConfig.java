@@ -6,8 +6,7 @@ import org.electronicsstore.backend.dtos.order.OrderItemDto;
 import org.electronicsstore.backend.dtos.order.ShippingMethodRefDto;
 import org.electronicsstore.backend.dtos.order.ShopOrderDto;
 import org.electronicsstore.backend.dtos.product.ProductRefDto;
-import org.electronicsstore.backend.dtos.product.PromoDto;
-import org.electronicsstore.backend.dtos.product.PromoPutDto;
+import org.electronicsstore.backend.dtos.product.PromoPostDto;
 import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
 import org.electronicsstore.backend.model.customer.Address;
 import org.electronicsstore.backend.model.customer.Review;
@@ -24,7 +23,6 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,39 +43,36 @@ public class MapperConfig {
         modelMapper
                 .getConfiguration()
                 .setPreferNestedProperties(false)
-                .setMatchingStrategy(MatchingStrategies.STRICT);;
+                .setMatchingStrategy(MatchingStrategies.STRICT);
 
-        modelMapper.typeMap(PromoPutDto.class, Promo.class).addMappings(mapper -> {
-            Converter<List<ProductRefDto>, Set<Product>> colls = c -> new HashSet<>(productRepo.findAllById(c.getSource()
+        modelMapper.typeMap(Promo.class, PromoPostDto.class).addMappings(mapper ->
+            mapper
+                    .using(c -> ((Set<Product>)(c.getSource())).stream().map(Product::getId).toList())
+                    .map(Promo::getProducts, PromoPostDto::setProducts));
+
+        modelMapper.typeMap(ShoppingCartPutDto.class, ShoppingCart.class).addMappings(mapper ->
+        {
+            Converter<List<ShoppingCartItemDto>, Set<ShoppingCartItem>> c1 =
+                    c -> c.getSource()
                             .stream()
-                            .map(ProductRefDto::getId)
-                            .toList()));
+                            .map(sci -> modelMapper.map(sci, ShoppingCartItem.class))
+                            .collect(Collectors.toSet());
             mapper
-                    .using(colls)
-                    .map(PromoPutDto::getProductIds, Promo::replaceProduct);
-            });
-
-        modelMapper.typeMap(Promo.class, PromoDto.class).addMappings(mapper ->
-                mapper
-                        .using(c -> ((Set<Product>)(c.getSource())).stream().map(Product::getId).toList())
-                        .map(Promo::getProducts, PromoDto::setProducts));
-
-        modelMapper.typeMap(ShoppingCartPutDto.class, ShoppingCart.class).addMappings(mapper -> {
-            mapper
-                    .using(c -> ((List<ShoppingCartItemDto>) c.getSource()).stream().map(sci -> modelMapper.map(sci, ShoppingCartItem.class)).toList())
+                    .using(c1)
                     .map(ShoppingCartPutDto::getShoppingCartItems, ShoppingCart::setShoppingCartItems);
             mapper
                     .using(c -> customerRepo.findById(((CustomerRefDto) c.getSource()).getId()).orElseThrow(CustomEntityNotFoundException::new))
                     .map(ShoppingCartPutDto::getCustomerId, ShoppingCart::setCustomer);
-            });
+        });
 
-        modelMapper.typeMap(ShoppingCartItem.class, ShoppingCartItemDto.class).addMappings(mapper -> {
+        modelMapper.typeMap(ShoppingCartItem.class, ShoppingCartItemDto.class).addMappings(mapper ->
             mapper
                     .using(c -> new ProductRefDto(((Product) c.getSource()).getId()))
-                    .map(ShoppingCartItem::getProduct, ShoppingCartItemDto::setProduct);
-            });
+                    .map(ShoppingCartItem::getProduct, ShoppingCartItemDto::setProduct)
+            );
 
-        modelMapper.typeMap(ReviewDto.class, Review.class).addMappings(mapper -> {
+        modelMapper.typeMap(ReviewDto.class, Review.class).addMappings(mapper ->
+        {
             mapper
                     .using(c -> customerRepo.findById(((CustomerRefDto) c.getSource()).getId()).orElseThrow(CustomEntityNotFoundException::new))
                     .map(ReviewDto::getCustomerId, Review::setCustomer);
@@ -86,13 +81,14 @@ public class MapperConfig {
                     .map(ReviewDto::getProductId, Review::setProduct);
         });
 
-        modelMapper.typeMap(OrderItemDto.class, OrderItem.class).addMappings(mapper -> {
+        modelMapper.typeMap(OrderItemDto.class, OrderItem.class).addMappings(mapper ->
             mapper
                     .using(c -> productRepo.findById(((ProductRefDto) c.getSource()).getId()).orElseThrow(CustomEntityNotFoundException::new))
-                    .map(OrderItemDto::getProductId, OrderItem::setProduct);
-        });
+                    .map(OrderItemDto::getProductId, OrderItem::setProduct)
+        );
 
-        modelMapper.typeMap(ShopOrderDto.class, ShopOrder.class).addMappings(mapper -> {
+        modelMapper.typeMap(ShopOrderDto.class, ShopOrder.class).addMappings(mapper ->
+        {
             mapper
                     .using(c -> customerRepo.findById(((CustomerRefDto) c.getSource()).getId()).orElseThrow(CustomEntityNotFoundException::new))
                     .map(ShopOrderDto::getCustomerId, ShopOrder::setCustomer);
@@ -104,11 +100,11 @@ public class MapperConfig {
                     .map(ShopOrderDto::getOrderItems, ShopOrder::setOrderItems);
         });
 
-        modelMapper.typeMap(AddressDto.class, Address.class).addMappings(mapper -> {
+        modelMapper.typeMap(AddressDto.class, Address.class).addMappings(mapper ->
             mapper
                     .using(c -> countryRepo.findById(((AddressDto.CountryEmbDto) c.getSource()).getId()).orElseThrow(CustomEntityNotFoundException::new))
-                    .map(AddressDto::getCountryId, Address::setCountry);
-        });
+                    .map(AddressDto::getCountryId, Address::setCountry)
+        );
         return modelMapper;
     }
 }

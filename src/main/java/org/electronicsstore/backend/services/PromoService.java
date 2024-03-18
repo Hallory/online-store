@@ -3,6 +3,7 @@ package org.electronicsstore.backend.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
+import org.electronicsstore.backend.model.product.Product;
 import org.electronicsstore.backend.model.product.Promo;
 import org.electronicsstore.backend.repos.BaseService;
 import org.electronicsstore.backend.repos.ProductRepo;
@@ -57,11 +58,14 @@ public class PromoService implements BaseService<Promo, Long> {
 
     @Override
     public Promo updateOne(Long id, Promo entity) {
+        entity.replaceProduct(productRepo.findAllById(entity.getProducts().stream().map(Product::getId).toList()));
+        entity.setId(id);
         return promoRepo.save(entity);
     }
 
     @Override
     public Promo patchOne(Long id, Promo entity) {
+        entity.setId(id);
         return promoRepo.save(entity);
     }
 

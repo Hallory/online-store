@@ -50,7 +50,7 @@ public class CategoryController extends AbstractController {
 
     @GetMapping(value = {"categories/{categoryId}/tree-down", "categories/{categoryId}/tree-down/"})
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> treeDownById(
+    public ResponseEntity<CategoryTraversedDownProj> treeDownById(
             @PathVariable(name = "categoryId", required = true) Long categoryId
     ) {
         var tree = categoryService.findProjById(categoryId, CategoryTraversedDownProj.class);
@@ -59,7 +59,7 @@ public class CategoryController extends AbstractController {
 
     @GetMapping(value = {"categories/{categoryId}/tree-up", "categories/{categoryId}/tree-up/"})
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> treeUpById(
+    public ResponseEntity<CategoryTraversedUpProj> treeUpById(
             @PathVariable(name = "categoryId", required = true) Long categoryId
     ) {
         var tree = categoryService.findProjById(categoryId, CategoryTraversedUpProj.class);

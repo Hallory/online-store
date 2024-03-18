@@ -1,13 +1,9 @@
 package org.electronicsstore.backend.controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.electronicsstore.backend.dtos.product.ProductRefDto;
-import org.electronicsstore.backend.dtos.product.PromoDto;
-import org.electronicsstore.backend.dtos.product.PromoProj;
-import org.electronicsstore.backend.dtos.product.PromoPutDto;
+import org.electronicsstore.backend.dtos.product.*;
 import org.electronicsstore.backend.model.product.Promo;
 import org.electronicsstore.backend.services.PromoService;
 import org.modelmapper.ModelMapper;
@@ -22,7 +18,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/promos")
+@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(
         origins = {"http://frontend:4200", "http://localhost:4200"},
         allowedHeaders = "*",
@@ -32,13 +28,13 @@ public class PromoController extends AbstractController {
     private final PromoService promoService;
     private final ModelMapper modelMapper;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = {"promos", "promos/"})
     @ResponseStatus(HttpStatus.OK)
     public List<PromoProj> promos() {
         return promoService.findAllBy(PromoProj.class);
     }
 
-    @GetMapping(value = {"{promoId}"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = {"promos/{promoId}", "promos/{promoId}/"})
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<PromoProj> promoById(
             @PathVariable(name = "promoId", required = true) Long promoId
@@ -47,20 +43,19 @@ public class PromoController extends AbstractController {
     }
 
     @PostMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            value = {"promos", "promos/"},
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<URI> createPromo(
             HttpServletRequest req,
-            @RequestBody PromoDto dto
+            @RequestBody PromoPostDto dto
     ) {
         var promo = promoService.createOne(modelMapper.map(dto, Promo.class));
         return ResponseEntity.created(buildURI(req, promo.getId().toString())).build();
     }
 
     @PutMapping(
-            value = {"{promoId}"},
-            consumes = MediaType.APPLICATION_JSON_VALUE,
+            value = {"promos/{promoId}", "promos/{promoId}/"},
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> putPromo(
@@ -71,13 +66,13 @@ public class PromoController extends AbstractController {
     }
 
     @PatchMapping(
-            value = {"{promoId}"},
+            value = {"promos/{promoId}", "promos/{promoId}/"},
             consumes = "application/merge-patch+json",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> patchPromo(
             @PathVariable(name = "promoId", required = true) Long promoId,
-            @RequestBody JsonNode dto
+            @RequestBody PromoPatchDto dto
     ) {
         var fetched = promoService.findById(promoId);
         fetched = promoService.patchOne(promoId, mergePatch(fetched, Promo.class, dto));
@@ -85,7 +80,7 @@ public class PromoController extends AbstractController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping(value = {"{promoId}"})
+    @DeleteMapping(value = {"promos/{promoId}", "promos/{promoId}/"})
     public ResponseEntity<?> deletePromo(
             @PathVariable(name = "promoId", required = true) Long promoId
     ) {
@@ -94,9 +89,8 @@ public class PromoController extends AbstractController {
     }
 
     @PostMapping(
-            value = {"{promoId}/products"},
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            value = {"promos/{promoId}/products", "promos/{promoId}/products/"},
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<URI> addProducts(
             HttpServletRequest req,
@@ -108,9 +102,8 @@ public class PromoController extends AbstractController {
     }
 
     @PutMapping(
-            value = {"{promoId}/products"},
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            value = {"promos/{promoId}/products", "promos/{promoId}/products/"},
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> putPromo(
             @PathVariable(name = "promoId", required = true) Long promoId,
@@ -121,7 +114,7 @@ public class PromoController extends AbstractController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping(value = {"{promoId}/products/{productId}"})
+    @DeleteMapping(value = {"promos/{promoId}/products/{productId}", "promos/{promoId}/products/{productId}/"})
     public ResponseEntity<?> deletePromo(
             @PathVariable(name = "promoId", required = true) Long promoId,
             @PathVariable(name = "productId", required = true) String productId

@@ -3,8 +3,11 @@ package org.electronicsstore.backend.services;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.electronicsstore.backend.dtos.product.CategoryProj;
+import org.electronicsstore.backend.dtos.product.CharacteristicNoRefProj;
+import org.electronicsstore.backend.dtos.product.CharacteristicProj;
 import org.electronicsstore.backend.exceptions.CustomEntityExistsException;
 import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
+import org.electronicsstore.backend.exceptions.EntityBadRequestException;
 import org.electronicsstore.backend.model.product.Category;
 import org.electronicsstore.backend.model.product.Characteristic;
 import org.electronicsstore.backend.repos.BaseService;
@@ -44,7 +47,6 @@ public class CharacteristicService implements BaseService<Characteristic, Long> 
     }
 
     public List<CategoryProj.CharacteristicProjEmb> findAllProjByCategoryIdInherited(Long id, Class<CategoryProj> clz) {
-        // todo CTE query
         final var category = categoryRepo.findProjById(id, clz).orElseThrow(CustomEntityNotFoundException::new);
         List<CategoryProj.CharacteristicProjEmb> inherited =
                 new ArrayList<>(category.getCharacteristics());
@@ -56,10 +58,21 @@ public class CharacteristicService implements BaseService<Characteristic, Long> 
         return inherited.stream().filter(Objects::nonNull).toList();
     }
 
+    public List<CharacteristicNoRefProj> findAllProjByCategoryIdInheritedCTE(Long id) {
+        return characteristicRepo.findAllProjByCategoryIdCTE(id);
+    }
+
     @Override
     public <P> P findProjById(Long id, Class<P> clz) {
         return characteristicRepo.findProjById(id, clz).orElseThrow(CustomEntityNotFoundException::new);
     }
+    public <P> P findProjById(Long categoryId, Long id, Class<P> clz) {
+        if (!categoryRepo.existsById(categoryId)) {
+            throw new EntityBadRequestException();
+        }
+        return findProjById(id, clz);
+    }
+
 
     @Override
     public List<Characteristic> findAllById(List<Long> ids) {
@@ -80,7 +93,7 @@ public class CharacteristicService implements BaseService<Characteristic, Long> 
     }
 
     public Characteristic createOne(Long categoryId, Characteristic entity) {
-        var category = categoryRepo.findById(categoryId).orElseThrow(CustomEntityNotFoundException::new);
+        var category = categoryRepo.findById(categoryId).orElseThrow(EntityBadRequestException::new);
         entity.setCategory(category);
         return createOne(entity);
     }
@@ -90,13 +103,35 @@ public class CharacteristicService implements BaseService<Characteristic, Long> 
         return characteristicRepo.save(entity);
     }
 
+    public Characteristic updateOne(Long categoryId, Long id, Characteristic entity) {
+        // todo handle deep char value creation
+        if (!categoryRepo.existsById(categoryId)) {
+            throw new EntityBadRequestException();
+        }
+        return updateOne(id, entity);
+    }
+
     @Override
     public Characteristic patchOne(Long id, Characteristic entity) {
         return characteristicRepo.save(entity);
     }
 
+    public Characteristic patchOne(Long categoryId, Long id, Characteristic entity) {
+        if (!categoryRepo.existsById(categoryId)) {
+            throw new EntityBadRequestException();
+        }
+        return patchOne(id, entity);
+    }
+
     @Override
     public void deleteOne(Long id) {
+        characteristicRepo.delete(findById(id));
+    }
+
+    public void deleteOne(Long categoryId, Long id) {
+        if (!categoryRepo.existsById(categoryId)) {
+            throw new EntityBadRequestException();
+        }
         characteristicRepo.delete(findById(id));
     }
 

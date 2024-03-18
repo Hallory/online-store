@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.electronicsstore.backend.exceptions.CustomEntityExistsException;
 import org.electronicsstore.backend.exceptions.CustomEntityNotFoundException;
+import org.electronicsstore.backend.exceptions.EntityBadRequestException;
 import org.electronicsstore.backend.model.product.Product;
 import org.electronicsstore.backend.repos.BaseService;
 import org.electronicsstore.backend.repos.CategoryRepo;
@@ -65,23 +66,51 @@ public class ProductService implements BaseService<Product, String> {
     }
 
     public Product createOne(Long categoryId, Product entity) {
-        var category = categoryRepo.findById(categoryId).orElseThrow(CustomEntityNotFoundException::new);
+        var category = categoryRepo.findById(categoryId).orElseThrow(EntityBadRequestException::new);
+        if (!category.isLeaf()) {
+            throw new EntityBadRequestException();
+        }
         entity.setCategory(category);
         return createOne(entity);
     }
 
     @Override
     public Product updateOne(String id, Product entity) {
+        entity.setId(id);
         return productRepo.save(entity);
+    }
+
+    public void updateOne(Long categoryId, String productId, Product product) {
+        // todo handle deep char value creation
+        if (!categoryRepo.existsById(categoryId)) {
+            throw new EntityBadRequestException();
+        }
+        updateOne(productId, product);
     }
 
     @Override
     public Product patchOne(String id, Product entity) {
+        entity.setId(id);
         return productRepo.save(entity);
+    }
+
+    public Product patchOne(Long categoryId, String productId, Product t) {
+        if (!categoryRepo.existsById(categoryId)) {
+            throw new EntityBadRequestException();
+        }
+        return patchOne(productId, t);
     }
 
     @Override
     public void deleteOne(String productId) {
+        var product = findById(productId);
+        productRepo.delete(product);
+    }
+
+    public void deleteOne(Long categoryId, String productId) {
+        if (!categoryRepo.existsById(categoryId)) {
+            throw new EntityBadRequestException();
+        }
         var product = findById(productId);
         productRepo.delete(product);
     }

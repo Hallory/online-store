@@ -7,26 +7,25 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Set;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class PromoPutDto {
+@AllArgsConstructor
+@Data
+public class CharacteristicPostDto {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
     private String name;
-    private String description;
-    private Double discountRate;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private Set<ProductRefDto> products;
+    private String dataType;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private LocalDateTime createdAt;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private LocalDateTime modifiedAt;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PromoPutDto that = (PromoPutDto) o;
+        CharacteristicPostDto that = (CharacteristicPostDto) o;
         return Objects.equals(name, that.name);
     }
 

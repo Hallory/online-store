@@ -60,6 +60,7 @@ public class CharacteristicValueService implements BaseService<CharacteristicVal
     }
 
     public CharacteristicValue createOne(Long categoryId, String productId, Long charId, CharacteristicValue charValue) {
+        // todo deep validation
         var product = productRepo.findById(productId).orElseThrow(CustomEntityNotFoundException::new);
         var characteristic = characteristicRepo.findById(charId).orElseThrow(CustomEntityNotFoundException::new);
         charValue.setCharacteristic(characteristic);
