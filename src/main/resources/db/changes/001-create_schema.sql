@@ -1,9 +1,9 @@
-create sequence category_seq start with 1 increment by 1;
-create sequence characteristic_seq start with 1 increment by 1;
-create sequence characteristic_value_seq start with 1 increment by 1;
-create sequence country_seq start with 1 increment by 1;
-create sequence promo_seq start with 1 increment by 1;
-create sequence shipping_method_seq start with 1 increment by 1;
+create sequence category_seq start with 1 increment by 50;
+create sequence characteristic_seq start with 1 increment by 50;
+create sequence characteristic_value_seq start with 1 increment by 50;
+create sequence country_seq start with 1 increment by 50;
+create sequence promo_seq start with 1 increment by 50;
+create sequence shipping_method_seq start with 1 increment by 50;
 create table address (is_default boolean, country_id bigint, created_at timestamp(6), modified_at timestamp(6), address_line1 varchar(255), address_line2 varchar(255), city varchar(255), customer_id varchar(255) not null, id varchar(255) not null, postal_code varchar(255), region varchar(255), street_num varchar(255), unit_num varchar(255), primary key (id));
 create table category (created_at timestamp(6) not null, id bigint not null, modified_at timestamp(6), parent_id bigint, description varchar(255), name varchar(255) not null, primary key (id), unique (name));
 create table characteristic (category_id bigint not null, created_at timestamp(6) not null, id bigint not null, modified_at timestamp(6), data_type varchar(255), name varchar(255) not null, primary key (id), unique (name, category_id));

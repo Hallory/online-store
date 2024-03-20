@@ -5,13 +5,18 @@ custom:
   secured_api: ${SECURE_API:true}
 
 logging:
-  level.org.springframework.security: TRACE
+  level:
+    root: INFO
+    org.springframework.security: TRACE
+    org.hibernate:
+      stat: DEBUG
+      SQL: DEBUG
   file.name: ${logging.file.path}/backend.log
   file.path: logs/dev
   logback:
     rollingpolicy.file-name-pattern: ${logging.file.name}.%d{yyyy-MM-dd}.%i.gz
     rollingpolicy.clean-history-on-start: false
-    rollingpolicy.max-file-size: 10MB
+    rollingpolicy.max-file-size: 50MB
     rollingpolicy.total-size-cap: 100MB
     rollingpolicy.max-history: 7
 
