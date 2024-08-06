@@ -30,11 +30,11 @@ const Orders = () => {
 
     return (
         <div className='flex h-full w-full gap-4'>
-            <div className='active-orders h-full bg-gray-200 items-center w-1/4 border-2 border-gray-300 rounded flex flex-col'>
+            <div className='low-price-orders h-full bg-gray-200 items-center md:w-1/3 lg:w-1/4 border-2 border-gray-300 rounded flex flex-col'>
             <p className='text-xl p-4 text-left'>Low price orders</p>
             <OrdersList ordersState={lowPriceOrders}/>
             </div>
-            <div className='active-orders h-full bg-gray-200 items-center w-1/4 border-2 border-gray-300 rounded flex flex-col'>
+            <div className='high-price-orders h-full bg-gray-200 items-center md:w-1/3 lg:w-1/4 border-2 border-gray-300 rounded flex flex-col'>
             <p className='text-xl p-4 text-left'>High price orders</p>
             <OrdersList ordersState={highPriceOrders}/>
             </div>

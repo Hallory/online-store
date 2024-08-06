@@ -1,6 +1,5 @@
 import React from 'react';
 import { IconList, IconLayoutGrid } from '@tabler/icons-react';
-import { FunnelIcon, BarsArrowUpIcon } from '@heroicons/react/24/solid';
 import Tasks from './tasks-bar/Tasks';
 import Searchbar from './search-bar/Searchbar';
 const Sidebar = () => {
@@ -14,9 +13,9 @@ const Sidebar = () => {
                     <IconList /> List
                 </button>
             </div>
-            <div className="search flex content-between w-[40%] gap-2">
-                <Searchbar/>
-            <Tasks/>
+            <div className="search flex content-between sm:w-1/2 lg:w-2/5 gap-2">
+                <Searchbar />
+                <Tasks />
             </div>
         </div>
     );

@@ -11,7 +11,7 @@ const OrdersList = ({ordersState}) => {
         return <p>Error: {ordersState.error}</p>;
     }
     return (
-        <div className='overflow-y-auto flex flex-col max-h-full gap-5 m-0 p-0'>
+        <div className='overflow-y-auto flex flex-col w-11/12 max-h-full gap-5 m-0 p-0'>
             {Array.isArray(ordersState) ? (
                 ordersState.map((order) => (
                     <OrderCard key={order.id} orders={order} />

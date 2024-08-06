@@ -11,7 +11,7 @@ const ManagersList = () => {
     }, [dispatch]);
 
     return (
-        <div>
+        <div className='flex flex-col '>
             {usersState.status === 'loading' && <p>Loading...</p>}
             {Array.isArray(usersState.list) && usersState.list.length > 0 ? (
                 usersState.list.map((user) => (
